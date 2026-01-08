@@ -175,20 +175,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Theme Toggle
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.documentElement.setAttribute('data-theme', 'light');
 
   // Trouver les boutons de thème
   const themeButtons = document.querySelectorAll('.theme-option');
-
-  // Mettre à jour l'état actif du bouton de thème au chargement
-  themeButtons.forEach(btn => {
-    if (btn.dataset.theme === savedTheme) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
 
   // Event listeners pour les boutons de thème
   themeButtons.forEach((btn) => {
@@ -196,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const theme = this.dataset.theme;
       
       document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
       
       // Mettre à jour les boutons actifs
       themeButtons.forEach(b => b.classList.remove('active'));
@@ -219,42 +208,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }, true);
   });
 });
-
-// Analytics - Tracker les recherches
-function trackSearch(type, query, result) {
-  const searches = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-  searches.push({
-    type: type, // 'command' ou 'recipe'
-    query: query,
-    result: result,
-    timestamp: new Date().toISOString()
-  });
-  
-  // Garder seulement les 100 dernières recherches
-  if (searches.length > 100) {
-    searches.shift();
-  }
-  
-  localStorage.setItem('searchHistory', JSON.stringify(searches));
-}
-
-function getPopularSearches(type = null) {
-  const searches = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-  const filtered = type ? searches.filter(s => s.type === type) : searches;
-  
-  // Compter les recherches
-  const counts = {};
-  filtered.forEach(s => {
-    const key = s.query.toLowerCase();
-    counts[key] = (counts[key] || 0) + 1;
-  });
-  
-  // Trier par popularité
-  return Object.entries(counts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([query, count]) => ({ query, count }));
-}
 
 function translatePage(lang) {
   currentLang = lang;
@@ -459,8 +412,8 @@ document.querySelectorAll(".btn-close").forEach((button) => {
   });
 });
 
-// Clé API Hugging Face (gratuite) - Obtenez la vôtre sur https://huggingface.co/settings/tokens
-const HF_API_KEY = ""; // Remplacez par votre clé
+// Clé API Hugging Face depuis variable d'environnement
+const HF_TOKEN = process.env.HF_TOKEN;
 
 // Fonction IA avec Hugging Face
 async function findCommand(description) {
@@ -470,7 +423,7 @@ async function findCommand(description) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${HF_API_KEY}`,
+          Authorization: `Bearer ${HF_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
