@@ -460,7 +460,7 @@ document.querySelectorAll(".btn-close").forEach((button) => {
 });
 
 // Clé API Hugging Face (gratuite) - Obtenez la vôtre sur https://huggingface.co/settings/tokens
-const HF_API_KEY = "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"; // Remplacez par votre clé
+const HF_API_KEY = ""; // Remplacez par votre clé
 
 // Fonction IA avec Hugging Face
 async function findCommand(description) {
