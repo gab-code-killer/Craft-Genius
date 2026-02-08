@@ -22,9 +22,21 @@
                 <li><a href="#astuces">Astuces</a></li>
                 <li><a href="#recettes">Recettes</a></li>
             </ul>
-            <button class="settings-btn" id="settingsBtn" title="Paramètres">⚙️</button>
+            <div class="navbar-right">
+                <button class="auth-btn" id="authBtn" title="Connexion">🔒 Se connecter</button>
+                <button class="settings-btn" id="settingsBtn" title="Paramètres">⚙️</button>
+            </div>
         </div>
     </nav>
+
+    <!-- Profile Menu -->
+    <div class="profile-menu" id="profileMenu" style="display: none;">
+        <div class="profile-header">
+            <p id="profileUsername">Utilisateur</p>
+            <p id="profileEmail" style="font-size: 0.85rem; color: var(--text-secondary);"></p>
+        </div>
+        <button class="profile-btn" id="logoutBtn">🚪 Déconnexion</button>
+    </div>
 
     <!-- Overlay pour fermer les paramètres -->
     <div class="settings-overlay" id="settingsOverlay"></div>
@@ -276,6 +288,11 @@
             <p>Créé par Gabriel Cardon | Site non affilié à Mojang Studios ou Microsoft</p>
         </div>
     </footer>
+
+    <!-- Firebase SDK (compat pour usage simple) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
     <script src="script.js"></script>
 </body>

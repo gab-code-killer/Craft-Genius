@@ -134,6 +134,95 @@ body {
     transform: rotate(90deg);
 }
 
+/* Navbar Right Container */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Auth Button */
+.auth-btn {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.auth-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+
+.auth-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+}
+
+/* Profile Menu */
+.profile-menu {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px var(--card-shadow);
+    width: 280px;
+    z-index: 1001;
+    animation: slideInRight 0.3s ease;
+    padding: 0;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.2rem 1.5rem;
+    border-radius: 15px 15px 0 0;
+}
+
+.profile-header p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.profile-btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0 0 15px 15px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.profile-btn:hover {
+    background: #e8e0f1;
+}
+
 /* Settings Menu */
 .settings-menu {
     position: fixed;
@@ -1029,6 +1118,23 @@ footer p {
     .settings-btn {
         padding: 6px 12px;
         font-size: 1.1rem;
+    }
+
+    .navbar-right {
+        gap: 0.8rem;
+    }
+
+    .auth-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    .profile-menu {
+        right: 10px;
+        left: 10px;
+        width: auto;
+        top: auto;
+        bottom: 70px;
     }
     
     /* Hero */

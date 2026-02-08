@@ -129,6 +129,77 @@ let currentLang = 'fr';
 
 // Attendre que le DOM soit chargé
 document.addEventListener('DOMContentLoaded', function() {
+    // ============================================
+    // Configuration Firebase (REMPLACER PAR VOTRE CONFIG)
+    // ============================================
+      const firebaseConfig = {
+        apiKey: "AIzaSyDV9nR4R9DrLBF7xkQzihLtzl8cOipUaC0",
+        authDomain: "craft-genius-201e6.firebaseapp.com",
+        projectId: "craft-genius-201e6",
+        storageBucket: "craft-genius-201e6.firebasestorage.app",
+        messagingSenderId: "476192035823",
+        appId: "1:476192035823:web:9f3c8a72fa2eef9bb99c1a"
+      };
+
+    // Vérifier si Firebase est chargé
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+  
+    if (typeof firebase !== 'undefined' && firebase.apps.length) {
+      const auth = firebase.auth();
+      const authBtn = document.getElementById('authBtn');
+      const profileMenu = document.getElementById('profileMenu');
+      const logoutBtn = document.getElementById('logoutBtn');
+      
+      // Vérifier l'état de connexion
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // Utilisateur connecté
+          const email = user.email || '';
+          const avatarLetter = email ? email.trim().charAt(0).toUpperCase() : '?';
+          authBtn.innerHTML = `<span class="auth-avatar">${avatarLetter}</span>`;
+          authBtn.setAttribute('aria-label', 'Profil');
+          authBtn.onclick = () => {
+            profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+          };
+
+          // Remplir le menu profil
+          document.getElementById('profileUsername').textContent = user.displayName || (email.split('@')[0] || email);
+          document.getElementById('profileEmail').textContent = user.email;
+              
+        } else {
+          // Utilisateur non connecté
+          authBtn.textContent = '🔒 Se connecter';
+          authBtn.removeAttribute('aria-label');
+          authBtn.onclick = () => {
+            window.location.href = 'auth.html';
+          };
+          profileMenu.style.display = 'none';
+        }
+      });
+      
+      // Bouton de déconnexion
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          try {
+            await auth.signOut();
+            localStorage.removeItem('user');
+            window.location.reload();
+          } catch (error) {
+            console.error('Erreur de déconnexion:', error);
+          }
+        });
+      }
+      
+      // Fermer le menu profil en cliquant en dehors
+      document.addEventListener('click', (e) => {
+        if (!authBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+          profileMenu.style.display = 'none';
+        }
+      });
+    }
+
   
   // Hamburger Menu Mobile
   const hamburger = document.getElementById('hamburger');
@@ -169,35 +240,71 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
+  function openSettingsMenu() {
+    settingsMenu.classList.add('show');
+    settingsOverlay.classList.add('show');
+  }
+
+  function closeSettingsMenu() {
+    settingsMenu.classList.remove('show');
+    settingsOverlay.classList.remove('show');
+  }
+
   // Ouvrir/Fermer le menu des paramètres
-  settingsBtn.addEventListener('click', () => {
-    settingsMenu.classList.toggle('show');
-    settingsOverlay.classList.toggle('show');
+  settingsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (settingsMenu.classList.contains('show')) {
+      closeSettingsMenu();
+    } else {
+      openSettingsMenu();
+    }
   });
 
   // Empêcher la fermeture quand on clique dans le menu
   settingsMenu.addEventListener('click', (e) => {
-    // Ne rien faire - empêche la propagation
+    e.stopPropagation();
   });
 
   // Empêcher aussi la propagation sur le settings-body
   const settingsBody = settingsMenu.querySelector('.settings-body');
   if (settingsBody) {
     settingsBody.addEventListener('click', (e) => {
-      // Ne rien faire - empêche la propagation
+      e.stopPropagation();
     });
   }
 
-  closeSettings.addEventListener('click', () => {
-    settingsMenu.classList.remove('show');
-    settingsOverlay.classList.remove('show');
+  closeSettings.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeSettingsMenu();
   });
 
   settingsOverlay.addEventListener('click', (e) => {
     // Fermer seulement si on clique directement sur l'overlay
     if (e.target === settingsOverlay) {
-      settingsMenu.classList.remove('show');
-      settingsOverlay.classList.remove('show');
+      closeSettingsMenu();
+    }
+  });
+
+  // Fermer si on clique en dehors du menu
+  document.addEventListener('click', (e) => {
+    if (settingsMenu.classList.contains('show') &&
+        !settingsMenu.contains(e.target) &&
+        !settingsBtn.contains(e.target)) {
+      closeSettingsMenu();
+    }
+  });
+
+  // Fermer avec Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && settingsMenu.classList.contains('show')) {
+      closeSettingsMenu();
+    }
+  });
+
+  // Fermer au scroll
+  window.addEventListener('scroll', () => {
+    if (settingsMenu.classList.contains('show')) {
+      closeSettingsMenu();
     }
   });
 
