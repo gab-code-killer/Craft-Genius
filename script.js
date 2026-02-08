@@ -198,14 +198,17 @@ document.addEventListener('DOMContentLoaded', function() {
   
   langButtons.forEach((btn) => {
     btn.addEventListener('click', function(e) {
+      e.preventDefault();
       const lang = this.dataset.lang;
       
-      translatePage(lang);
-      
-      // Mettre à jour les boutons actifs
+      // Mettre à jour les boutons actifs - retirer active de tous
       langButtons.forEach(b => b.classList.remove('active'));
+      // Ajouter active au bouton cliqué
       this.classList.add('active');
-    }, true);
+      
+      // Traduire la page
+      translatePage(lang);
+    });
   });
 });
 
@@ -412,71 +415,13 @@ document.querySelectorAll(".btn-close").forEach((button) => {
   });
 });
 
-// Clé API Hugging Face depuis variable d'environnement
-const HF_TOKEN = process.env.HF_TOKEN;
-
-// Fonction IA avec Hugging Face
+// Fonction IA locale avec recherche intelligente
 async function findCommand(description) {
   try {
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${HF_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inputs: `Tu es un expert Minecraft. L'utilisateur décrit ce qu'il veut faire et tu réponds UNIQUEMENT avec la commande Minecraft et son explication.
-
-Format STRICT:
-COMMANDE: [commande ici]
-EXPLICATION: [explication ici]
-
-Exemples de commandes:
-- /give @p diamond 64 : donner items
-- /gamemode creative : changer mode
-- /tp @p ~ ~10 ~ : téléporter
-- /time set day : changer heure
-- /weather clear : changer météo
-- /effect give @p speed 60 2 : effets
-- /summon zombie : invoquer entités
-- /fill ~ ~ ~ ~10 ~10 ~10 stone : remplir zones
-
-Demande: ${description}
-
-Réponds maintenant:`,
-          parameters: {
-            max_new_tokens: 200,
-            temperature: 0.7,
-            return_full_text: false,
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Erreur API Hugging Face: " + response.status);
-    }
-
-    const data = await response.json();
-    const text = data[0].generated_text;
-
-    // Parser la réponse
-    const commandMatch = text.match(/COMMANDE:\s*(.+)/);
-    const explanationMatch = text.match(/EXPLICATION:\s*(.+)/s);
-
-    if (commandMatch && explanationMatch) {
-      return {
-        command: commandMatch[1].trim().split("\n")[0],
-        explanation: explanationMatch[1].trim(),
-      };
-    }
-
-    // Fallback vers IA locale si le format n'est pas bon
+    // Utiliser directement l'IA locale (plus fiable et rapide)
     return findCommandLocal(description);
   } catch (error) {
-    console.log("Erreur API, utilisation IA locale:", error);
+    console.log("Erreur lors de la recherche:", error);
     return findCommandLocal(description);
   }
 }
@@ -808,23 +753,17 @@ const itemTranslations = {
   "spectateur": "spectator"
 };
 
+// Fonction pour trouver un élément dans un texte
+function findInDict(text, dict) {
+  for (let [fr, en] of Object.entries(dict)) {
+    if (text.includes(fr)) return en;
+  }
+  return null;
+}
+
 // IA locale avec système JSON
 function findCommandLocal(description) {
   const text = description.toLowerCase();
-  
-  // Fonction pour trouver un item/mob/effet dans le texte
-  function findInText(dict) {
-    for (let [fr, en] of Object.entries(dict)) {
-      if (text.includes(fr)) return en;
-    }
-    return null;
-  }
-  
-  // Fonction pour extraire les nombres
-  function getNumber(defaultVal = "1") {
-    const match = text.match(/\d+/);
-    return match ? match[0] : defaultVal;
-  }
   
   // Chercher quelle commande correspond
   for (let [cmdName, cmdData] of Object.entries(minecraftCommands)) {
@@ -849,14 +788,14 @@ function buildCommand(cmdName, text, cmdData) {
   
   switch(cmdName) {
     case "give":
-      const item = findInText(itemTranslations) || "diamond";
+      const item = findInDict(text, itemTranslations) || "diamond";
       return {
         command: `/give @p ${item} ${qty}`,
         explanation: `Donne ${qty} ${item} au joueur.`
       };
       
     case "gamemode":
-      let mode = findInText(itemTranslations);
+      let mode = findInDict(text, itemTranslations);
       if (!cmdData.modes || !cmdData.modes.includes(mode)) mode = "creative";
       return {
         command: `/gamemode ${mode}`,
@@ -892,14 +831,14 @@ function buildCommand(cmdName, text, cmdData) {
       };
       
     case "effect":
-      const effect = findInText(itemTranslations) || "speed";
+      const effect = findInDict(text, itemTranslations) || "speed";
       return {
         command: `/effect give @p ${effect} 60 2`,
         explanation: `Applique l'effet ${effect} niveau 2 pendant 60 secondes.`
       };
       
     case "summon":
-      const mob = findInText(itemTranslations) || "zombie";
+      const mob = findInDict(text, itemTranslations) || "zombie";
       return {
         command: `/summon ${mob}`,
         explanation: `Fait apparaître un ${mob}.`
@@ -919,7 +858,7 @@ function buildCommand(cmdName, text, cmdData) {
       };
       
     case "clear":
-      const clearItem = findInText(itemTranslations);
+      const clearItem = findInDict(text, itemTranslations);
       if (clearItem) {
         return {
           command: `/clear @p ${clearItem}`,
@@ -932,7 +871,7 @@ function buildCommand(cmdName, text, cmdData) {
       };
       
     case "fill":
-      const fillBlock = findInText(itemTranslations) || "stone";
+      const fillBlock = findInDict(text, itemTranslations) || "stone";
       if (coords && coords.length >= 6) {
         return {
           command: `/fill ${coords[0]} ${coords[1]} ${coords[2]} ${coords[3]} ${coords[4]} ${coords[5]} ${fillBlock}`,
@@ -945,7 +884,7 @@ function buildCommand(cmdName, text, cmdData) {
       };
       
     case "setblock":
-      const block = findInText(itemTranslations) || "stone";
+      const block = findInDict(text, itemTranslations) || "stone";
       if (coords && coords.length >= 3) {
         return {
           command: `/setblock ${coords[0]} ${coords[1]} ${coords[2]} ${block}`,
@@ -1051,16 +990,6 @@ function buildCommand(cmdName, text, cmdData) {
   }
 }
 
-function findInText(dict) {
-  const text = document.getElementById("commandDescription").value.toLowerCase();
-  for (let [fr, en] of Object.entries(dict)) {
-    if (text.includes(fr)) return en;
-  }
-  return null;
-}
-
-
-
 // Gestionnaire du bouton de recherche - INITIALISÉ AU CHARGEMENT
 const searchButton = document.getElementById("searchCommand");
 const commandInput = document.getElementById("commandDescription");
@@ -1091,9 +1020,6 @@ async function performSearch() {
   try {
     // Trouver la commande avec l'IA
     const result = await findCommand(description);
-
-    // Stocker dans les analytics
-    trackSearch('command', description, result.command);
 
     // Afficher le résultat
     commandCodeElement.textContent = result.command;
@@ -1370,9 +1296,6 @@ async function performRecipeSearch() {
   try {
     // Trouver la recette
     const result = findRecipe(description);
-
-    // Stocker dans les analytics
-    trackSearch('recipe', description, result.name);
 
     // Afficher le résultat
     recipeNameElement.textContent = result.name;

@@ -586,6 +586,11 @@ body {
     margin-bottom: 3rem;
 }
 
+/* Fix subtitle visibility in recipes section */
+.recipes .subtitle {
+    color: var(--text-primary);
+}
+
 .search-box {
     max-width: 800px;
     margin: 0 auto 3rem;
