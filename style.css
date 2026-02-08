@@ -68,6 +68,36 @@ body {
     color: white;
 }
 
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
 .nav-links {
     display: flex;
     list-style: none;
@@ -955,14 +985,55 @@ footer p {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .nav-links {
-        gap: 1rem;
+    /* Navigation Mobile */
+    .hamburger {
+        display: flex;
     }
     
+    .nav-links {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: #2c3e50;
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+    
+    .nav-links.active {
+        max-height: 300px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    
+    .nav-links li {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 1rem;
+    }
+    
+    /* Settings Menu */
     .settings-menu {
         right: 10px;
         left: 10px;
         width: auto;
+        top: auto;
+        bottom: 70px;
+    }
+    
+    .settings-btn {
+        padding: 6px 12px;
+        font-size: 1.1rem;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: 60px 20px;
     }
     
     .hero-content h1 {
@@ -973,9 +1044,256 @@ footer p {
         font-size: 1rem;
     }
     
+    /* Sections */
+    .command-finder h2,
+    .recipes h2,
+    .features h2,
+    .tips h2 {
+        font-size: 1.8rem;
+    }
+    
+    .subtitle {
+        font-size: 0.95rem;
+    }
+    
+    /* Search Box */
+    .search-box {
+        padding: 1.5rem;
+        margin: 0 auto 2rem;
+    }
+    
+    .search-box textarea {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+    }
+    
+    /* Cards */
+    .cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
+    
+    /* Tips Grid */
+    .tips-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .tip {
+        padding: 1rem;
+    }
+    
+    .tip h4 {
+        font-size: 1rem;
+    }
+    
+    .tip p {
+        font-size: 0.9rem;
+    }
+    
+    /* Recipe Items */
     .recipe-item {
         flex-direction: column;
         text-align: center;
         gap: 0.5rem;
+        padding: 1rem;
+    }
+    
+    /* Command Examples */
+    .command-examples {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .example-command {
+        padding: 1rem;
+    }
+    
+    /* Settings Menu Mobile */
+    .setting-options {
+        flex-direction: column;
+    }
+    
+    .setting-option {
+        width: 100%;
+    }
+    
+    /* Footer */
+    footer {
+        padding: 1.5rem 20px;
+    }
+    
+    footer p {
+        font-size: 0.85rem;
+    }
+    
+    /* Container padding */
+    .container {
+        padding: 0 15px;
+    }
+}
+
+/* Very Small Screens (< 480px) */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .navbar {
+        padding: 0.8rem 0;
+    }
+    
+    .settings-btn {
+        padding: 4px 10px;
+        font-size: 1rem;
+    }
+    
+    .settings-menu {
+        width: calc(100% - 20px);
+        right: 10px;
+        left: 10px;
+    }
+    
+    .settings-header h3 {
+        font-size: 1rem;
+    }
+    
+    .setting-option {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    .option-icon {
+        font-size: 1.5rem;
+    }
+    
+    /* Hero Very Small */
+    .hero {
+        padding: 40px 15px;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+    
+    /* Sections Very Small */
+    .command-finder h2,
+    .recipes h2,
+    .features h2,
+    .tips h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Search Box Very Small */
+    .search-box {
+        padding: 1rem;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .search-box textarea {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+        rows: 2;
+    }
+    
+    .btn-search {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        margin-top: 1rem;
+    }
+    
+    /* Cards Very Small */
+    .cards {
+        gap: 1rem;
+    }
+    
+    .card {
+        padding: 1.2rem;
+    }
+    
+    .card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .card p {
+        font-size: 0.85rem;
+    }
+    
+    /* Tips Very Small */
+    .tips-grid {
+        gap: 1rem;
+    }
+    
+    .tip {
+        padding: 0.8rem;
+    }
+    
+    .tip h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .tip p {
+        font-size: 0.8rem;
+    }
+    
+    /* Command Examples Very Small */
+    .command-examples {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .example-command {
+        padding: 1rem;
+    }
+    
+    .example-command code {
+        font-size: 0.8rem;
+    }
+    
+    /* Guide Very Small */
+    .guide-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .guide-body h3 {
+        font-size: 1.1rem;
+    }
+    
+    .guide-body li {
+        font-size: 0.9rem;
+    }
+    
+    /* Command Result Very Small */
+    .command-result {
+        padding: 1rem;
+        gap: 0.8rem;
+    }
+    
+    .command-box {
+        gap: 0.5rem;
+    }
+    
+    .command-box code {
+        font-size: 0.85rem;
+        padding: 0.7rem;
+    }
+    
+    .btn-copy {
+        padding: 6px 12px;
+        font-size: 0.8rem;
     }
 }
