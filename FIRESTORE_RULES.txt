@@ -1,0 +1,31 @@
+// Mettez à jour vos règles Firestore dans la Firebase Console :
+// Allez à : Firestore Database > Rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Règles pour la collection users
+    match /users/{uid} {
+      allow read, write: if request.auth.uid == uid;
+    }
+    
+    // Règles pour la collection comments
+    match /comments/{document=**} {
+      // Lire tous les commentaires
+      allow read: if true;
+      
+      // Créer un commentaire (l'utilisateur peut être connecté ou non)
+      allow create: if request.resource.data.text.size() > 0 && 
+                       request.resource.data.name != null;
+      
+      // Supprimer son propre commentaire (si on a un userId)
+      allow delete: if request.auth != null && 
+                       request.auth.uid == resource.data.userId;
+      
+      // Modifier son propre commentaire
+      allow update: if request.auth != null && 
+                       request.auth.uid == resource.data.userId;
+    }
+  }
+}

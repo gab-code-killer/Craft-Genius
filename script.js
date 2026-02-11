@@ -164,9 +164,40 @@ document.addEventListener('DOMContentLoaded', function() {
             profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
           };
 
-          // Remplir le menu profil
-          document.getElementById('profileUsername').textContent = user.displayName || (email.split('@')[0] || email);
-          document.getElementById('profileEmail').textContent = user.email;
+          // Récupérer le username depuis Firestore
+          const db = firebase.firestore();
+          db.collection('users').doc(user.uid).get()
+            .then((doc) => {
+              let username = user.displayName || email.split('@')[0];
+              
+              if (doc.exists && doc.data().username) {
+                username = doc.data().username;
+              }
+              
+              // Remplir le menu profil
+              document.getElementById('profileUsername').textContent = username;
+              document.getElementById('profileEmail').textContent = user.email;
+              
+              // Sauvegarder dans localStorage pour les commentaires
+              localStorage.setItem('user', JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                username: username
+              }));
+            })
+            .catch((error) => {
+              console.error('Erreur récupération username:', error);
+              // Fallback
+              const username = user.displayName || email.split('@')[0];
+              document.getElementById('profileUsername').textContent = username;
+              document.getElementById('profileEmail').textContent = user.email;
+              
+              localStorage.setItem('user', JSON.stringify({
+                uid: user.uid,
+                email: user.email,
+                username: username
+              }));
+            });
               
         } else {
           // Utilisateur non connecté

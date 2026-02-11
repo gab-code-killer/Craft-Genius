@@ -54,8 +54,28 @@ Remplacez le `firebaseConfig` avec vos vrais identifiants
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    // Règles pour la collection users
     match /users/{uid} {
       allow read, write: if request.auth.uid == uid;
+    }
+    
+    // Règles pour la collection comments
+    match /comments/{document=**} {
+      // Lire tous les commentaires
+      allow read: if true;
+      
+      // Créer un commentaire (l'utilisateur peut être connecté ou non)
+      allow create: if request.resource.data.text.size() > 0 && 
+                       request.resource.data.name != null;
+      
+      // Supprimer son propre commentaire (si on a un userId)
+      allow delete: if request.auth != null && 
+                       request.auth.uid == resource.data.userId;
+      
+      // Modifier son propre commentaire
+      allow update: if request.auth != null && 
+                       request.auth.uid == resource.data.userId;
     }
   }
 }
@@ -95,6 +115,16 @@ users/
     - createdAt: timestamp
     - favorites: array
     - history: array
+
+comments/
+  {commentId}/
+    - name: string (nom du commentateur)
+    - text: string (contenu du commentaire)
+    - userId: string (uid de l'utilisateur, null si non connecté)
+    - timestamp: timestamp (serveur)
+    - date: string (formatée)
+    - likes: number (pour futurs votes)
+    - replies: array (pour futures réponses)
 ```
 
 ---
