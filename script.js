@@ -7,6 +7,24 @@ const translations = {
     guides: "Guides",
     tips: "Astuces",
     recipes: "Recettes",
+
+    // Page
+    pageTitle: "Craft Genius - Commandes & Astuces Minecraft",
+
+    // Parametres
+    settingsTitle: "Parametres",
+    languageLabel: "Langue",
+    themeLabel: "Theme",
+    languageFrench: "Francais",
+    languageEnglish: "Anglais",
+    themeLight: "Clair",
+    themeDark: "Sombre",
+
+    // Auth / Profil
+    authButtonText: "🔒 Se connecter",
+    authButtonTitle: "Connexion",
+    profileLabel: "Profil",
+    logoutText: "🚪 Deconnexion",
     
     // Hero
     heroTitle: "⚡ Craft Genius",
@@ -22,6 +40,17 @@ const translations = {
     commandFound: "✅ Commande trouvée !",
     copyButton: "📋 Copier",
     popularCommands: "Commandes populaires",
+    commandDescribeAlert: "Veuillez décrire ce que vous voulez faire !",
+    commandLoadingCode: "⏳ Analyse en cours...",
+    commandLoadingExplanation: "L'IA est en train de trouver la commande parfaite pour vous...",
+    commandSearchLoading: "⏳ Recherche...",
+    commandSearchError: "Une erreur est survenue. Veuillez réessayer.",
+    commandCopied: "✅ Copié !",
+    commandNotRecognized: "Commande non reconnue. Essayez: \"donner diamants\", \"mode creatif\", \"teleporter\", \"tuer\", etc.",
+    exampleCommand1Text: "Donner 64 diamants",
+    exampleCommand2Text: "Mode creatif",
+    exampleCommand3Text: "Teleporter 10 blocs en haut",
+    exampleCommand4Text: "Mettre le jour",
     
     // Recipes
     recipesTitle: "Trouveur de Recettes",
@@ -30,6 +59,25 @@ const translations = {
     searchRecipeButton: "🔍 Trouver la recette",
     recipeFound: "✅ Recette trouvée !",
     popularRecipes: "Recettes populaires",
+    recipeDescribeAlert: "Veuillez décrire ce que vous voulez crafter !",
+    recipeLoadingName: "⏳ Recherche en cours...",
+    recipeLoadingMaterials: "Analyse de votre demande...",
+    recipeSearchLoading: "⏳ Recherche...",
+    recipeSearchErrorTitle: "Erreur",
+    recipeSearchErrorBody: "Une erreur est survenue",
+    recipeSearchErrorHint: "Veuillez réessayer.",
+    recipeExamplePrefix: "Je veux crafter ",
+    recipeNotFoundName: "Recette non trouvée",
+    recipeNotFoundMaterials: "Essayez avec des termes plus précis",
+    recipeNotFoundCraft: "Exemples : 'épée en diamant', 'table d'enchantement', 'coffre', 'tnt', 'arc', 'bloc d'or'",
+    exampleRecipe1Text: "Epee en diamant",
+    exampleRecipe2Text: "Table d'enchantement",
+    exampleRecipe3Text: "Coffre",
+    exampleRecipe4Text: "TNT",
+    exampleRecipe1Ingredients: "2 Diamants + 1 Baton",
+    exampleRecipe2Ingredients: "4 Obsidiennes + 2 Diamants + 1 Livre",
+    exampleRecipe3Ingredients: "8 Planches de bois",
+    exampleRecipe4Ingredients: "5 Poudre a canon + 4 Sable",
     
     // Guides
     guidesTitle: "Guide de Survie",
@@ -45,6 +93,38 @@ const translations = {
     multiplayerDesc: "Serveurs, plugins et mode multijoueur",
     seeGuide: "Voir le guide",
     closeButton: "✖ Fermer",
+    guideSurvivalHeader: "⚔️ Guide de Survie",
+    guidePhases: [
+      "🟦 PHASE 1 : Debut du monde",
+      "🟦 PHASE 2 : Premiers outils",
+      "🟦 PHASE 3 : Securite",
+      "🟦 PHASE 4 : Base simple",
+      "🟦 PHASE 5 : Minage",
+      "🟦 PHASE 6 : Progression",
+      "🟦 PHASE 7 : Fin de jeu"
+    ],
+    guideSteps: [
+      "<strong>ETAPE 1 - Apparition :</strong> Observer le biome et les alentours. Reperer arbres, animaux et relief.",
+      "<strong>ETAPE 2 - Bois :</strong> Couper plusieurs arbres. Recuperer environ 15 buches.",
+      "<strong>ETAPE 3 - Planches :</strong> Transformer les buches en planches. Fabriquer une table de craft.",
+      "<strong>ETAPE 4 - Outils en bois :</strong> Fabriquer une pioche et une hache en bois.",
+      "<strong>ETAPE 5 - Pierre :</strong> Trouver et miner de la pierre. Recolter une bonne quantite.",
+      "<strong>ETAPE 6 - Outils en pierre :</strong> Fabriquer : Pioche en pierre, Hache en pierre, Epee en pierre.",
+      "<strong>ETAPE 7 - Four :</strong> Fabriquer un four.",
+      "<strong>ETAPE 8 - Charbon et torches :</strong> Miner du charbon ou faire du charbon de bois. Fabriquer des torches.",
+      "<strong>ETAPE 9 - Nourriture :</strong> Chasser des animaux. Cuire la nourriture.",
+      "<strong>ETAPE 10 - Lit :</strong> Trouver 3 laines. Fabriquer et poser un lit.",
+      "<strong>ETAPE 11 - Abri :</strong> Construire une petite maison simple. Poser le lit, la table de craft et le four.",
+      "<strong>ETAPE 12 - Coffre :</strong> Fabriquer un coffre. Ranger les ressources.",
+      "<strong>ETAPE 13 - Mine :</strong> Creuser une mine en escalier.",
+      "<strong>ETAPE 14 - Fer :</strong> Miner du fer. Le faire cuire.",
+      "<strong>ETAPE 15 - Equipement en fer :</strong> Fabriquer : Pioche en fer, Epee en fer, Armure (au moins partielle).",
+      "<strong>ETAPE 16 - Exploration :</strong> Explorer les environs. Trouver des structures.",
+      "<strong>ETAPE 17 - Diamants :</strong> Miner a la bonne profondeur. Recolter des diamants.",
+      "<strong>ETAPE 18 - Enchantements :</strong> Fabriquer une table d'enchantement (si possible).",
+      "<strong>ETAPE 19 - Nether :</strong> Construire un portail du Nether. Explorer et recuperer les ressources utiles.",
+      "<strong>ETAPE 20 - End :</strong> Trouver le stronghold. Aller dans l'End et battre le dragon."
+    ],
     
     // Tips
     tipsTitle: "Astuces Rapides",
@@ -56,6 +136,24 @@ const translations = {
     tip3Text: "Créez un bouclier avec des planches et du fer pour vous protéger",
     tip4Title: "Astuce #4",
     tip4Text: "Utilisez des rails propulsés avec de la redstone pour voyager rapidement",
+
+    // Commentaires
+    commentsTitle: "💬 Commentaires",
+    notConnectedText: "🔒 Vous devez etre connecte pour poster un commentaire",
+    notConnectedAction: "Se connecter / S'inscrire",
+    commentFormTitle: "Laissez un commentaire",
+    commentNamePlaceholder: "Votre nom",
+    commentTextPlaceholder: "Votre commentaire...",
+    commentSubmit: "Publier le commentaire",
+    commentsLoading: "Chargement des commentaires...",
+    noComments: "Aucun commentaire pour le moment. Soyez le premier! 👇",
+    commentLoginRequired: "🔒 Vous devez etre connecte pour poster un commentaire",
+    commentEmpty: "Veuillez entrer un commentaire",
+    commentTooShort: "Le commentaire doit contenir au moins 5 caracteres",
+    commentPostedSuccess: "✅ Commentaire publie avec succes!",
+    commentSavedLocalSuccess: "✅ Commentaire sauvegarde localement!",
+    commentPostedLocalSuccess: "✅ Commentaire publie!",
+    commentJustNow: "a l'instant",
     
     // Footer
     footerCopyright: "© 2025 Craft Genius - L'assistant Minecraft intelligent",
@@ -69,6 +167,24 @@ const translations = {
     guides: "Guides",
     tips: "Tips",
     recipes: "Recipes",
+
+    // Page
+    pageTitle: "Craft Genius - Minecraft Commands & Tips",
+
+    // Settings
+    settingsTitle: "Settings",
+    languageLabel: "Language",
+    themeLabel: "Theme",
+    languageFrench: "French",
+    languageEnglish: "English",
+    themeLight: "Light",
+    themeDark: "Dark",
+
+    // Auth / Profile
+    authButtonText: "🔒 Sign in",
+    authButtonTitle: "Sign in",
+    profileLabel: "Profile",
+    logoutText: "🚪 Log out",
     
     // Hero
     heroTitle: "⚡ Craft Genius",
@@ -84,6 +200,17 @@ const translations = {
     commandFound: "✅ Command found!",
     copyButton: "📋 Copy",
     popularCommands: "Popular commands",
+    commandDescribeAlert: "Please describe what you want to do!",
+    commandLoadingCode: "⏳ Analyzing...",
+    commandLoadingExplanation: "The AI is finding the perfect command for you...",
+    commandSearchLoading: "⏳ Searching...",
+    commandSearchError: "An error occurred. Please try again.",
+    commandCopied: "✅ Copied!",
+    commandNotRecognized: "Command not recognized. Try: \"give diamonds\", \"creative mode\", \"teleport\", \"kill\", etc.",
+    exampleCommand1Text: "Give 64 diamonds",
+    exampleCommand2Text: "Creative mode",
+    exampleCommand3Text: "Teleport 10 blocks up",
+    exampleCommand4Text: "Set time to day",
     
     // Recipes
     recipesTitle: "Recipe Finder",
@@ -92,6 +219,25 @@ const translations = {
     searchRecipeButton: "🔍 Find recipe",
     recipeFound: "✅ Recipe found!",
     popularRecipes: "Popular recipes",
+    recipeDescribeAlert: "Please describe what you want to craft!",
+    recipeLoadingName: "⏳ Searching...",
+    recipeLoadingMaterials: "Analyzing your request...",
+    recipeSearchLoading: "⏳ Searching...",
+    recipeSearchErrorTitle: "Error",
+    recipeSearchErrorBody: "Something went wrong",
+    recipeSearchErrorHint: "Please try again.",
+    recipeExamplePrefix: "I want to craft ",
+    recipeNotFoundName: "Recipe not found",
+    recipeNotFoundMaterials: "Try more specific terms",
+    recipeNotFoundCraft: "Examples: 'diamond sword', 'enchanting table', 'chest', 'tnt', 'bow', 'gold block'",
+    exampleRecipe1Text: "Diamond sword",
+    exampleRecipe2Text: "Enchanting table",
+    exampleRecipe3Text: "Chest",
+    exampleRecipe4Text: "TNT",
+    exampleRecipe1Ingredients: "2 Diamonds + 1 Stick",
+    exampleRecipe2Ingredients: "4 Obsidian + 2 Diamonds + 1 Book",
+    exampleRecipe3Ingredients: "8 Wooden Planks",
+    exampleRecipe4Ingredients: "5 Gunpowder + 4 Sand",
     
     // Guides
     guidesTitle: "Survival Guide",
@@ -107,6 +253,38 @@ const translations = {
     multiplayerDesc: "Servers, plugins and multiplayer mode",
     seeGuide: "View guide",
     closeButton: "✖ Close",
+    guideSurvivalHeader: "⚔️ Survival Guide",
+    guidePhases: [
+      "🟦 PHASE 1: World start",
+      "🟦 PHASE 2: First tools",
+      "🟦 PHASE 3: Safety",
+      "🟦 PHASE 4: Simple base",
+      "🟦 PHASE 5: Mining",
+      "🟦 PHASE 6: Progression",
+      "🟦 PHASE 7: Endgame"
+    ],
+    guideSteps: [
+      "<strong>STEP 1 - Spawn:</strong> Observe the biome and surroundings. Spot trees, animals, and terrain.",
+      "<strong>STEP 2 - Wood:</strong> Chop several trees. Collect about 15 logs.",
+      "<strong>STEP 3 - Planks:</strong> Turn logs into planks. Craft a crafting table.",
+      "<strong>STEP 4 - Wooden tools:</strong> Craft a wooden pickaxe and axe.",
+      "<strong>STEP 5 - Stone:</strong> Find and mine stone. Gather a good amount.",
+      "<strong>STEP 6 - Stone tools:</strong> Craft: stone pickaxe, stone axe, stone sword.",
+      "<strong>STEP 7 - Furnace:</strong> Craft a furnace.",
+      "<strong>STEP 8 - Coal and torches:</strong> Mine coal or make charcoal. Craft torches.",
+      "<strong>STEP 9 - Food:</strong> Hunt animals. Cook the food.",
+      "<strong>STEP 10 - Bed:</strong> Find 3 wool. Craft and place a bed.",
+      "<strong>STEP 11 - Shelter:</strong> Build a small simple house. Place the bed, crafting table, and furnace.",
+      "<strong>STEP 12 - Chest:</strong> Craft a chest. Store resources.",
+      "<strong>STEP 13 - Mine:</strong> Dig a staircase mine.",
+      "<strong>STEP 14 - Iron:</strong> Mine iron. Smelt it.",
+      "<strong>STEP 15 - Iron gear:</strong> Craft: iron pickaxe, iron sword, armor (at least some pieces).",
+      "<strong>STEP 16 - Exploration:</strong> Explore nearby. Find structures.",
+      "<strong>STEP 17 - Diamonds:</strong> Mine at the right depth. Collect diamonds.",
+      "<strong>STEP 18 - Enchanting:</strong> Craft an enchanting table (if possible).",
+      "<strong>STEP 19 - Nether:</strong> Build a Nether portal. Explore and gather useful resources.",
+      "<strong>STEP 20 - End:</strong> Find the stronghold. Go to the End and beat the dragon."
+    ],
     
     // Tips
     tipsTitle: "Quick Tips",
@@ -118,6 +296,24 @@ const translations = {
     tip3Text: "Create a shield with planks and iron to protect yourself",
     tip4Title: "Tip #4",
     tip4Text: "Use powered rails with redstone to travel quickly",
+
+    // Comments
+    commentsTitle: "💬 Comments",
+    notConnectedText: "🔒 You must be signed in to post a comment",
+    notConnectedAction: "Sign in / Sign up",
+    commentFormTitle: "Leave a comment",
+    commentNamePlaceholder: "Your name",
+    commentTextPlaceholder: "Your comment...",
+    commentSubmit: "Post comment",
+    commentsLoading: "Loading comments...",
+    noComments: "No comments yet. Be the first! 👇",
+    commentLoginRequired: "🔒 You must be signed in to post a comment",
+    commentEmpty: "Please enter a comment",
+    commentTooShort: "Comment must be at least 5 characters",
+    commentPostedSuccess: "✅ Comment posted successfully!",
+    commentSavedLocalSuccess: "✅ Comment saved locally!",
+    commentPostedLocalSuccess: "✅ Comment posted!",
+    commentJustNow: "just now",
     
     // Footer
     footerCopyright: "© 2025 Craft Genius - The smart Minecraft assistant",
@@ -126,6 +322,15 @@ const translations = {
 };
 
 let currentLang = 'fr';
+
+function getUiText(key, fallback) {
+  const lang = currentLang || 'fr';
+  return translations[lang]?.[key] ?? fallback ?? key;
+}
+
+window.appTranslations = translations;
+window.getUiText = getUiText;
+window.currentLang = currentLang;
 
 // Attendre que le DOM soit chargé
 document.addEventListener('DOMContentLoaded', function() {
@@ -159,7 +364,8 @@ document.addEventListener('DOMContentLoaded', function() {
           const email = user.email || '';
           const avatarLetter = email ? email.trim().charAt(0).toUpperCase() : '?';
           authBtn.innerHTML = `<span class="auth-avatar">${avatarLetter}</span>`;
-          authBtn.setAttribute('aria-label', 'Profil');
+          authBtn.setAttribute('aria-label', getUiText('profileLabel', 'Profil'));
+          authBtn.title = getUiText('profileLabel', 'Profil');
           authBtn.onclick = () => {
             profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
           };
@@ -201,7 +407,8 @@ document.addEventListener('DOMContentLoaded', function() {
               
         } else {
           // Utilisateur non connecté
-          authBtn.textContent = '🔒 Se connecter';
+          authBtn.textContent = getUiText('authButtonText', '🔒 Se connecter');
+          authBtn.title = getUiText('authButtonTitle', 'Connexion');
           authBtn.removeAttribute('aria-label');
           authBtn.onclick = () => {
             window.location.href = 'auth.html';
@@ -375,11 +582,21 @@ document.addEventListener('DOMContentLoaded', function() {
       translatePage(lang);
     });
   });
+
+  const savedLang = localStorage.getItem('lang');
+  if (savedLang && translations[savedLang]) {
+    translatePage(savedLang);
+  }
 });
 
 function translatePage(lang) {
   currentLang = lang;
+  window.currentLang = currentLang;
   const t = translations[lang];
+  localStorage.setItem('lang', lang);
+
+  document.documentElement.lang = lang;
+  if (t.pageTitle) document.title = t.pageTitle;
   
   // Navigation
   document.querySelectorAll('.nav-links a')[0].textContent = t.home;
@@ -391,7 +608,8 @@ function translatePage(lang) {
   // Hero
   document.querySelector('.hero-content h1').textContent = t.heroTitle;
   document.querySelector('.hero-content p').textContent = t.heroSubtitle;
-  document.querySelector('.btn-primary').textContent = t.heroButton;
+  const heroButton = document.querySelector('.btn-primary');
+  if (heroButton) heroButton.textContent = t.heroButton;
   
   // Commands section
   document.querySelector('#commandes h2').textContent = t.commandsTitle;
@@ -404,6 +622,12 @@ function translatePage(lang) {
   }
   document.querySelector('#copyCommand').textContent = t.copyButton;
   document.querySelector('#commandes .popular-commands h3').textContent = t.popularCommands;
+
+  const commandExamples = document.querySelectorAll('#commandes .example-command .example-text');
+  if (commandExamples[0]) commandExamples[0].textContent = t.exampleCommand1Text;
+  if (commandExamples[1]) commandExamples[1].textContent = t.exampleCommand2Text;
+  if (commandExamples[2]) commandExamples[2].textContent = t.exampleCommand3Text;
+  if (commandExamples[3]) commandExamples[3].textContent = t.exampleCommand4Text;
   
   // Recipes section
   document.querySelector('#recettes h2').textContent = t.recipesTitle;
@@ -415,18 +639,44 @@ function translatePage(lang) {
     document.querySelector('#recipeResult h3').textContent = t.recipeFound;
   }
   document.querySelector('#recettes .popular-commands h3').textContent = t.popularRecipes;
+
+  const recipeExamples = document.querySelectorAll('#recettes .example-command .example-text');
+  if (recipeExamples[0]) recipeExamples[0].textContent = t.exampleRecipe1Text;
+  if (recipeExamples[1]) recipeExamples[1].textContent = t.exampleRecipe2Text;
+  if (recipeExamples[2]) recipeExamples[2].textContent = t.exampleRecipe3Text;
+  if (recipeExamples[3]) recipeExamples[3].textContent = t.exampleRecipe4Text;
+
+  const recipeExampleCodes = document.querySelectorAll('#recettes .example-command code');
+  if (recipeExampleCodes[0]) recipeExampleCodes[0].textContent = t.exampleRecipe1Ingredients;
+  if (recipeExampleCodes[1]) recipeExampleCodes[1].textContent = t.exampleRecipe2Ingredients;
+  if (recipeExampleCodes[2]) recipeExampleCodes[2].textContent = t.exampleRecipe3Ingredients;
+  if (recipeExampleCodes[3]) recipeExampleCodes[3].textContent = t.exampleRecipe4Ingredients;
+
+  const recipeExampleCards = document.querySelectorAll('#recettes .example-command');
+  if (recipeExampleCards[0]) recipeExampleCards[0].setAttribute('data-recipe', t.exampleRecipe1Text.toLowerCase());
+  if (recipeExampleCards[1]) recipeExampleCards[1].setAttribute('data-recipe', t.exampleRecipe2Text.toLowerCase());
+  if (recipeExampleCards[2]) recipeExampleCards[2].setAttribute('data-recipe', t.exampleRecipe3Text.toLowerCase());
+  if (recipeExampleCards[3]) recipeExampleCards[3].setAttribute('data-recipe', t.exampleRecipe4Text.toLowerCase());
   
   // Guides section
   document.querySelector('#guides h2').textContent = t.guidesTitle;
   const guideCards = document.querySelectorAll('#guides .card');
-  guideCards[0].querySelector('h3').textContent = t.survivalGuide;
-  guideCards[0].querySelector('p').textContent = t.survivalDesc;
-  guideCards[1].querySelector('h3').textContent = t.constructionGuide;
-  guideCards[1].querySelector('p').textContent = t.constructionDesc;
-  guideCards[2].querySelector('h3').textContent = t.miningGuide;
-  guideCards[2].querySelector('p').textContent = t.miningDesc;
-  guideCards[3].querySelector('h3').textContent = t.redstoneGuide;
-  guideCards[3].querySelector('p').textContent = t.redstoneDesc;
+  if (guideCards[0]) {
+    guideCards[0].querySelector('h3').textContent = t.survivalGuide;
+    guideCards[0].querySelector('p').textContent = t.survivalDesc;
+  }
+  if (guideCards[1]) {
+    guideCards[1].querySelector('h3').textContent = t.constructionGuide;
+    guideCards[1].querySelector('p').textContent = t.constructionDesc;
+  }
+  if (guideCards[2]) {
+    guideCards[2].querySelector('h3').textContent = t.miningGuide;
+    guideCards[2].querySelector('p').textContent = t.miningDesc;
+  }
+  if (guideCards[3]) {
+    guideCards[3].querySelector('h3').textContent = t.redstoneGuide;
+    guideCards[3].querySelector('p').textContent = t.redstoneDesc;
+  }
   if (guideCards[4]) {
     guideCards[4].querySelector('h3').textContent = t.multiplayerGuide;
     guideCards[4].querySelector('p').textContent = t.multiplayerDesc;
@@ -436,6 +686,23 @@ function translatePage(lang) {
   });
   document.querySelectorAll('.btn-close').forEach(btn => {
     btn.textContent = t.closeButton;
+  });
+
+  const guideHeader = document.querySelector('#guide-survie .guide-header h2');
+  if (guideHeader) guideHeader.textContent = t.guideSurvivalHeader;
+
+  const guidePhaseTitles = document.querySelectorAll('#guide-survie .guide-body h3');
+  guidePhaseTitles.forEach((el, index) => {
+    if (t.guidePhases && t.guidePhases[index]) {
+      el.textContent = t.guidePhases[index];
+    }
+  });
+
+  const guideSteps = document.querySelectorAll('#guide-survie .guide-body li');
+  guideSteps.forEach((el, index) => {
+    if (t.guideSteps && t.guideSteps[index]) {
+      el.innerHTML = t.guideSteps[index];
+    }
   });
   
   // Tips section
@@ -449,16 +716,66 @@ function translatePage(lang) {
   tips[2].querySelector('p').textContent = t.tip3Text;
   tips[3].querySelector('h4').textContent = t.tip4Title;
   tips[3].querySelector('p').textContent = t.tip4Text;
+
+  // Comments section
+  const commentsTitle = document.querySelector('#commentaires h2');
+  if (commentsTitle) commentsTitle.textContent = t.commentsTitle;
+  const notConnectedText = document.querySelector('#notConnectedMessage p');
+  if (notConnectedText) notConnectedText.textContent = t.notConnectedText;
+  const notConnectedAction = document.querySelector('#notConnectedMessage .btn-connect');
+  if (notConnectedAction) notConnectedAction.textContent = t.notConnectedAction;
+  const commentFormTitle = document.querySelector('#commentFormContainer h3');
+  if (commentFormTitle) commentFormTitle.textContent = t.commentFormTitle;
+  const commentNameInput = document.getElementById('commentName');
+  if (commentNameInput) commentNameInput.placeholder = t.commentNamePlaceholder;
+  const commentTextInput = document.getElementById('commentText');
+  if (commentTextInput) commentTextInput.placeholder = t.commentTextPlaceholder;
+  const commentSubmit = document.getElementById('submitComment');
+  if (commentSubmit) commentSubmit.textContent = t.commentSubmit;
+  const commentsLoading = document.querySelector('#commentsContainer .loading');
+  if (commentsLoading) commentsLoading.textContent = t.commentsLoading;
   
   // Footer
   document.querySelectorAll('footer p')[0].textContent = t.footerCopyright;
   document.querySelectorAll('footer p')[1].textContent = t.footerCredit;
+
+  // Settings menu
+  const settingsHeader = document.querySelector('.settings-header h3');
+  if (settingsHeader) settingsHeader.textContent = `⚙️ ${t.settingsTitle}`;
+  const settingTitles = document.querySelectorAll('.setting-section h4');
+  if (settingTitles[0]) settingTitles[0].textContent = `🌍 ${t.languageLabel}`;
+  if (settingTitles[1]) settingTitles[1].textContent = `🎨 ${t.themeLabel}`;
+  const languageOptionLabels = document.querySelectorAll('.setting-option[data-lang] span:not(.option-icon)');
+  if (languageOptionLabels[0]) languageOptionLabels[0].textContent = t.languageFrench;
+  if (languageOptionLabels[1]) languageOptionLabels[1].textContent = t.languageEnglish;
+  const themeOptions = document.querySelectorAll('.theme-option span:not(.option-icon)');
+  if (themeOptions[0]) themeOptions[0].textContent = t.themeLight;
+  if (themeOptions[1]) themeOptions[1].textContent = t.themeDark;
+
+  const settingsBtn = document.getElementById('settingsBtn');
+  if (settingsBtn) settingsBtn.title = t.settingsTitle;
+
+  const authBtn = document.getElementById('authBtn');
+  if (authBtn && !authBtn.querySelector('.auth-avatar')) {
+    authBtn.textContent = t.authButtonText;
+    authBtn.title = t.authButtonTitle;
+  }
+  if (authBtn && authBtn.querySelector('.auth-avatar')) {
+    authBtn.setAttribute('aria-label', t.profileLabel);
+    authBtn.title = t.profileLabel;
+  }
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.textContent = t.logoutText;
+
+  const langButtons = document.querySelectorAll('.setting-option[data-lang]');
+  langButtons.forEach((btn) => {
+    btn.classList.remove('active');
+    if (btn.dataset.lang === lang) {
+      btn.classList.add('active');
+    }
+  });
   
   // Update theme option text
-  const themeOptions = document.querySelectorAll('.theme-option span:not(.option-icon)');
-  if (themeOptions[0]) themeOptions[0].textContent = lang === 'fr' ? 'Clair' : 'Light';
-  if (themeOptions[1]) themeOptions[1].textContent = lang === 'fr' ? 'Sombre' : 'Dark';
-  
   // Update active button (old system)
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.remove('active');
@@ -942,7 +1259,10 @@ function findCommandLocal(description) {
   
   return {
     command: "/help",
-    explanation: 'Commande non reconnue. Essayez: "donner diamants", "mode créatif", "téléporter", "tuer", etc.'
+    explanation: getUiText(
+      'commandNotRecognized',
+      'Commande non reconnue. Essayez: "donner diamants", "mode créatif", "téléporter", "tuer", etc.'
+    )
   };
 }
 
@@ -1167,20 +1487,22 @@ async function performSearch() {
   const description = commandInput.value.trim();
 
   if (description === "") {
-    alert("Veuillez décrire ce que vous voulez faire !");
+    alert(getUiText('commandDescribeAlert', "Veuillez décrire ce que vous voulez faire !"));
     return;
   }
 
   // Afficher un message de chargement
-  commandCodeElement.textContent = "⏳ Analyse en cours...";
-  commandExplanationElement.textContent =
-    "L'IA est en train de trouver la commande parfaite pour vous...";
+  commandCodeElement.textContent = getUiText('commandLoadingCode', "⏳ Analyse en cours...");
+  commandExplanationElement.textContent = getUiText(
+    'commandLoadingExplanation',
+    "L'IA est en train de trouver la commande parfaite pour vous..."
+  );
   resultDiv.style.display = "block";
   resultDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
   // Désactiver le bouton pendant la recherche
   searchButton.disabled = true;
-  searchButton.textContent = "⏳ Recherche...";
+  searchButton.textContent = getUiText('commandSearchLoading', "⏳ Recherche...");
 
   try {
     // Trouver la commande avec l'IA
@@ -1191,12 +1513,14 @@ async function performSearch() {
     commandExplanationElement.textContent = result.explanation;
   } catch (error) {
     commandCodeElement.textContent = "/help";
-    commandExplanationElement.textContent =
-      "Une erreur est survenue. Veuillez réessayer.";
+    commandExplanationElement.textContent = getUiText(
+      'commandSearchError',
+      "Une erreur est survenue. Veuillez réessayer."
+    );
   } finally {
     // Réactiver le bouton
     searchButton.disabled = false;
-    searchButton.textContent = "🔍 Trouver la commande";
+    searchButton.textContent = getUiText('searchButton', "🔍 Trouver la commande");
   }
 }
 
@@ -1221,7 +1545,7 @@ if (copyButton) {
     const command = commandCodeElement.textContent;
     navigator.clipboard.writeText(command).then(() => {
       const originalText = copyButton.textContent;
-      copyButton.textContent = "✅ Copié !";
+      copyButton.textContent = getUiText('commandCopied', "✅ Copié !");
       setTimeout(() => {
         copyButton.textContent = originalText;
       }, 2000);
@@ -1337,6 +1661,52 @@ const minecraftRecipes = {
 
 // Traductions pour recherche de recettes
 const recipeTranslations = {
+  "diamond sword": "épée en diamant",
+  "enchanting table": "table d'enchantement",
+  "diamond pickaxe": "pioche en diamant",
+  "diamond axe": "hache en diamant",
+  "diamond shovel": "pelle en diamant",
+  "iron sword": "épée en fer",
+  "iron pickaxe": "pioche en fer",
+  "iron axe": "hache en fer",
+  "iron shovel": "pelle en fer",
+  "wooden sword": "épée en bois",
+  "wooden pickaxe": "pioche en bois",
+  "wooden axe": "hache en bois",
+  "wooden shovel": "pelle en bois",
+  "stone sword": "épée en pierre",
+  "stone pickaxe": "pioche en pierre",
+  "stone axe": "hache en pierre",
+  "stone shovel": "pelle en pierre",
+  "crafting table": "table de craft",
+  "enchanting": "enchantement",
+  "chest": "coffre",
+  "tnt": "tnt",
+  "bed": "lit",
+  "furnace": "four",
+  "gold block": "bloc d'or",
+  "iron block": "bloc de fer",
+  "diamond block": "bloc de diamant",
+  "emerald block": "bloc d'émeraude",
+  "torch": "torche",
+  "ladder": "échelle",
+  "bow": "arc",
+  "arrow": "flèche",
+  "shield": "bouclier",
+  "boat": "bateau",
+  "minecart": "wagonnet",
+  "rails": "rails",
+  "glass": "verre",
+  "lantern": "lanterne",
+  "diamond": "diamant",
+  "iron": "fer",
+  "gold": "or",
+  "wood": "bois",
+  "planks": "planches",
+  "stick": "bâton",
+  "obsidian": "obsidienne",
+  "gunpowder": "poudre à canon",
+  "sand": "sable",
   "epee": "épée", "epée": "épée",
   "diamant": "diamant", "diamants": "diamant",
   "fer": "fer",
@@ -1421,9 +1791,12 @@ function findRecipe(description) {
   }
   
   return {
-    name: "Recette non trouvée",
-    materials: "Essayez avec des termes plus précis",
-    craft: "Exemples : 'épée en diamant', 'table d'enchantement', 'coffre', 'tnt', 'arc', 'bloc d'or'"
+    name: getUiText('recipeNotFoundName', "Recette non trouvée"),
+    materials: getUiText('recipeNotFoundMaterials', "Essayez avec des termes plus précis"),
+    craft: getUiText(
+      'recipeNotFoundCraft',
+      "Exemples : 'épée en diamant', 'table d'enchantement', 'coffre', 'tnt', 'arc', 'bloc d'or'"
+    )
   };
 }
 
@@ -1440,20 +1813,20 @@ async function performRecipeSearch() {
   const description = recipeInput.value.trim();
 
   if (description === "") {
-    alert("Veuillez décrire ce que vous voulez crafter !");
+    alert(getUiText('recipeDescribeAlert', "Veuillez décrire ce que vous voulez crafter !"));
     return;
   }
 
   // Afficher un message de chargement
-  recipeNameElement.textContent = "⏳ Recherche en cours...";
-  recipeIngredientsElement.textContent = "Analyse de votre demande...";
+  recipeNameElement.textContent = getUiText('recipeLoadingName', "⏳ Recherche en cours...");
+  recipeIngredientsElement.textContent = getUiText('recipeLoadingMaterials', "Analyse de votre demande...");
   recipeInstructionsElement.textContent = "";
   recipeResultDiv.style.display = "block";
   recipeResultDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
   // Désactiver le bouton pendant la recherche
   searchRecipeButton.disabled = true;
-  searchRecipeButton.textContent = "⏳ Recherche...";
+  searchRecipeButton.textContent = getUiText('recipeSearchLoading', "⏳ Recherche...");
 
   // Simuler un petit délai pour l'effet
   await new Promise(resolve => setTimeout(resolve, 500));
@@ -1467,13 +1840,13 @@ async function performRecipeSearch() {
     recipeIngredientsElement.textContent = result.materials;
     recipeInstructionsElement.textContent = result.craft;
   } catch (error) {
-    recipeNameElement.textContent = "Erreur";
-    recipeIngredientsElement.textContent = "Une erreur est survenue";
-    recipeInstructionsElement.textContent = "Veuillez réessayer.";
+    recipeNameElement.textContent = getUiText('recipeSearchErrorTitle', "Erreur");
+    recipeIngredientsElement.textContent = getUiText('recipeSearchErrorBody', "Une erreur est survenue");
+    recipeInstructionsElement.textContent = getUiText('recipeSearchErrorHint', "Veuillez réessayer.");
   } finally {
     // Réactiver le bouton
     searchRecipeButton.disabled = false;
-    searchRecipeButton.textContent = "🔍 Trouver la recette";
+    searchRecipeButton.textContent = getUiText('searchRecipeButton', "🔍 Trouver la recette");
   }
 }
 
@@ -1495,7 +1868,7 @@ if (recipeInput) {
 document.querySelectorAll(".example-command[data-recipe]").forEach((example) => {
   example.addEventListener("click", function () {
     const recipe = this.getAttribute("data-recipe");
-    recipeInput.value = "Je veux crafter " + recipe;
+    recipeInput.value = getUiText('recipeExamplePrefix', "Je veux crafter ") + recipe;
     searchRecipeButton.click();
   });
 });

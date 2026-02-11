@@ -11,6 +11,84 @@ const firebaseConfig = {
     appId: "1:476192035823:web:9f3c8a72fa2eef9bb99c1a"
 };
 
+const authTranslations = {
+    fr: {
+        pageTitle: "Connexion - Craft Genius",
+        loginTitle: "Connexion",
+        loginEmailLabel: "Email",
+        loginEmailPlaceholder: "votre@email.com",
+        loginPasswordLabel: "Mot de passe",
+        loginPasswordPlaceholder: "●●●●●●●●",
+        loginButton: "Se connecter",
+        loginNoAccount: "Pas de compte?",
+        signupLink: "S'inscrire",
+        signupTitle: "Creer un compte",
+        signupUsernameLabel: "Pseudo",
+        signupUsernamePlaceholder: "MycraftGenius",
+        signupEmailLabel: "Email",
+        signupPasswordLabel: "Mot de passe",
+        signupConfirmPasswordLabel: "Confirmer mot de passe",
+        signupButton: "S'inscrire",
+        signupHaveAccount: "Deja inscrit?",
+        loginLink: "Se connecter",
+        loadingText: "Traitement en cours...",
+        loginFillAll: "❌ Veuillez remplir tous les champs",
+        loginSuccess: "✅ Connexion reussie! Redirection...",
+        loginUserNotFound: "❌ Email non trouve",
+        loginWrongPassword: "❌ Mot de passe incorrect",
+        loginInvalidEmail: "❌ Email invalide",
+        signupFillAll: "❌ Veuillez remplir tous les champs",
+        signupUsernameShort: "❌ Le pseudo doit avoir au moins 3 caracteres",
+        signupPasswordShort: "❌ Le mot de passe doit avoir au moins 6 caracteres",
+        signupPasswordMismatch: "❌ Les mots de passe ne correspondent pas",
+        signupInvalidEmail: "❌ Email invalide",
+        signupEmailInUse: "❌ Cet email est deja utilise",
+        signupWeakPassword: "❌ Le mot de passe est trop faible",
+        signupSuccess: "✅ Compte cree avec succes! Redirection..."
+    },
+    en: {
+        pageTitle: "Sign in - Craft Genius",
+        loginTitle: "Sign in",
+        loginEmailLabel: "Email",
+        loginEmailPlaceholder: "your@email.com",
+        loginPasswordLabel: "Password",
+        loginPasswordPlaceholder: "●●●●●●●●",
+        loginButton: "Sign in",
+        loginNoAccount: "No account?",
+        signupLink: "Sign up",
+        signupTitle: "Create an account",
+        signupUsernameLabel: "Username",
+        signupUsernamePlaceholder: "MycraftGenius",
+        signupEmailLabel: "Email",
+        signupPasswordLabel: "Password",
+        signupConfirmPasswordLabel: "Confirm password",
+        signupButton: "Sign up",
+        signupHaveAccount: "Already signed up?",
+        loginLink: "Sign in",
+        loadingText: "Processing...",
+        loginFillAll: "❌ Please fill in all fields",
+        loginSuccess: "✅ Signed in! Redirecting...",
+        loginUserNotFound: "❌ Email not found",
+        loginWrongPassword: "❌ Wrong password",
+        loginInvalidEmail: "❌ Invalid email",
+        signupFillAll: "❌ Please fill in all fields",
+        signupUsernameShort: "❌ Username must be at least 3 characters",
+        signupPasswordShort: "❌ Password must be at least 6 characters",
+        signupPasswordMismatch: "❌ Passwords do not match",
+        signupInvalidEmail: "❌ Invalid email",
+        signupEmailInUse: "❌ This email is already in use",
+        signupWeakPassword: "❌ Password is too weak",
+        signupSuccess: "✅ Account created! Redirecting..."
+    }
+};
+
+const authLang = localStorage.getItem('lang') || 'fr';
+document.documentElement.lang = authLang;
+
+function getAuthText(key, fallback) {
+    return authTranslations[authLang]?.[key] ?? fallback ?? key;
+}
+
 // Initialiser Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);

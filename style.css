@@ -1104,7 +1104,7 @@ footer p {
     
     .nav-links a {
         display: block;
-        padding: 1rem;
+        padding: 1.1rem;
     }
     
     /* Settings Menu */
@@ -1117,8 +1117,8 @@ footer p {
     }
     
     .settings-btn {
-        padding: 6px 12px;
-        font-size: 1.1rem;
+        padding: 8px 14px;
+        font-size: 1.15rem;
     }
 
     .navbar-right {
@@ -1126,8 +1126,8 @@ footer p {
     }
 
     .auth-btn {
-        padding: 6px 12px;
-        font-size: 0.85rem;
+        padding: 8px 16px;
+        font-size: 0.95rem;
     }
 
     .profile-menu {
@@ -1144,11 +1144,11 @@ footer p {
     }
     
     .hero-content h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     
     .hero-content p {
-        font-size: 1rem;
+        font-size: 1.05rem;
     }
     
     /* Sections */
@@ -1156,11 +1156,11 @@ footer p {
     .recipes h2,
     .features h2,
     .tips h2 {
-        font-size: 1.8rem;
+        font-size: 1.95rem;
     }
     
     .subtitle {
-        font-size: 0.95rem;
+        font-size: 1.02rem;
     }
     
     /* Search Box */
@@ -1170,8 +1170,8 @@ footer p {
     }
     
     .search-box textarea {
-        padding: 0.8rem;
-        font-size: 0.95rem;
+        padding: 0.9rem;
+        font-size: 1rem;
     }
     
     /* Cards */
@@ -1194,11 +1194,11 @@ footer p {
     }
     
     .tip h4 {
-        font-size: 1rem;
+        font-size: 1.05rem;
     }
     
     .tip p {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
     
     /* Recipe Items */
@@ -1234,7 +1234,7 @@ footer p {
     }
     
     footer p {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
     
     /* Container padding */
@@ -1254,8 +1254,8 @@ footer p {
     }
     
     .settings-btn {
-        padding: 4px 10px;
-        font-size: 1rem;
+        padding: 8px 12px;
+        font-size: 1.1rem;
     }
     
     .settings-menu {
@@ -1269,8 +1269,8 @@ footer p {
     }
     
     .setting-option {
-        padding: 0.6rem;
-        font-size: 0.85rem;
+        padding: 0.7rem;
+        font-size: 0.95rem;
     }
     
     .option-icon {
@@ -1283,11 +1283,11 @@ footer p {
     }
     
     .hero-content h1 {
-        font-size: 1.5rem;
+        font-size: 1.7rem;
     }
     
     .hero-content p {
-        font-size: 0.9rem;
+        font-size: 0.98rem;
     }
     
     /* Sections Very Small */
@@ -1295,12 +1295,12 @@ footer p {
     .recipes h2,
     .features h2,
     .tips h2 {
-        font-size: 1.5rem;
+        font-size: 1.65rem;
         margin-bottom: 1.5rem;
     }
     
     .subtitle {
-        font-size: 0.9rem;
+        font-size: 0.98rem;
         margin-bottom: 1.5rem;
     }
     
@@ -1311,14 +1311,14 @@ footer p {
     }
     
     .search-box textarea {
-        padding: 0.7rem;
-        font-size: 0.9rem;
+        padding: 0.8rem;
+        font-size: 0.98rem;
         rows: 2;
     }
     
     .btn-search {
-        padding: 10px 20px;
-        font-size: 0.95rem;
+        padding: 12px 22px;
+        font-size: 1rem;
         margin-top: 1rem;
     }
     
@@ -1332,11 +1332,11 @@ footer p {
     }
     
     .card h3 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     
     .card p {
-        font-size: 0.85rem;
+        font-size: 0.92rem;
     }
     
     /* Tips Very Small */
@@ -1349,12 +1349,12 @@ footer p {
     }
     
     .tip h4 {
-        font-size: 0.95rem;
+        font-size: 1rem;
         margin-bottom: 0.5rem;
     }
     
     .tip p {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
     
     /* Command Examples Very Small */
@@ -1368,20 +1368,20 @@ footer p {
     }
     
     .example-command code {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
     
     /* Guide Very Small */
     .guide-header h2 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
     
     .guide-body h3 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     
     .guide-body li {
-        font-size: 0.9rem;
+        font-size: 0.98rem;
     }
     
     /* Command Result Very Small */
@@ -1395,13 +1395,13 @@ footer p {
     }
     
     .command-box code {
-        font-size: 0.85rem;
+        font-size: 0.95rem;
         padding: 0.7rem;
     }
     
     .btn-copy {
-        padding: 6px 12px;
-        font-size: 0.8rem;
+        padding: 10px 14px;
+        font-size: 0.9rem;
     }
 }
 

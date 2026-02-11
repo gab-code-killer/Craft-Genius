@@ -4,6 +4,20 @@ let commentsDB = null;
 let currentUser = null;
 let currentUsername = null;
 
+function getText(key, fallback) {
+    if (typeof window.getUiText === 'function') {
+        return window.getUiText(key, fallback);
+    }
+    if (window.appTranslations && window.currentLang) {
+        return window.appTranslations[window.currentLang]?.[key] ?? fallback ?? key;
+    }
+    return fallback ?? key;
+}
+
+function getLocale() {
+    return window.currentLang === 'en' ? 'en-US' : 'fr-FR';
+}
+
 // Initialiser Firestore si Firebase est prêt
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
@@ -116,7 +130,7 @@ function submitComment() {
 
     // Si l'utilisateur n'est pas connecté, montrer l'erreur
     if (!currentUser) {
-        showMessage('🔒 Vous devez être connecté pour poster un commentaire', 'error');
+        showMessage(getText('commentLoginRequired', '🔒 Vous devez être connecté pour poster un commentaire'), 'error');
         return;
     }
 
@@ -126,11 +140,11 @@ function submitComment() {
     }
 
     if (!text) {
-        showMessage('Veuillez entrer un commentaire', 'error');
+        showMessage(getText('commentEmpty', 'Veuillez entrer un commentaire'), 'error');
         return;
     }
     if (text.length < 5) {
-        showMessage('Le commentaire doit contenir au moins 5 caractères', 'error');
+        showMessage(getText('commentTooShort', 'Le commentaire doit contenir au moins 5 caractères'), 'error');
         return;
     }
 
@@ -140,7 +154,7 @@ function submitComment() {
         text: text,
         userId: currentUser?.uid || null,  // Ajouter l'ID utilisateur si connecté
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),  // Utiliser le timestamp serveur
-        date: new Date().toLocaleString('fr-FR', {
+        date: new Date().toLocaleString(getLocale(), {
             hour: '2-digit',
             minute: '2-digit',
             day: '2-digit',
@@ -156,7 +170,7 @@ function submitComment() {
         // Utiliser Firebase
         commentsDB.collection('comments').add(comment)
             .then((docRef) => {
-                showMessage('✅ Commentaire publié avec succès!', 'success');
+                showMessage(getText('commentPostedSuccess', '✅ Commentaire publié avec succès!'), 'success');
                 clearForm();
                 loadComments();
             })
@@ -165,7 +179,7 @@ function submitComment() {
                 // Fallback sur localStorage
                 const fallbackComment = { ...comment, timestamp: new Date().toISOString() };
                 saveCommentLocal(fallbackComment);
-                showMessage('✅ Commentaire sauvegardé localement!', 'success');
+                showMessage(getText('commentSavedLocalSuccess', '✅ Commentaire sauvegardé localement!'), 'success');
                 clearForm();
                 loadCommentsLocal();
             });
@@ -173,7 +187,7 @@ function submitComment() {
         // Utiliser localStorage
         const fallbackComment = { ...comment, timestamp: new Date().toISOString() };
         saveCommentLocal(fallbackComment);
-        showMessage('✅ Commentaire publié!', 'success');
+        showMessage(getText('commentPostedLocalSuccess', '✅ Commentaire publié!'), 'success');
         clearForm();
         loadCommentsLocal();
     }
@@ -212,7 +226,7 @@ function loadComments() {
                 container.innerHTML = '';
                 
                 if (snapshot.empty) {
-                    container.innerHTML = '<p class="no-comments">Aucun commentaire pour le moment. Soyez le premier! 👇</p>';
+                    container.innerHTML = `<p class="no-comments">${getText('noComments', 'Aucun commentaire pour le moment. Soyez le premier! 👇')}</p>`;
                     return;
                 }
 
@@ -237,7 +251,7 @@ function loadCommentsLocal() {
     container.innerHTML = '';
 
     if (comments.length === 0) {
-        container.innerHTML = '<p class="no-comments">Aucun commentaire pour le moment. Soyez le premier! 👇</p>';
+        container.innerHTML = `<p class="no-comments">${getText('noComments', 'Aucun commentaire pour le moment. Soyez le premier! 👇')}</p>`;
         return;
     }
 
@@ -261,7 +275,7 @@ function createCommentHTML(comment) {
         <div class="comment-item">
             <div class="comment-header">
                 <span class="comment-name">👤 ${escapeHtml(comment.name)}</span>
-                <span class="comment-date">${comment.date || 'juste à l\'instant'}</span>
+                <span class="comment-date">${comment.date || getText('commentJustNow', "juste à l'instant")}</span>
             </div>
             <div class="comment-text">${escapeHtml(comment.text)}</div>
         </div>
