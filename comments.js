@@ -17,7 +17,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateCommentFormForUser();
             } catch (e) {
                 console.log('Erreur parsing utilisateur depuis localStorage');
+                updateCommentFormForUser(); // Afficher le message "pas connecté"
             }
+        } else {
+            updateCommentFormForUser(); // Afficher le message "pas connecté"
         }
 
         if (typeof firebase !== 'undefined' && firebase.firestore) {
@@ -67,20 +70,20 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateCommentFormForUser() {
     const commentNameInput = document.getElementById('commentName');
     const commentNameGroup = document.getElementById('commentNameGroup');
+    const commentFormContainer = document.getElementById('commentFormContainer');
+    const notConnectedMessage = document.getElementById('notConnectedMessage');
     
-    if (commentNameGroup && commentNameInput) {
+    if (commentNameGroup && commentNameInput && commentFormContainer && notConnectedMessage) {
         if (currentUser && currentUsername) {
-            // Utilisateur connecté - masquer le champ du nom
+            // Utilisateur connecté - afficher le formulaire, masquer le message
+            commentFormContainer.style.display = 'block';
+            notConnectedMessage.style.display = 'none';
             commentNameGroup.style.display = 'none';
             commentNameInput.value = currentUsername;
         } else {
-            // Utilisateur non connecté - afficher le champ du nom
-            commentNameGroup.style.display = 'block';
-            commentNameInput.value = '';
-            commentNameInput.disabled = false;
-            commentNameInput.style.backgroundColor = 'var(--bg-secondary)';
-            commentNameInput.style.cursor = 'text';
-            commentNameInput.placeholder = 'Votre nom';
+            // Utilisateur non connecté - afficher le message, masquer le formulaire
+            commentFormContainer.style.display = 'none';
+            notConnectedMessage.style.display = 'block';
         }
     }
 }
@@ -111,9 +114,9 @@ function submitComment() {
     const text = document.getElementById('commentText').value.trim();
     const messageDiv = document.getElementById('commentMessage');
 
-    // Si l'utilisateur n'est pas connecté, demander le nom
-    if (!currentUser && !name) {
-        showMessage('Veuillez entrer votre nom ou vous connecter', 'error');
+    // Si l'utilisateur n'est pas connecté, montrer l'erreur
+    if (!currentUser) {
+        showMessage('🔒 Vous devez être connecté pour poster un commentaire', 'error');
         return;
     }
 

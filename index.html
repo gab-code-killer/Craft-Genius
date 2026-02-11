@@ -288,7 +288,14 @@
         <div class="container">
             <h2>💬 Commentaires</h2>
             
-            <div class="comment-form">
+            <!-- Message pour utilisateurs non connectés -->
+            <div id="notConnectedMessage" class="not-connected-message">
+                <p>🔒 Vous devez être connecté pour poster un commentaire</p>
+                <a href="auth.html" class="btn-connect">Se connecter / S'inscrire</a>
+            </div>
+            
+            <!-- Formulaire de commentaire (visible uniquement si connecté) -->
+            <div id="commentFormContainer" class="comment-form" style="display: none;">
                 <h3>Laissez un commentaire</h3>
                 <div class="form-group" id="commentNameGroup">
                     <input type="text" id="commentName" placeholder="Votre nom" maxlength="50">
