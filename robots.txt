@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://craft-genius-w2t3.vercel.app/sitemap.xml
