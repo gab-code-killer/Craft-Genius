@@ -1,331 +1,476 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Craft Genius - Commandes & Astuces Minecraft</title>
-    <meta name="description" content="Craft Genius: commandes Minecraft, recettes de craft, astuces et guides de survie pour progresser rapidement.">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://craft-genius-w2t3.vercel.app/">
-    <meta property="og:title" content="Craft Genius - Commandes & Astuces Minecraft">
-    <meta property="og:description" content="Trouve des commandes Minecraft, des recettes et des astuces rapidement.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://craft-genius-w2t3.vercel.app/">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <meta
+      name="description"
+      content="Craft Genius: commandes Minecraft, recettes de craft, astuces et guides de survie pour progresser rapidement."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://craft-genius-w2t3.vercel.app/" />
+    <meta
+      property="og:title"
+      content="Craft Genius - Commandes & Astuces Minecraft"
+    />
+    <meta
+      property="og:description"
+      content="Trouve des commandes Minecraft, des recettes et des astuces rapidement."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://craft-genius-w2t3.vercel.app/" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="container">
-            <div class="logo">⚡ Craft Genius</div>
-            <button class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#commandes">Commandes</a></li>
-                <li><a href="#guides">Guides</a></li>
-                <li><a href="#astuces">Astuces</a></li>
-                <li><a href="#recettes">Recettes</a></li>
-            </ul>
-            <div class="navbar-right">
-                <button class="auth-btn" id="authBtn" title="Connexion">🔒 Se connecter</button>
-                <button class="settings-btn" id="settingsBtn" title="Paramètres">⚙️</button>
-            </div>
+      <div class="container">
+        <div class="logo">⚡ Craft Genius</div>
+        <button class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#commandes">Commandes</a></li>
+          <li><a href="#guides">Guides</a></li>
+          <li><a href="#astuces">Astuces</a></li>
+          <li><a href="#recettes">Recettes</a></li>
+        </ul>
+        <div class="navbar-right">
+          <button class="auth-btn" id="authBtn" title="Connexion">
+            🔒 Se connecter
+          </button>
+          <button class="settings-btn" id="settingsBtn" title="Paramètres">
+            ⚙️
+          </button>
         </div>
+      </div>
     </nav>
 
     <!-- Profile Menu -->
-    <div class="profile-menu" id="profileMenu" style="display: none;">
-        <div class="profile-header">
-            <p id="profileUsername">Utilisateur</p>
-            <p id="profileEmail" style="font-size: 0.85rem; color: var(--text-secondary);"></p>
-        </div>
-        <button class="profile-btn" id="logoutBtn">🚪 Déconnexion</button>
+    <div class="profile-menu" id="profileMenu" style="display: none">
+      <div class="profile-header">
+        <p id="profileUsername">Utilisateur</p>
+        <p
+          id="profileEmail"
+          style="font-size: 0.85rem; color: var(--text-secondary)"
+        ></p>
+      </div>
+      <button class="profile-btn" id="logoutBtn">🚪 Déconnexion</button>
     </div>
 
     <!-- Overlay pour fermer les paramètres -->
     <div class="settings-overlay" id="settingsOverlay"></div>
-    
+
     <!-- Menu des paramètres (en dehors de la navbar) -->
     <div class="settings-menu" id="settingsMenu">
-        <div class="settings-header">
-            <h3>⚙️ Paramètres</h3>
-            <button class="close-settings" id="closeSettings">✖</button>
+      <div class="settings-header">
+        <h3>⚙️ Paramètres</h3>
+        <button class="close-settings" id="closeSettings">✖</button>
+      </div>
+      <div class="settings-body">
+        <div class="setting-section">
+          <h4>🌍 Langue</h4>
+          <div class="setting-options">
+            <button class="setting-option active" data-lang="fr">
+              <span class="option-icon">🇫🇷</span>
+              <span>Français</span>
+            </button>
+            <button class="setting-option" data-lang="en">
+              <span class="option-icon">🇬🇧</span>
+              <span>English</span>
+            </button>
+          </div>
         </div>
-        <div class="settings-body">
-            <div class="setting-section">
-                <h4>🌍 Langue</h4>
-                <div class="setting-options">
-                    <button class="setting-option active" data-lang="fr">
-                        <span class="option-icon">🇫🇷</span>
-                        <span>Français</span>
-                    </button>
-                    <button class="setting-option" data-lang="en">
-                        <span class="option-icon">🇬🇧</span>
-                        <span>English</span>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="setting-section">
-                <h4>🎨 Thème</h4>
-                <div class="setting-options">
-                    <button class="setting-option theme-option active" data-theme="light">
-                        <span class="option-icon">☀️</span>
-                        <span>Clair</span>
-                    </button>
-                    <button class="setting-option theme-option" data-theme="dark">
-                        <span class="option-icon">🌙</span>
-                        <span>Sombre</span>
-                    </button>
-                </div>
-            </div>
+
+        <div class="setting-section">
+          <h4>🎨 Thème</h4>
+          <div class="setting-options">
+            <button
+              class="setting-option theme-option active"
+              data-theme="light"
+            >
+              <span class="option-icon">☀️</span>
+              <span>Clair</span>
+            </button>
+            <button class="setting-option theme-option" data-theme="dark">
+              <span class="option-icon">🌙</span>
+              <span>Sombre</span>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <section class="hero" id="accueil">
-        <div class="hero-content">
-            <h1>⚡ Craft Genius</h1>
-            <p>Ton assistant ultime pour Minecraft - Commandes, Recettes & Astuces</p>
-        </div>
+      <div class="hero-content">
+        <h1>⚡ Craft Genius</h1>
+        <p>
+          Ton assistant ultime pour Minecraft - Commandes, Recettes & Astuces
+        </p>
+      </div>
     </section>
 
     <section class="command-finder" id="commandes">
-        <div class="container">
-            <h2>Trouvez Votre Commande</h2>
-            <p class="subtitle">Décrivez ce que vous voulez faire et l'IA trouvera la commande pour vous</p>
-            <p class="subtitle" style="font-size: 0.95rem; margin-top: -1.5rem; opacity: 0.9;">⚠️ Attention : Écrivez les mots sans fautes d'orthographe pour de meilleurs résultats</p>
-            
-            <div class="search-box">
-                <textarea id="commandDescription" placeholder="Ex: Je veux donner 64 diamants à mon ami..." rows="3"></textarea>
-                <button class="btn-search" id="searchCommand">🔍 Trouver la commande</button>
-            </div>
+      <div class="container">
+        <h2>Trouvez Votre Commande</h2>
+        <p class="subtitle">
+          Décrivez ce que vous voulez faire et l'IA trouvera la commande pour
+          vous
+        </p>
+        <p
+          class="subtitle"
+          style="font-size: 0.95rem; margin-top: -1.5rem; opacity: 0.9"
+        >
+          ⚠️ Attention : Écrivez les mots sans fautes d'orthographe pour de
+          meilleurs résultats
+        </p>
 
-            <div class="command-result" id="commandResult" style="display: none;">
-                <div class="result-header">
-                    <h3>✅ Commande trouvée !</h3>
-                </div>
-                <div class="command-box">
-                    <code id="commandCode"></code>
-                    <button class="btn-copy" id="copyCommand" title="Copier la commande">📋 Copier</button>
-                </div>
-                <div class="command-explanation" id="commandExplanation"></div>
-            </div>
-
-            <div class="popular-commands">
-                <h3>Commandes populaires</h3>
-                <div class="command-examples">
-                    <div class="example-command" data-command="/give @p diamond 64">
-                        <span class="example-text">Donner 64 diamants</span>
-                        <span class="example-arrow">→</span>
-                        <code>/give @p diamond 64</code>
-                    </div>
-                    <div class="example-command" data-command="/gamemode creative">
-                        <span class="example-text">Mode créatif</span>
-                        <span class="example-arrow">→</span>
-                        <code>/gamemode creative</code>
-                    </div>
-                    <div class="example-command" data-command="/tp @p ~ ~10 ~">
-                        <span class="example-text">Téléporter 10 blocs en haut</span>
-                        <span class="example-arrow">→</span>
-                        <code>/tp @p ~ ~10 ~</code>
-                    </div>
-                    <div class="example-command" data-command="/time set day">
-                        <span class="example-text">Mettre le jour</span>
-                        <span class="example-arrow">→</span>
-                        <code>/time set day</code>
-                    </div>
-                </div>
-            </div>
+        <div class="search-box">
+          <textarea
+            id="commandDescription"
+            placeholder="Ex: Je veux donner 64 diamants à mon ami..."
+            rows="3"
+          ></textarea>
+          <button class="btn-search" id="searchCommand">
+            🔍 Trouver la commande
+          </button>
         </div>
+
+        <div class="command-result" id="commandResult" style="display: none">
+          <div class="result-header">
+            <h3>✅ Commande trouvée !</h3>
+          </div>
+          <div class="command-box">
+            <code id="commandCode"></code>
+            <button
+              class="btn-copy"
+              id="copyCommand"
+              title="Copier la commande"
+            >
+              📋 Copier
+            </button>
+          </div>
+          <div class="command-explanation" id="commandExplanation"></div>
+        </div>
+
+        <div class="popular-commands">
+          <h3>Commandes populaires</h3>
+          <div class="command-examples">
+            <div class="example-command" data-command="/give @p diamond 64">
+              <span class="example-text">Donner 64 diamants</span>
+              <span class="example-arrow">→</span>
+              <code>/give @p diamond 64</code>
+            </div>
+            <div class="example-command" data-command="/gamemode creative">
+              <span class="example-text">Mode créatif</span>
+              <span class="example-arrow">→</span>
+              <code>/gamemode creative</code>
+            </div>
+            <div class="example-command" data-command="/tp @p ~ ~10 ~">
+              <span class="example-text">Téléporter 10 blocs en haut</span>
+              <span class="example-arrow">→</span>
+              <code>/tp @p ~ ~10 ~</code>
+            </div>
+            <div class="example-command" data-command="/time set day">
+              <span class="example-text">Mettre le jour</span>
+              <span class="example-arrow">→</span>
+              <code>/time set day</code>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="features" id="guides">
-        <div class="container">
-            <h2>Guide de Survie</h2>
-            <div class="cards">
-                <div class="card" data-guide="survie">
-                    <div class="card-icon"></div>
-                    <h3>Survie</h3>
-                    <p>Apprenez à survivre dans le monde de Minecraft</p>
-                    <button class="btn-secondary">Voir le guide</button>
-                </div>
-            </div>
+      <div class="container">
+        <h2>Guide de Survie</h2>
+        <div class="cards">
+          <div class="card" data-guide="survie">
+            <div class="card-icon"></div>
+            <h3>Survie</h3>
+            <p>Apprenez à survivre dans le monde de Minecraft</p>
+            <button class="btn-secondary">Voir le guide</button>
+          </div>
         </div>
+      </div>
 
-        <!-- Contenu détaillé des guides -->
-        <div class="guide-content" id="guide-survie" style="display: none;">
-            <div class="guide-header">
-                <h2>⚔️ Guide de Survie</h2>
-                <button class="btn-close">✖ Fermer</button>
-            </div>
-            <div class="guide-body">
-                <h3>🟦 PHASE 1 : Début du monde</h3>
-                <ul>
-                    <li><strong>ÉTAPE 1 - Apparition :</strong> Observer le biome et les alentours. Repérer arbres, animaux et relief.</li>
-                    <li><strong>ÉTAPE 2 - Bois :</strong> Couper plusieurs arbres. Récupérer environ 15 bûches.</li>
-                    <li><strong>ÉTAPE 3 - Planches :</strong> Transformer les bûches en planches. Fabriquer une table de craft.</li>
-                </ul>
-
-                <h3>🟦 PHASE 2 : Premiers outils</h3>
-                <ul>
-                    <li><strong>ÉTAPE 4 - Outils en bois :</strong> Fabriquer une pioche et une hache en bois.</li>
-                    <li><strong>ÉTAPE 5 - Pierre :</strong> Trouver et miner de la pierre. Récolter une bonne quantité.</li>
-                    <li><strong>ÉTAPE 6 - Outils en pierre :</strong> Fabriquer : Pioche en pierre, Hache en pierre, Épée en pierre.</li>
-                    <li><strong>ÉTAPE 7 - Four :</strong> Fabriquer un four.</li>
-                </ul>
-
-                <h3>🟦 PHASE 3 : Sécurité</h3>
-                <ul>
-                    <li><strong>ÉTAPE 8 - Charbon et torches :</strong> Miner du charbon ou faire du charbon de bois. Fabriquer des torches.</li>
-                    <li><strong>ÉTAPE 9 - Nourriture :</strong> Chasser des animaux. Cuire la nourriture.</li>
-                    <li><strong>ÉTAPE 10 - Lit :</strong> Trouver 3 laines. Fabriquer et poser un lit.</li>
-                </ul>
-
-                <h3>🟦 PHASE 4 : Base simple</h3>
-                <ul>
-                    <li><strong>ÉTAPE 11 - Abri :</strong> Construire une petite maison simple. Poser le lit, la table de craft et le four.</li>
-                    <li><strong>ÉTAPE 12 - Coffre :</strong> Fabriquer un coffre. Ranger les ressources.</li>
-                </ul>
-
-                <h3>🟦 PHASE 5 : Minage</h3>
-                <ul>
-                    <li><strong>ÉTAPE 13 - Mine :</strong> Creuser une mine en escalier.</li>
-                    <li><strong>ÉTAPE 14 - Fer :</strong> Miner du fer. Le faire cuire.</li>
-                    <li><strong>ÉTAPE 15 - Équipement en fer :</strong> Fabriquer : Pioche en fer, Épée en fer, Armure (au moins partielle).</li>
-                </ul>
-
-                <h3>🟦 PHASE 6 : Progression</h3>
-                <ul>
-                    <li><strong>ÉTAPE 16 - Exploration :</strong> Explorer les environs. Trouver des structures.</li>
-                    <li><strong>ÉTAPE 17 - Diamants :</strong> Miner à la bonne profondeur. Récolter des diamants.</li>
-                    <li><strong>ÉTAPE 18 - Enchantements :</strong> Fabriquer une table d'enchantement (si possible).</li>
-                </ul>
-
-                <h3>🟦 PHASE 7 : Fin de jeu</h3>
-                <ul>
-                    <li><strong>ÉTAPE 19 - Nether :</strong> Construire un portail du Nether. Explorer et récupérer les ressources utiles.</li>
-                    <li><strong>ÉTAPE 20 - End :</strong> Trouver le stronghold. Aller dans l'End et battre le dragon.</li>
-                </ul>
-            </div>
+      <!-- Contenu détaillé des guides -->
+      <div class="guide-content" id="guide-survie" style="display: none">
+        <div class="guide-header">
+          <h2>⚔️ Guide de Survie</h2>
+          <button class="btn-close">✖ Fermer</button>
         </div>
+        <div class="guide-body">
+          <h3>🟦 PHASE 1 : Début du monde</h3>
+          <ul>
+            <li>
+              <strong>ÉTAPE 1 - Apparition :</strong> Observer le biome et les
+              alentours. Repérer arbres, animaux et relief.
+            </li>
+            <li>
+              <strong>ÉTAPE 2 - Bois :</strong> Couper plusieurs arbres.
+              Récupérer environ 15 bûches.
+            </li>
+            <li>
+              <strong>ÉTAPE 3 - Planches :</strong> Transformer les bûches en
+              planches. Fabriquer une table de craft.
+            </li>
+          </ul>
+
+          <h3>🟦 PHASE 2 : Premiers outils</h3>
+          <ul>
+            <li>
+              <strong>ÉTAPE 4 - Outils en bois :</strong> Fabriquer une pioche
+              et une hache en bois.
+            </li>
+            <li>
+              <strong>ÉTAPE 5 - Pierre :</strong> Trouver et miner de la pierre.
+              Récolter une bonne quantité.
+            </li>
+            <li>
+              <strong>ÉTAPE 6 - Outils en pierre :</strong> Fabriquer : Pioche
+              en pierre, Hache en pierre, Épée en pierre.
+            </li>
+            <li><strong>ÉTAPE 7 - Four :</strong> Fabriquer un four.</li>
+          </ul>
+
+          <h3>🟦 PHASE 3 : Sécurité</h3>
+          <ul>
+            <li>
+              <strong>ÉTAPE 8 - Charbon et torches :</strong> Miner du charbon
+              ou faire du charbon de bois. Fabriquer des torches.
+            </li>
+            <li>
+              <strong>ÉTAPE 9 - Nourriture :</strong> Chasser des animaux. Cuire
+              la nourriture.
+            </li>
+            <li>
+              <strong>ÉTAPE 10 - Lit :</strong> Trouver 3 laines. Fabriquer et
+              poser un lit.
+            </li>
+          </ul>
+
+          <h3>🟦 PHASE 4 : Base simple</h3>
+          <ul>
+            <li>
+              <strong>ÉTAPE 11 - Abri :</strong> Construire une petite maison
+              simple. Poser le lit, la table de craft et le four.
+            </li>
+            <li>
+              <strong>ÉTAPE 12 - Coffre :</strong> Fabriquer un coffre. Ranger
+              les ressources.
+            </li>
+          </ul>
+
+          <h3>🟦 PHASE 5 : Minage</h3>
+          <ul>
+            <li>
+              <strong>ÉTAPE 13 - Mine :</strong> Creuser une mine en escalier.
+            </li>
+            <li>
+              <strong>ÉTAPE 14 - Fer :</strong> Miner du fer. Le faire cuire.
+            </li>
+            <li>
+              <strong>ÉTAPE 15 - Équipement en fer :</strong> Fabriquer : Pioche
+              en fer, Épée en fer, Armure (au moins partielle).
+            </li>
+          </ul>
+
+          <h3>🟦 PHASE 6 : Progression</h3>
+          <ul>
+            <li>
+              <strong>ÉTAPE 16 - Exploration :</strong> Explorer les environs.
+              Trouver des structures.
+            </li>
+            <li>
+              <strong>ÉTAPE 17 - Diamants :</strong> Miner à la bonne
+              profondeur. Récolter des diamants.
+            </li>
+            <li>
+              <strong>ÉTAPE 18 - Enchantements :</strong> Fabriquer une table
+              d'enchantement (si possible).
+            </li>
+          </ul>
+
+          <h3>🟦 PHASE 7 : Fin de jeu</h3>
+          <ul>
+            <li>
+              <strong>ÉTAPE 19 - Nether :</strong> Construire un portail du
+              Nether. Explorer et récupérer les ressources utiles.
+            </li>
+            <li>
+              <strong>ÉTAPE 20 - End :</strong> Trouver le stronghold. Aller
+              dans l'End et battre le dragon.
+            </li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section class="tips" id="astuces">
-        <div class="container">
-            <h2>Astuces Rapides</h2>
-            <div class="tips-grid">
-                <div class="tip">
-                    <h4> Astuce #1</h4>
-                    <p>Minez au niveau Y=-59 pour trouver plus de diamants</p>
-                </div>
-                <div class="tip">
-                    <h4> Astuce #2</h4>
-                    <p>Utilisez de la farine d'os pour accélérer la croissance des cultures</p>
-                </div>
-                <div class="tip">
-                    <h4> Astuce #3</h4>
-                    <p>Créez un bouclier avec des planches et du fer pour vous protéger</p>
-                </div>
-                <div class="tip">
-                    <h4> Astuce #4</h4>
-                    <p>Utilisez des rails propulsés avec de la redstone pour voyager rapidement</p>
-                </div>
-            </div>
+      <div class="container">
+        <h2>Astuces Rapides</h2>
+        <div class="tips-grid">
+          <div class="tip">
+            <h4>Astuce #1</h4>
+            <p>Minez au niveau Y=-59 pour trouver plus de diamants</p>
+          </div>
+          <div class="tip">
+            <h4>Astuce #2</h4>
+            <p>
+              Utilisez de la farine d'os pour accélérer la croissance des
+              cultures
+            </p>
+          </div>
+          <div class="tip">
+            <h4>Astuce #3</h4>
+            <p>
+              Créez un bouclier avec des planches et du fer pour vous protéger
+            </p>
+          </div>
+          <div class="tip">
+            <h4>Astuce #4</h4>
+            <p>
+              Utilisez des rails propulsés avec de la redstone pour voyager
+              rapidement
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="recipes" id="recettes">
-        <div class="container">
-            <h2>Trouveur de Recettes</h2>
-            <p class="subtitle">Décrivez ce que vous voulez crafter et l'IA trouvera la recette pour vous</p>
-            <p class="subtitle" style="font-size: 0.95rem; margin-top: -1.5rem; opacity: 0.9;">⚠️ Attention : Écrivez les mots sans fautes d'orthographe pour de meilleurs résultats</p>
-            
-            <div class="search-box">
-                <textarea id="recipeDescription" placeholder="Ex: Je veux fabriquer une épée en diamant..." rows="3"></textarea>
-                <button class="btn-search" id="searchRecipe">🔍 Trouver la recette</button>
-            </div>
+      <div class="container">
+        <h2>Trouveur de Recettes</h2>
+        <p class="subtitle">
+          Décrivez ce que vous voulez crafter et l'IA trouvera la recette pour
+          vous
+        </p>
+        <p
+          class="subtitle"
+          style="font-size: 0.95rem; margin-top: -1.5rem; opacity: 0.9"
+        >
+          ⚠️ Attention : Écrivez les mots sans fautes d'orthographe pour de
+          meilleurs résultats
+        </p>
 
-            <div class="command-result" id="recipeResult" style="display: none;">
-                <div class="result-header">
-                    <h3>✅ Recette trouvée !</h3>
-                </div>
-                <div style="text-align: center; margin-bottom: 1rem;">
-                    <h2 id="recipeName" style="color: #2c3e50; margin-bottom: 1rem;"></h2>
-                </div>
-                <div class="command-box">
-                    <code id="recipeIngredients" style="color: #e67e22; white-space: pre-line;"></code>
-                </div>
-                <div class="command-explanation" id="recipeInstructions"></div>
-            </div>
-
-            <div class="popular-commands">
-                <h3>Recettes populaires</h3>
-                <div class="command-examples">
-                    <div class="example-command" data-recipe="épée diamant">
-                        <span class="example-text">Épée en diamant</span>
-                        <span class="example-arrow">→</span>
-                        <code>2 Diamants + 1 Bâton</code>
-                    </div>
-                    <div class="example-command" data-recipe="table enchantement">
-                        <span class="example-text">Table d'enchantement</span>
-                        <span class="example-arrow">→</span>
-                        <code>4 Obsidiennes + 2 Diamants + 1 Livre</code>
-                    </div>
-                    <div class="example-command" data-recipe="coffre">
-                        <span class="example-text">Coffre</span>
-                        <span class="example-arrow">→</span>
-                        <code>8 Planches de bois</code>
-                    </div>
-                    <div class="example-command" data-recipe="tnt">
-                        <span class="example-text">TNT</span>
-                        <span class="example-arrow">→</span>
-                        <code>5 Poudre à canon + 4 Sable</code>
-                    </div>
-                </div>
-            </div>
+        <div class="search-box">
+          <textarea
+            id="recipeDescription"
+            placeholder="Ex: Je veux fabriquer une épée en diamant..."
+            rows="3"
+          ></textarea>
+          <button class="btn-search" id="searchRecipe">
+            🔍 Trouver la recette
+          </button>
         </div>
+
+        <div class="command-result" id="recipeResult" style="display: none">
+          <div class="result-header">
+            <h3>✅ Recette trouvée !</h3>
+          </div>
+          <div style="text-align: center; margin-bottom: 1rem">
+            <h2
+              id="recipeName"
+              style="color: #2c3e50; margin-bottom: 1rem"
+            ></h2>
+          </div>
+          <div class="command-box">
+            <code
+              id="recipeIngredients"
+              style="color: #e67e22; white-space: pre-line"
+            ></code>
+          </div>
+          <div class="command-explanation" id="recipeInstructions"></div>
+        </div>
+
+        <div class="popular-commands">
+          <h3>Recettes populaires</h3>
+          <div class="command-examples">
+            <div class="example-command" data-recipe="épée diamant">
+              <span class="example-text">Épée en diamant</span>
+              <span class="example-arrow">→</span>
+              <code>2 Diamants + 1 Bâton</code>
+            </div>
+            <div class="example-command" data-recipe="table enchantement">
+              <span class="example-text">Table d'enchantement</span>
+              <span class="example-arrow">→</span>
+              <code>4 Obsidiennes + 2 Diamants + 1 Livre</code>
+            </div>
+            <div class="example-command" data-recipe="coffre">
+              <span class="example-text">Coffre</span>
+              <span class="example-arrow">→</span>
+              <code>8 Planches de bois</code>
+            </div>
+            <div class="example-command" data-recipe="tnt">
+              <span class="example-text">TNT</span>
+              <span class="example-arrow">→</span>
+              <code>5 Poudre à canon + 4 Sable</code>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Section Commentaires -->
     <section id="commentaires" class="comments-section">
-        <div class="container">
-            <h2>💬 Commentaires</h2>
-            
-            <!-- Message pour utilisateurs non connectés -->
-            <div id="notConnectedMessage" class="not-connected-message">
-                <p>🔒 Vous devez être connecté pour poster un commentaire</p>
-                <a href="auth.html" class="btn-connect">Se connecter / S'inscrire</a>
-            </div>
-            
-            <!-- Formulaire de commentaire (visible uniquement si connecté) -->
-            <div id="commentFormContainer" class="comment-form" style="display: none;">
-                <h3>Laissez un commentaire</h3>
-                <div class="form-group" id="commentNameGroup">
-                    <input type="text" id="commentName" placeholder="Votre nom" maxlength="50">
-                </div>
-                <div class="form-group">
-                    <textarea id="commentText" placeholder="Votre commentaire..." rows="4" maxlength="500"></textarea>
-                    <small id="charCount">0/500</small>
-                </div>
-                <button id="submitComment" class="comment-btn">Publier le commentaire</button>
-                <div id="commentMessage" class="comment-message"></div>
-            </div>
+      <div class="container">
+        <h2>💬 Commentaires</h2>
 
-            <div id="commentsContainer" class="comments-list">
-                <p class="loading">Chargement des commentaires...</p>
-            </div>
+        <!-- Message pour utilisateurs non connectés -->
+        <div id="notConnectedMessage" class="not-connected-message">
+          <p>🔒 Vous devez être connecté pour poster un commentaire</p>
+          <a href="auth.html" class="btn-connect">Se connecter / S'inscrire</a>
         </div>
+
+        <!-- Formulaire de commentaire (visible uniquement si connecté) -->
+        <div
+          id="commentFormContainer"
+          class="comment-form"
+          style="display: none"
+        >
+          <h3>Laissez un commentaire</h3>
+          <div class="form-group" id="commentNameGroup">
+            <input
+              type="text"
+              id="commentName"
+              placeholder="Votre nom"
+              maxlength="50"
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              id="commentText"
+              placeholder="Votre commentaire..."
+              rows="4"
+              maxlength="500"
+            ></textarea>
+            <small id="charCount">0/500</small>
+          </div>
+          <button id="submitComment" class="comment-btn">
+            Publier le commentaire
+          </button>
+          <div id="commentMessage" class="comment-message"></div>
+        </div>
+
+        <div id="commentsContainer" class="comments-list">
+          <p class="loading">Chargement des commentaires...</p>
+        </div>
+      </div>
     </section>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2025 Craft Genius - L'assistant Minecraft intelligent</p>
-            <p>Créé par Gabriel Cardon | Site non affilié à Mojang Studios ou Microsoft</p>
-        </div>
+      <div class="container">
+        <p>&copy; 2025 Craft Genius - L'assistant Minecraft intelligent</p>
+        <p>
+          Créé par Gabriel Cardon | Site non affilié à Mojang Studios ou
+          Microsoft
+        </p>
+      </div>
     </footer>
 
     <!-- Firebase SDK (compat pour usage simple) -->
@@ -335,5 +480,5 @@
 
     <script src="script.js"></script>
     <script src="comments.js"></script>
-</body>
+  </body>
 </html>
