@@ -3,6 +3,62 @@
 let commentsDB = null;
 let currentUser = null;
 let currentUsername = null;
+const externalBlockedWords = [];
+
+const blockedWords = [
+  "con",
+  "cons",
+  "connard",
+  "connards",
+  "connasse",
+  "connasses",
+  "fdp",
+  "fils de pute",
+  "fils de p",
+  "salope",
+  "salopes",
+  "salaud",
+  "salauds",
+  "ta gueule",
+  "pute",
+  "putain",
+  "putains",
+  "encule",
+  "enculé",
+  "enculee",
+  "enculée",
+  "encules",
+  "enculés",
+  "batard",
+  "bâtard",
+  "batards",
+  "bâtards",
+  "bordel",
+  "merde",
+  "merdes",
+  "nique",
+  "niquer",
+  "nique ta",
+  "ferme ta gueule",
+  "shit",
+  "damn",
+  "dumbass",
+  "bitch",
+  "bitches",
+  "asshole",
+  "assholes",
+  "bastard",
+  "bastards",
+  "motherfucker",
+  "motherfuckers",
+  "wtf",
+  "stfu",
+  "fuck",
+  "fucked",
+  "fucking",
+  "fucker",
+  "fuk",
+];
 
 function getText(key, fallback) {
   if (typeof window.getUiText === "function") {
@@ -18,8 +74,94 @@ function getLocale() {
   return window.currentLang === "en" ? "en-US" : "fr-FR";
 }
 
+function generateLocalCommentId() {
+  return `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function isCommentOwner(comment) {
+  return Boolean(currentUser && comment?.userId && comment.userId === currentUser.uid);
+}
+
+function getCommentValidationError(text) {
+  if (!text) {
+    return getText("commentEmpty", "Veuillez entrer un commentaire");
+  }
+
+  if (text.length < 5) {
+    return getText(
+      "commentTooShort",
+      "Le commentaire doit contenir au moins 5 caractères",
+    );
+  }
+
+  if (containsBlockedWord(text)) {
+    return getText(
+      "commentBlockedLanguage",
+      "⚠️ Votre commentaire contient un langage inapproprié.",
+    );
+  }
+
+  return null;
+}
+
+function normalizeForFilter(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+async function loadExternalProfanityList() {
+  try {
+    const response = await fetch("profanity-en.json", { cache: "no-store" });
+    if (!response.ok) {
+      return;
+    }
+
+    const words = await response.json();
+    if (!Array.isArray(words)) {
+      return;
+    }
+
+    words.forEach((word) => {
+      if (typeof word !== "string") {
+        return;
+      }
+      const trimmedWord = word.trim();
+      if (trimmedWord.length >= 3) {
+        externalBlockedWords.push(trimmedWord);
+      }
+    });
+  } catch (error) {
+    console.log("Liste externe de mots bloqués non chargée");
+  }
+}
+
+function containsBlockedWord(text) {
+  const normalizedText = normalizeForFilter(text);
+  const allBlockedWords = [...blockedWords, ...externalBlockedWords];
+
+  return allBlockedWords.some((word) => {
+    const normalizedWord = normalizeForFilter(word);
+    const cleanedWord = normalizedWord.replace(/\*/g, "").trim();
+    if (cleanedWord.length < 3) {
+      return false;
+    }
+
+    const escapedWord = escapeRegExp(cleanedWord);
+    const pattern = new RegExp(`(^|[^a-z0-9])${escapedWord}([^a-z0-9]|$)`);
+    return pattern.test(normalizedText);
+  });
+}
+
 // Initialiser Firestore si Firebase est prêt
 document.addEventListener("DOMContentLoaded", function () {
+  loadExternalProfanityList();
+
   setTimeout(() => {
     // Vérifier d'abord si utilisateur est connecté via localStorage
     const userFromStorage = localStorage.getItem("user");
@@ -82,6 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   setupCommentForm();
   setupCharCounter();
+  setupCommentActions();
 });
 
 function updateCommentFormForUser() {
@@ -133,10 +276,40 @@ function setupCommentForm() {
     });
 }
 
+function setupCommentActions() {
+  const commentsContainer = document.getElementById("commentsContainer");
+  if (!commentsContainer) {
+    return;
+  }
+
+  commentsContainer.addEventListener("click", async (event) => {
+    const actionButton = event.target.closest(".comment-action-btn");
+    if (!actionButton) {
+      return;
+    }
+
+    const action = actionButton.dataset.action;
+    const commentId = actionButton.dataset.id;
+    const source = actionButton.dataset.source || "firebase";
+
+    if (!commentId) {
+      return;
+    }
+
+    if (action === "edit") {
+      await editComment(commentId, source);
+      return;
+    }
+
+    if (action === "delete") {
+      await deleteComment(commentId, source);
+    }
+  });
+}
+
 function submitComment() {
   let name = document.getElementById("commentName").value.trim();
   const text = document.getElementById("commentText").value.trim();
-  const messageDiv = document.getElementById("commentMessage");
 
   // Si l'utilisateur n'est pas connecté, montrer l'erreur
   if (!currentUser) {
@@ -155,21 +328,9 @@ function submitComment() {
     name = currentUsername;
   }
 
-  if (!text) {
-    showMessage(
-      getText("commentEmpty", "Veuillez entrer un commentaire"),
-      "error",
-    );
-    return;
-  }
-  if (text.length < 5) {
-    showMessage(
-      getText(
-        "commentTooShort",
-        "Le commentaire doit contenir au moins 5 caractères",
-      ),
-      "error",
-    );
+  const validationError = getCommentValidationError(text);
+  if (validationError) {
+    showMessage(validationError, "error");
     return;
   }
 
@@ -209,6 +370,7 @@ function submitComment() {
         // Fallback sur localStorage
         const fallbackComment = {
           ...comment,
+          id: generateLocalCommentId(),
           timestamp: new Date().toISOString(),
         };
         saveCommentLocal(fallbackComment);
@@ -224,7 +386,11 @@ function submitComment() {
       });
   } else {
     // Utiliser localStorage
-    const fallbackComment = { ...comment, timestamp: new Date().toISOString() };
+    const fallbackComment = {
+      ...comment,
+      id: generateLocalCommentId(),
+      timestamp: new Date().toISOString(),
+    };
     saveCommentLocal(fallbackComment);
     showMessage(
       getText("commentPostedLocalSuccess", "✅ Commentaire publié!"),
@@ -275,7 +441,7 @@ function loadComments() {
 
         snapshot.forEach((doc) => {
           const comment = doc.data();
-          const html = createCommentHTML(comment);
+          const html = createCommentHTML(comment, doc.id, "firebase");
           container.innerHTML += html;
         });
       },
@@ -300,11 +466,23 @@ function loadCommentsLocal() {
     return;
   }
 
+  let shouldSave = false;
+  comments.forEach((comment) => {
+    if (!comment.id) {
+      comment.id = generateLocalCommentId();
+      shouldSave = true;
+    }
+  });
+
+  if (shouldSave) {
+    localStorage.setItem("craftGenius_comments", JSON.stringify(comments));
+  }
+
   // Trier par date décroissante
   comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   comments.forEach((comment) => {
-    const html = createCommentHTML(comment);
+    const html = createCommentHTML(comment, comment.id, "local");
     container.innerHTML += html;
   });
 }
@@ -313,18 +491,264 @@ function saveCommentLocal(comment) {
   const comments = JSON.parse(
     localStorage.getItem("craftGenius_comments") || "[]",
   );
-  comments.push(comment);
+  comments.push({
+    ...comment,
+    id: comment.id || generateLocalCommentId(),
+  });
   localStorage.setItem("craftGenius_comments", JSON.stringify(comments));
 }
 
-function createCommentHTML(comment) {
+async function editComment(commentId, source) {
+  if (!currentUser) {
+    showMessage(
+      getText(
+        "commentLoginRequired",
+        "🔒 Vous devez être connecté pour poster un commentaire",
+      ),
+      "error",
+    );
+    return;
+  }
+
+  if (source === "firebase" && commentsDB) {
+    try {
+      const commentRef = commentsDB.collection("comments").doc(commentId);
+      const commentDoc = await commentRef.get();
+
+      if (!commentDoc.exists) {
+        showMessage(getText("commentNotFound", "Commentaire introuvable."), "error");
+        return;
+      }
+
+      const comment = commentDoc.data();
+      if (!isCommentOwner(comment)) {
+        showMessage(
+          getText(
+            "commentNotOwner",
+            "❌ Vous ne pouvez modifier que vos propres commentaires.",
+          ),
+          "error",
+        );
+        return;
+      }
+
+      const updatedText = window.prompt(
+        getText("commentEditPrompt", "Modifiez votre commentaire :"),
+        comment.text || "",
+      );
+
+      if (updatedText === null) {
+        return;
+      }
+
+      const nextText = updatedText.trim();
+      const validationError = getCommentValidationError(nextText);
+      if (validationError) {
+        showMessage(validationError, "error");
+        return;
+      }
+
+      await commentRef.update({
+        text: nextText,
+        date: new Date().toLocaleString(getLocale(), {
+          hour: "2-digit",
+          minute: "2-digit",
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+        }),
+        editedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      showMessage(
+        getText("commentEditedSuccess", "✅ Commentaire modifié avec succès!"),
+        "success",
+      );
+    } catch (error) {
+      console.error("Erreur modification commentaire:", error);
+      showMessage(
+        getText("commentEditError", "❌ Erreur lors de la modification."),
+        "error",
+      );
+    }
+    return;
+  }
+
+  const comments = JSON.parse(localStorage.getItem("craftGenius_comments") || "[]");
+  const index = comments.findIndex((comment) => comment.id === commentId);
+
+  if (index === -1) {
+    showMessage(getText("commentNotFound", "Commentaire introuvable."), "error");
+    return;
+  }
+
+  const comment = comments[index];
+  if (!isCommentOwner(comment)) {
+    showMessage(
+      getText(
+        "commentNotOwner",
+        "❌ Vous ne pouvez modifier que vos propres commentaires.",
+      ),
+      "error",
+    );
+    return;
+  }
+
+  const updatedText = window.prompt(
+    getText("commentEditPrompt", "Modifiez votre commentaire :"),
+    comment.text || "",
+  );
+
+  if (updatedText === null) {
+    return;
+  }
+
+  const nextText = updatedText.trim();
+  const validationError = getCommentValidationError(nextText);
+  if (validationError) {
+    showMessage(validationError, "error");
+    return;
+  }
+
+  comments[index] = {
+    ...comment,
+    text: nextText,
+    date: new Date().toLocaleString(getLocale(), {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    }),
+    editedAt: new Date().toISOString(),
+  };
+
+  localStorage.setItem("craftGenius_comments", JSON.stringify(comments));
+  loadCommentsLocal();
+  showMessage(
+    getText("commentEditedSuccess", "✅ Commentaire modifié avec succès!"),
+    "success",
+  );
+}
+
+async function deleteComment(commentId, source) {
+  if (!currentUser) {
+    showMessage(
+      getText(
+        "commentLoginRequired",
+        "🔒 Vous devez être connecté pour poster un commentaire",
+      ),
+      "error",
+    );
+    return;
+  }
+
+  const confirmDelete = window.confirm(
+    getText(
+      "commentDeleteConfirm",
+      "Voulez-vous vraiment supprimer ce commentaire ?",
+    ),
+  );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  if (source === "firebase" && commentsDB) {
+    try {
+      const commentRef = commentsDB.collection("comments").doc(commentId);
+      const commentDoc = await commentRef.get();
+
+      if (!commentDoc.exists) {
+        showMessage(getText("commentNotFound", "Commentaire introuvable."), "error");
+        return;
+      }
+
+      const comment = commentDoc.data();
+      if (!isCommentOwner(comment)) {
+        showMessage(
+          getText(
+            "commentNotOwnerDelete",
+            "❌ Vous ne pouvez supprimer que vos propres commentaires.",
+          ),
+          "error",
+        );
+        return;
+      }
+
+      await commentRef.delete();
+      showMessage(
+        getText("commentDeletedSuccess", "🗑️ Commentaire supprimé."),
+        "success",
+      );
+    } catch (error) {
+      console.error("Erreur suppression commentaire:", error);
+      showMessage(
+        getText("commentDeleteError", "❌ Erreur lors de la suppression."),
+        "error",
+      );
+    }
+    return;
+  }
+
+  const comments = JSON.parse(localStorage.getItem("craftGenius_comments") || "[]");
+  const index = comments.findIndex((comment) => comment.id === commentId);
+
+  if (index === -1) {
+    showMessage(getText("commentNotFound", "Commentaire introuvable."), "error");
+    return;
+  }
+
+  const comment = comments[index];
+  if (!isCommentOwner(comment)) {
+    showMessage(
+      getText(
+        "commentNotOwnerDelete",
+        "❌ Vous ne pouvez supprimer que vos propres commentaires.",
+      ),
+      "error",
+    );
+    return;
+  }
+
+  comments.splice(index, 1);
+  localStorage.setItem("craftGenius_comments", JSON.stringify(comments));
+  loadCommentsLocal();
+  showMessage(
+    getText("commentDeletedSuccess", "🗑️ Commentaire supprimé."),
+    "success",
+  );
+}
+
+function createCommentHTML(comment, commentId, source = "firebase") {
+  const canManage = isCommentOwner(comment) && Boolean(commentId);
+  const dateText = escapeHtml(
+    String(comment.date || getText("commentJustNow", "juste à l'instant")),
+  );
+  const editedLabel = comment.editedAt
+    ? ` · ${escapeHtml(getText("commentEdited", "modifié"))}`
+    : "";
+  const actionsHTML = canManage
+    ? `
+      <div class="comment-actions">
+        <button class="comment-action-btn" data-action="edit" data-id="${escapeHtml(String(commentId))}" data-source="${escapeHtml(source)}">
+          ${escapeHtml(getText("commentEdit", "Modifier"))}
+        </button>
+        <button class="comment-action-btn delete" data-action="delete" data-id="${escapeHtml(String(commentId))}" data-source="${escapeHtml(source)}">
+          ${escapeHtml(getText("commentDelete", "Supprimer"))}
+        </button>
+      </div>
+    `
+    : "";
+
   return `
         <div class="comment-item">
             <div class="comment-header">
                 <span class="comment-name">👤 ${escapeHtml(comment.name)}</span>
-                <span class="comment-date">${comment.date || getText("commentJustNow", "juste à l'instant")}</span>
+                <span class="comment-date">${dateText}${editedLabel}</span>
             </div>
             <div class="comment-text">${escapeHtml(comment.text)}</div>
+            ${actionsHTML}
         </div>
     `;
 }
