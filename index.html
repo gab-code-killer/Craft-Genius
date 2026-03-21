@@ -6,7 +6,7 @@
     <title>Craft Genius - Commandes & Astuces Minecraft</title>
     <meta
       name="description"
-      content="Craft Genius: commandes Minecraft, recettes de craft, astuces et guides de survie pour progresser rapidement."
+      content="Craft Genius: commandes Minecraft, crafts, astuces et guides de survie pour progresser rapidement."
     />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://craft-genius-w2t3.vercel.app/" />
@@ -16,7 +16,7 @@
     />
     <meta
       property="og:description"
-      content="Trouve des commandes Minecraft, des recettes et des astuces rapidement."
+      content="Trouve des commandes Minecraft, des crafts et des astuces rapidement."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://craft-genius-w2t3.vercel.app/" />
@@ -37,7 +37,7 @@
           <li><a href="#commandes">Commandes</a></li>
           <li><a href="#guides">Guides</a></li>
           <li><a href="#astuces">Astuces</a></li>
-          <li><a href="#recettes">Recettes</a></li>
+          <li><a href="#recettes">Craft</a></li>
         </ul>
         <div class="navbar-right">
           <button class="auth-btn" id="authBtn" title="Connexion">
@@ -109,8 +109,12 @@
       <div class="hero-content">
         <h1>⚡ Craft Genius</h1>
         <p>
-          Ton assistant ultime pour Minecraft - Commandes, Recettes & Astuces
+          Ton assistant ultime pour Minecraft - Commandes, Crafts & Astuces
         </p>
+        <div class="tip-of-day" id="tipOfDay">
+          <span class="tip-badge">💡 Astuce du jour</span>
+          <span id="tipOfDayText"></span>
+        </div>
       </div>
     </section>
 
@@ -141,9 +145,7 @@
         </div>
 
         <div class="command-result" id="commandResult" style="display: none">
-          <div class="result-header">
-            <h3>✅ Commande trouvée !</h3>
-          </div>
+          <h3>✅ Commande trouvée !</h3>
           <div class="command-box">
             <code id="commandCode"></code>
             <button
@@ -345,9 +347,9 @@
 
     <section class="recipes" id="recettes">
       <div class="container">
-        <h2>Trouveur de Recettes</h2>
+        <h2>Trouveur de Craft</h2>
         <p class="subtitle">
-          Décrivez ce que vous voulez crafter et l'IA trouvera la recette pour
+          Décrivez ce que vous voulez crafter et l'IA trouvera le craft pour
           vous
         </p>
         <p
@@ -365,20 +367,19 @@
             rows="3"
           ></textarea>
           <button class="btn-search" id="searchRecipe">
-            🔍 Trouver la recette
+            🔍 Trouver le craft
           </button>
         </div>
 
         <div class="command-result" id="recipeResult" style="display: none">
-          <div class="result-header">
-            <h3>✅ Recette trouvée !</h3>
-          </div>
+          <h3>✅ Craft trouvé !</h3>
           <div style="text-align: center; margin-bottom: 1rem">
             <h2
               id="recipeName"
               style="color: #2c3e50; margin-bottom: 1rem"
             ></h2>
           </div>
+          <div id="craftingGridDisplay"></div>
           <div class="command-box">
             <code
               id="recipeIngredients"
@@ -389,7 +390,7 @@
         </div>
 
         <div class="popular-commands">
-          <h3>Recettes populaires</h3>
+          <h3>Crafts populaires</h3>
           <div class="command-examples">
             <div class="example-command" data-recipe="épée diamant">
               <span class="example-text">Épée en diamant</span>
@@ -477,6 +478,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+    <!-- Textures Minecraft (générées par extract-textures.js) -->
+    <script src="mc-textures.js"></script>
 
     <script src="script.js"></script>
     <script src="comments.js"></script>

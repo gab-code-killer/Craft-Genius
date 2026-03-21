@@ -6,7 +6,7 @@ const translations = {
     commands: "Commandes",
     guides: "Guides",
     tips: "Astuces",
-    recipes: "Recettes",
+    recipes: "Craft",
 
     // Page
     pageTitle: "Craft Genius - Commandes & Astuces Minecraft",
@@ -28,7 +28,7 @@ const translations = {
     
     // Hero
     heroTitle: "⚡ Craft Genius",
-    heroSubtitle: "Ton assistant ultime pour Minecraft - Commandes, Recettes & Astuces",
+    heroSubtitle: "Ton assistant ultime pour Minecraft - Commandes, Crafts & Astuces",
     heroButton: "Commencer",
     
     // Commands
@@ -53,12 +53,12 @@ const translations = {
     exampleCommand4Text: "Mettre le jour",
     
     // Recipes
-    recipesTitle: "Trouveur de Recettes",
-    recipesSubtitle: "Décrivez ce que vous voulez crafter et l'IA trouvera la recette pour vous",
+    recipesTitle: "Trouveur de Craft",
+    recipesSubtitle: "Décrivez ce que vous voulez crafter et l'IA trouvera le craft pour vous",
     recipePlaceholder: "Ex: Je veux fabriquer une épée en diamant...",
-    searchRecipeButton: "🔍 Trouver la recette",
-    recipeFound: "✅ Recette trouvée !",
-    popularRecipes: "Recettes populaires",
+    searchRecipeButton: "🔍 Trouver le craft",
+    recipeFound: "✅ Craft trouvé !",
+    popularRecipes: "Crafts populaires",
     recipeDescribeAlert: "Veuillez décrire ce que vous voulez crafter !",
     recipeLoadingName: "⏳ Recherche en cours...",
     recipeLoadingMaterials: "Analyse de votre demande...",
@@ -67,7 +67,7 @@ const translations = {
     recipeSearchErrorBody: "Une erreur est survenue",
     recipeSearchErrorHint: "Veuillez réessayer.",
     recipeExamplePrefix: "Je veux crafter ",
-    recipeNotFoundName: "Recette non trouvée",
+    recipeNotFoundName: "Craft non trouvé",
     recipeNotFoundMaterials: "Essayez avec des termes plus précis",
     recipeNotFoundCraft: "Exemples : 'épée en diamant', 'table d'enchantement', 'coffre', 'tnt', 'arc', 'bloc d'or'",
     exampleRecipe1Text: "Epee en diamant",
@@ -166,7 +166,7 @@ const translations = {
     commands: "Commands",
     guides: "Guides",
     tips: "Tips",
-    recipes: "Recipes",
+    recipes: "Craft",
 
     // Page
     pageTitle: "Craft Genius - Minecraft Commands & Tips",
@@ -188,7 +188,7 @@ const translations = {
     
     // Hero
     heroTitle: "⚡ Craft Genius",
-    heroSubtitle: "Your ultimate Minecraft assistant - Commands, Recipes & Tips",
+    heroSubtitle: "Your ultimate Minecraft assistant - Commands, Crafts & Tips",
     heroButton: "Get Started",
     
     // Commands
@@ -213,12 +213,12 @@ const translations = {
     exampleCommand4Text: "Set time to day",
     
     // Recipes
-    recipesTitle: "Recipe Finder",
-    recipesSubtitle: "Describe what you want to craft and AI will find the recipe for you",
+    recipesTitle: "Craft Finder",
+    recipesSubtitle: "Describe what you want to craft and AI will find the craft for you",
     recipePlaceholder: "Ex: I want to craft a diamond sword...",
-    searchRecipeButton: "🔍 Find recipe",
-    recipeFound: "✅ Recipe found!",
-    popularRecipes: "Popular recipes",
+    searchRecipeButton: "🔍 Find craft",
+    recipeFound: "✅ Craft found!",
+    popularRecipes: "Popular crafts",
     recipeDescribeAlert: "Please describe what you want to craft!",
     recipeLoadingName: "⏳ Searching...",
     recipeLoadingMaterials: "Analyzing your request...",
@@ -227,7 +227,7 @@ const translations = {
     recipeSearchErrorBody: "Something went wrong",
     recipeSearchErrorHint: "Please try again.",
     recipeExamplePrefix: "I want to craft ",
-    recipeNotFoundName: "Recipe not found",
+    recipeNotFoundName: "Craft not found",
     recipeNotFoundMaterials: "Try more specific terms",
     recipeNotFoundCraft: "Examples: 'diamond sword', 'enchanting table', 'chest', 'tnt', 'bow', 'gold block'",
     exampleRecipe1Text: "Diamond sword",
@@ -597,6 +597,10 @@ function translatePage(lang) {
 
   document.documentElement.lang = lang;
   if (t.pageTitle) document.title = t.pageTitle;
+
+  // Update tip of the day for new language
+  initTipOfDay();
+
   
   // Navigation
   document.querySelectorAll('.nav-links a')[0].textContent = t.home;
@@ -1511,6 +1515,7 @@ async function performSearch() {
     // Afficher le résultat
     commandCodeElement.textContent = result.command;
     commandExplanationElement.textContent = result.explanation;
+
   } catch (error) {
     commandCodeElement.textContent = "/help";
     commandExplanationElement.textContent = getUiText(
@@ -1563,6 +1568,367 @@ document.querySelectorAll(".example-command").forEach((example) => {
 });
 
 // Base de données JSON complète des recettes Minecraft
+
+// ============================================
+// Grilles de craft visuelles (3x3 = 9 cellules)
+// Ordre: [Haut-G, Haut-M, Haut-D, Mid-G, Mid-M, Mid-D, Bas-G, Bas-M, Bas-D]
+// ============================================
+const recipeGrids = {
+  "épée en bois":         [null,'plank',null,        null,'plank',null,        null,'stick',null],
+  "pioche en bois":       ['plank','plank','plank',  null,'stick',null,        null,'stick',null],
+  "hache en bois":        ['plank','plank',null,     'plank','stick',null,     null,'stick',null],
+  "pelle en bois":        [null,'plank',null,        null,'stick',null,        null,'stick',null],
+  "épée en pierre":       [null,'cobblestone',null,  null,'cobblestone',null,  null,'stick',null],
+  "pioche en pierre":     ['cobblestone','cobblestone','cobblestone', null,'stick',null, null,'stick',null],
+  "hache en pierre":      ['cobblestone','cobblestone',null, 'cobblestone','stick',null, null,'stick',null],
+  "épée en fer":          [null,'iron_ingot',null,   null,'iron_ingot',null,   null,'stick',null],
+  "pioche en fer":        ['iron_ingot','iron_ingot','iron_ingot', null,'stick',null, null,'stick',null],
+  "hache en fer":         ['iron_ingot','iron_ingot',null, 'iron_ingot','stick',null, null,'stick',null],
+  "pelle en fer":         [null,'iron_ingot',null,   null,'stick',null,        null,'stick',null],
+  "épée en diamant":      [null,'diamond',null,      null,'diamond',null,      null,'stick',null],
+  "pioche en diamant":    ['diamond','diamond','diamond', null,'stick',null,   null,'stick',null],
+  "hache en diamant":     ['diamond','diamond',null, 'diamond','stick',null,   null,'stick',null],
+  "pelle en diamant":     [null,'diamond',null,      null,'stick',null,        null,'stick',null],
+  "casque en fer":        ['iron_ingot','iron_ingot','iron_ingot', 'iron_ingot',null,'iron_ingot', null,null,null],
+  "plastron en fer":      ['iron_ingot',null,'iron_ingot', 'iron_ingot','iron_ingot','iron_ingot', 'iron_ingot','iron_ingot','iron_ingot'],
+  "jambières en fer":     ['iron_ingot','iron_ingot','iron_ingot', 'iron_ingot',null,'iron_ingot', 'iron_ingot',null,'iron_ingot'],
+  "bottes en fer":        [null,null,null, 'iron_ingot',null,'iron_ingot', 'iron_ingot',null,'iron_ingot'],
+  "casque en diamant":    ['diamond','diamond','diamond', 'diamond',null,'diamond', null,null,null],
+  "plastron en diamant":  ['diamond',null,'diamond', 'diamond','diamond','diamond', 'diamond','diamond','diamond'],
+  "jambières en diamant": ['diamond','diamond','diamond', 'diamond',null,'diamond', 'diamond',null,'diamond'],
+  "bottes en diamant":    [null,null,null, 'diamond',null,'diamond', 'diamond',null,'diamond'],
+  "table de craft":       ['plank','plank',null, 'plank','plank',null, null,null,null],
+  "four":                 ['cobblestone','cobblestone','cobblestone', 'cobblestone',null,'cobblestone', 'cobblestone','cobblestone','cobblestone'],
+  "coffre":               ['plank','plank','plank', 'plank',null,'plank', 'plank','plank','plank'],
+  "lit":                  [null,null,null, 'wool','wool','wool', 'plank','plank','plank'],
+  "porte en bois":        ['plank','plank',null, 'plank','plank',null, 'plank','plank',null],
+  "porte en fer":         ['iron_ingot','iron_ingot',null, 'iron_ingot','iron_ingot',null, 'iron_ingot','iron_ingot',null],
+  "échelle":              ['stick',null,'stick', 'stick','stick','stick', 'stick',null,'stick'],
+  "bibliothèque":         ['plank','plank','plank', 'book','book','book', 'plank','plank','plank'],
+  "torche":               [null,'charcoal',null, null,'stick',null, null,null,null],
+  "table d'enchantement": [null,'book',null, 'diamond','obsidian','diamond', 'obsidian','obsidian','obsidian'],
+  "enclume":              ['iron_block','iron_block','iron_block', null,'iron_ingot',null, 'iron_ingot','iron_ingot','iron_ingot'],
+  "livre":                ['paper',null,null, 'paper','leather',null, 'paper',null,null],
+  "papier":               [null,null,null, 'sugarcane','sugarcane','sugarcane', null,null,null],
+  "bouclier":             ['plank','iron_ingot','plank', 'plank','plank','plank', null,'plank',null],
+  "arc":                  [null,'stick','string', 'stick',null,'string', null,'stick','string'],
+  "flèche":               [null,'flint',null, null,'stick',null, null,'feather',null],
+  "flèche (x4)":          [null,'flint',null, null,'stick',null, null,'feather',null],
+  "tnt":                  ['gunpowder','sand','gunpowder', 'sand','gunpowder','sand', 'gunpowder','sand','gunpowder'],
+  "répéteur de redstone": ['rs_torch','redstone','rs_torch', 'stone','stone','stone', null,null,null],
+  "piston":               ['plank','plank','plank', 'cobblestone','iron_ingot','cobblestone', 'cobblestone','redstone','cobblestone'],
+  "torche de redstone":   [null,'redstone',null, null,'stick',null, null,null,null],
+  "rails":                ['iron_ingot',null,'iron_ingot', 'iron_ingot','stick','iron_ingot', 'iron_ingot',null,'iron_ingot'],
+  "rails propulsés":      ['gold_ingot',null,'gold_ingot', 'gold_ingot','stick','gold_ingot', 'gold_ingot','redstone','gold_ingot'],
+  "wagonnet":             [null,null,null, 'iron_ingot',null,'iron_ingot', 'iron_ingot','iron_ingot','iron_ingot'],
+  "bateau":               [null,null,null, 'plank',null,'plank', 'plank','plank','plank'],
+  "seau":                 [null,null,null, 'iron_ingot',null,'iron_ingot', null,'iron_ingot',null],
+  "horloge":              [null,'gold_ingot',null, 'gold_ingot','redstone','gold_ingot', null,'gold_ingot',null],
+  "boussole":             [null,'iron_ingot',null, 'iron_ingot','redstone','iron_ingot', null,'iron_ingot',null],
+  "pain":                 [null,null,null, 'wheat','wheat','wheat', null,null,null],
+  "bloc d'or":            ['gold_ingot','gold_ingot','gold_ingot', 'gold_ingot','gold_ingot','gold_ingot', 'gold_ingot','gold_ingot','gold_ingot'],
+  "bloc de fer":          ['iron_ingot','iron_ingot','iron_ingot', 'iron_ingot','iron_ingot','iron_ingot', 'iron_ingot','iron_ingot','iron_ingot'],
+  "bloc de diamant":      ['diamond','diamond','diamond', 'diamond','diamond','diamond', 'diamond','diamond','diamond'],
+  "bloc d'émeraude":      ['emerald','emerald','emerald', 'emerald','emerald','emerald', 'emerald','emerald','emerald'],
+  "bloc de charbon":      ['charcoal','charcoal','charcoal', 'charcoal','charcoal','charcoal', 'charcoal','charcoal','charcoal'],
+  "bloc de redstone":     ['redstone','redstone','redstone', 'redstone','redstone','redstone', 'redstone','redstone','redstone'],
+  "bloc de lapis-lazuli": ['lapis','lapis','lapis', 'lapis','lapis','lapis', 'lapis','lapis','lapis'],
+  "lanterne":             ['iron_nugget','iron_nugget','iron_nugget', 'iron_nugget','torch','iron_nugget', 'iron_nugget','iron_nugget','iron_nugget'],
+  "pierre lumineuse":     ['glowstone_dust','glowstone_dust',null, 'glowstone_dust','glowstone_dust',null, null,null,null],
+  "cisailles":            ['iron_ingot',null,null, null,'iron_ingot',null, null,null,null],
+};
+
+// Couleurs / styles des blocs Minecraft
+const blockColors = {
+  'diamond':       {bg:'linear-gradient(135deg,#4dd9e0,#5DECF5)',border:'#3bc8cf',fg:'#003a5c',label:'Diamant'},
+  'iron_ingot':    {bg:'linear-gradient(135deg,#B8B8B8,#D0D0D0)',border:'#909090',fg:'#333',   label:'Lingot fer'},
+  'gold_ingot':    {bg:'linear-gradient(135deg,#E8C000,#FFD700)',border:'#C8A000',fg:'#4a3500',label:'Lingot or'},
+  'stick':         {bg:'linear-gradient(135deg,#6B4423,#8B5E3C)',border:'#5A3820',fg:'#f5d5b0',label:'Bâton'},
+  'plank':         {bg:'linear-gradient(135deg,#A0783C,#C8953C)',border:'#8B6930',fg:'#2a1a00',label:'Planche'},
+  'cobblestone':   {bg:'linear-gradient(135deg,#686868,#888888)',border:'#555',   fg:'#eee',   label:'Cobble'},
+  'obsidian':      {bg:'linear-gradient(135deg,#0d0820,#1a0d2e)',border:'#2d1a4e',fg:'#9d7ec9',label:'Obsidian'},
+  'book':          {bg:'linear-gradient(135deg,#6B4A14,#8B5E1A)',border:'#5A3E10',fg:'#ffeedd',label:'Livre'},
+  'string':        {bg:'linear-gradient(135deg,#C8C8C8,#EEEEEE)',border:'#AAAAAA',fg:'#555',   label:'Ficelle'},
+  'charcoal':      {bg:'linear-gradient(135deg,#222222,#333333)',border:'#555',   fg:'#bbb',   label:'Charbon'},
+  'redstone':      {bg:'linear-gradient(135deg,#AA0000,#CC0000)',border:'#880000',fg:'#ffbbbb',label:'Redstone'},
+  'sand':          {bg:'linear-gradient(135deg,#D8C590,#E8D5A3)',border:'#C8B57A',fg:'#5a4820',label:'Sable'},
+  'gunpowder':     {bg:'linear-gradient(135deg,#3a3a3a,#4a4a4a)',border:'#2a2a2a',fg:'#ccc',   label:'Poudre'},
+  'flint':         {bg:'linear-gradient(135deg,#555555,#707070)',border:'#444',   fg:'#eee',   label:'Silex'},
+  'feather':       {bg:'linear-gradient(135deg,#C8C8C8,#E0E0E0)',border:'#AAAAAA',fg:'#555',   label:'Plume'},
+  'wool':          {bg:'linear-gradient(135deg,#D8CBB8,#EDE8DF)',border:'#C0B09A',fg:'#333',   label:'Laine'},
+  'iron_block':    {bg:'linear-gradient(135deg,#909090,#B0B0B0)',border:'#787878',fg:'#222',   label:'Bloc fer'},
+  'lapis':         {bg:'linear-gradient(135deg,#1030A0,#1A4FBD)',border:'#0C2880',fg:'#ccddff',label:'Lapis'},
+  'rs_torch':      {bg:'linear-gradient(135deg,#AA3300,#CC4400)',border:'#882800',fg:'#ffccaa',label:'Torche rs'},
+  'stone':         {bg:'linear-gradient(135deg,#686868,#888888)',border:'#555',   fg:'#eee',   label:'Pierre'},
+  'torch':         {bg:'linear-gradient(135deg,#CC7000,#FF8C00)',border:'#AA5A00',fg:'#fff',   label:'Torche'},
+  'paper':         {bg:'linear-gradient(135deg,#EEEEC8,#FFFDE7)',border:'#CCCC88',fg:'#555',   label:'Papier'},
+  'leather':       {bg:'linear-gradient(135deg,#6B3010,#8B4513)',border:'#5A2810',fg:'#eee',   label:'Cuir'},
+  'sugarcane':     {bg:'linear-gradient(135deg,#3A9B3A,#5DBB63)',border:'#2A7A2A',fg:'#fff',   label:'Canne'},
+  'wheat':         {bg:'linear-gradient(135deg,#D08020,#F4A460)',border:'#B06010',fg:'#3a2000',label:'Blé'},
+  'iron_nugget':   {bg:'linear-gradient(135deg,#C0C0C0,#D8D8D8)',border:'#A0A0A0',fg:'#333',   label:'Pép. fer'},
+  'glowstone_dust':{bg:'linear-gradient(135deg,#D0D010,#FFF820)',border:'#B0B000',fg:'#333300',label:'Poussl.'},
+  'emerald':       {bg:'linear-gradient(135deg,#3AAA4A,#50C878)',border:'#2A8A3A',fg:'#002a10',label:'Émeraude'},
+  'nether_quartz': {bg:'linear-gradient(135deg,#D0D0D0,#E8E8E8)',border:'#B0B0B0',fg:'#333',   label:'Quartz'},
+};
+
+// Retourner l'ID texture Minecraft pour un item résultat
+// Correspondance: notre clé interne → clé dans MC_TEXTURES
+const resultTextureKey = {
+  // Épées
+  'diamond':   'diamond_sword',
+  'iron_ingot':'iron_sword',
+  'gold_ingot':'golden_sword',
+  'cobblestone':'stone_sword',
+  'plank':     'wooden_sword',
+  // Outils — résolu dynamiquement dans guessResultBlock via clé complète
+};
+
+// Correspondance recette → clé texture du résultat
+const recipeResultTextureKey = {
+  "épée en diamant": "diamond_sword",
+  "épée en fer": "iron_sword",
+  "épée en pierre": "stone_sword",
+  "épée en bois": "wooden_sword",
+  "pioche en diamant": "diamond_pickaxe",
+  "pioche en fer": "iron_pickaxe",
+  "pioche en pierre": "stone_pickaxe",
+  "pioche en bois": "wooden_pickaxe",
+  "hache en diamant": "diamond_axe",
+  "hache en fer": "iron_axe",
+  "hache en pierre": "stone_axe",
+  "hache en bois": "wooden_axe",
+  "pelle en diamant": "diamond_shovel",
+  "pelle en fer": "iron_shovel",
+  "pelle en pierre": "stone_shovel",
+  "pelle en bois": "wooden_shovel",
+  "casque en diamant": "diamond_helmet",
+  "casque en fer": "iron_helmet",
+  "plastron en diamant": "diamond_chestplate",
+  "plastron en fer": "iron_chestplate",
+  "jambières en diamant": "diamond_leggings",
+  "jambières en fer": "iron_leggings",
+  "bottes en diamant": "diamond_boots",
+  "bottes en fer": "iron_boots",
+  "table de craft": "crafting_table",
+  "four": "furnace",
+  "coffre": "chest",
+  "lit": "white_bed",
+  "porte en bois": "oak_door",
+  "porte en fer": "iron_door",
+  "échelle": "ladder",
+  "bibliothèque": "bookshelf",
+  "table d'enchantement": "enchanting_table",
+  "enclume": "anvil",
+  "livre": "book",
+  "papier": "paper",
+  "torche": "torch",
+  "torche de redstone": "rs_torch",
+  "bouclier": "shield",
+  "arc": "bow",
+  "flèche": "arrow",
+  "flèche (x4)": "arrow",
+  "tnt": "tnt",
+  "répéteur de redstone": "repeater",
+  "piston": "piston",
+  "rails": "rail",
+  "rails propulsés": "powered_rail",
+  "wagonnet": "minecart",
+  "bateau": "oak_boat",
+  "seau": "bucket",
+  "horloge": "clock",
+  "boussole": "compass",
+  "pain": "bread",
+  "lanterne": "lantern",
+  "pierre lumineuse": "glowstone",
+  "bloc d'or": "gold_block",
+  "bloc de fer": "iron_block",
+  "bloc de diamant": "diamond_block",
+  "bloc d'émeraude": "emerald_block",
+  "bloc de charbon": "coal_block",
+  "bloc de redstone": "redstone_block",
+  "bloc de lapis-lazuli": "lapis_block",
+};
+
+function makeCellHTML(blockId, size) {
+  const tex = blockId ? 'textures/' + blockId + '.png' : null;
+  const style = size === 'result'
+    ? 'width:64px;height:64px;border-radius:6px;margin:0 auto;position:relative;'
+    : 'width:50px;height:50px;border-radius:4px;';
+
+  if (tex) {
+    return `<div class="grid-cell" style="${style}border:2px solid rgba(0,0,0,0.5);overflow:hidden;background:#1a1a1a;" title="${blockColors[blockId]?.label || blockId}">
+      <img src="${tex}" alt="${blockId}" style="width:100%;height:100%;image-rendering:pixelated;display:block;" draggable="false">
+    </div>`;
+  }
+  // Fallback coloré si texture absente
+  const s = blockColors[blockId] || {bg:'#555',border:'#333',fg:'#eee',label:blockId};
+  return `<div class="grid-cell" style="${style}background:${s.bg};border:2px solid ${s.border};color:${s.fg};display:flex;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;text-align:center;padding:3px;box-sizing:border-box;" title="${s.label}">
+    <span>${s.label}</span>
+  </div>`;
+}
+
+function renderCraftingGrid(recipeName) {
+  const container = document.getElementById('craftingGridDisplay');
+  if (!container) return;
+
+  const key = (recipeName || '').toLowerCase().trim();
+  let grid = recipeGrids[key];
+  // Fallback: partial key match
+  if (!grid) {
+    for (const [k, v] of Object.entries(recipeGrids)) {
+      if (key.includes(k) || k.includes(key)) { grid = v; break; }
+    }
+  }
+  if (!grid) { container.innerHTML = ''; return; }
+
+  const cellsHTML = grid.map(b => {
+    if (!b) return '<div class="grid-cell empty" style="width:50px;height:50px;border-radius:4px;background:#2a1e10;border:2px solid #1a1208;"></div>';
+    return makeCellHTML(b, 'cell');
+  }).join('');
+
+  // Résultat: chercher la clé texture dans recipeResultTextureKey
+  const resultTexKey = recipeResultTextureKey[key];
+  let resultHTML;
+  if (resultTexKey) {
+    resultHTML = makeCellHTML(resultTexKey, 'result').replace('class="grid-cell"', 'class="result-cell"');
+  } else {
+    const fallbackBlock = guessResultBlock(key);
+    resultHTML = fallbackBlock
+      ? makeCellHTML(fallbackBlock, 'result').replace('class="grid-cell"', 'class="result-cell"')
+      : '<div class="result-cell result-unknown" style="width:64px;height:64px;border-radius:6px;background:#2a1e10;display:flex;align-items:center;justify-content:center;color:#888;font-size:1.5rem;">?</div>';
+  }
+
+  container.innerHTML = `
+    <div class="crafting-grid-wrapper">
+      <div class="crafting-table-ui">
+        <div class="crafting-table-label">🪵 Table de craft</div>
+        <div class="crafting-grid" style="display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(3,50px);gap:3px;">${cellsHTML}</div>
+      </div>
+      <span class="crafting-arrow" style="font-size:2.2rem;color:var(--accent-green);font-weight:900;">→</span>
+      <div class="crafting-result">
+        <div class="crafting-result-label">Résultat</div>
+        ${resultHTML}
+      </div>
+    </div>`;
+}
+
+function guessResultBlock(name) {
+  if (!name) return null;
+  const n = name.toLowerCase();
+  if (n === 'tnt') return 'redstone';
+  if (n.includes('épée') || n.includes('epee')) {
+    if (n.includes('diamant')) return 'diamond';
+    if (n.includes('fer')) return 'iron_ingot';
+    if (n.includes('or')) return 'gold_ingot';
+    if (n.includes('bois') || n.includes('planche')) return 'plank';
+    return 'cobblestone';
+  }
+  if (n.includes('pioche') || n.includes('hache') || n.includes('pelle') || n.includes('houe')) {
+    if (n.includes('diamant')) return 'diamond';
+    if (n.includes('fer')) return 'iron_ingot';
+    if (n.includes('or')) return 'gold_ingot';
+    if (n.includes('bois') || n.includes('planche')) return 'plank';
+    return 'cobblestone';
+  }
+  if (n.includes('casque') || n.includes('plastron') || n.includes('jambière') || n.includes('botte')) {
+    if (n.includes('diamant')) return 'diamond';
+    if (n.includes('fer')) return 'iron_ingot';
+    return 'iron_ingot';
+  }
+  if (n.includes('bloc de fer')) return 'iron_block';
+  if (n.includes('bloc d\'or') || n.includes('bloc or')) return 'gold_ingot';
+  if (n.includes('bloc de diamant')) return 'diamond';
+  if (n.includes('bloc d\'émeraud')) return 'emerald';
+  if (n.includes('bloc de charbon')) return 'charcoal';
+  if (n.includes('bloc de redstone')) return 'redstone';
+  if (n.includes('bloc de lapis')) return 'lapis';
+  if (n.includes('diamant')) return 'diamond';
+  if (n.includes('obsid')) return 'obsidian';
+  if (n.includes('torche de redstone') || n.includes('rs_torch')) return 'rs_torch';
+  if (n.includes('torche')) return 'torch';
+  if (n.includes('redstone') && !n.includes('bloc')) return 'redstone';
+  if (n.includes('émeraud')) return 'emerald';
+  if (n.includes('or') && !n.includes('lingot') && !n.includes('bloc')) return 'gold_ingot';
+  if (n.includes('fer') && !n.includes('bloc')) return 'iron_ingot';
+  if (n.includes('coffre') || n.includes('table de craft') || n.includes('porte en bois')
+   || n.includes('lit') || n.includes('bibliothèque') || n.includes('bateau')) return 'plank';
+  if (n.includes('four') || n.includes('cobble')) return 'cobblestone';
+  if (n.includes('lapis')) return 'lapis';
+  if (n.includes('laine')) return 'wool';
+  if (n.includes('charbon')) return 'charcoal';
+  if (n.includes('sable') || n.includes('sand')) return 'sand';
+  if (n.includes('bâton') || n.includes('batons') || n.includes('stick')) return 'stick';
+  if (n.includes('bouclier')) return 'plank';
+  if (n.includes('arc')) return 'string';
+  if (n.includes('flèche') || n.includes('fleche')) return 'flint';
+  if (n.includes('lanterne')) return 'iron_nugget';
+  if (n.includes('pierre lumineuse')) return 'glowstone_dust';
+  if (n.includes('papier')) return 'paper';
+  if (n.includes('livre')) return 'book';
+  if (n.includes('pain')) return 'wheat';
+  return null;
+}
+
+// ============================================
+// Astuce du Jour
+// ============================================
+const allDailyTips = {
+  fr: [
+    "Minez au niveau Y=-59 pour trouver plus de diamants",
+    "Bloquez un creeper avec un bouclier pour annuler l'explosion",
+    "Un lit dans le Nether provoque une explosion dévastatrice",
+    "Les endermen ne vous attaquent pas si vous portez une citrouille sur la tête",
+    "La farine d'os accélère la croissance des cultures et des arbres",
+    "Un seau d'eau placé sous vous annule les dégâts de chute",
+    "Le wither est immunisé aux flèches en armure de diamant",
+    "Construisez un portail du Nether à l'échelle 1:8 (coordonnées x8 dans le monde normal)",
+    "Les villageois peuvent réparer vos objets via les tables de métiers",
+    "Placez des torches avant de miner pour éviter les spawns de mobs",
+    "La pioche Fortune III peut tripler vos drops de minerais",
+    "Un lit permet de passer la nuit et de fixer votre point de réapparition",
+    "Les rails propulsés avec redstone vous propulsent à grande vitesse",
+    "Les pistons peuvent pousser presque n'importe quel bloc",
+    "Combinez un livre+plume et une enclume pour enchanter via livres",
+    "Le TNT peut être dupliqué avec un piston collant",
+    "Plongez dans l'eau avant de toucher le sol pour survivre à des chutes mortelles",
+    "Un feu de camp envoie un signal de fumée visible de loin",
+    "Les chats repoussent les creepers naturellement",
+    "Fabriques une boussole pour toujours retrouver ton spawn",
+  ],
+  en: [
+    "Mine at Y=-59 to find more diamonds",
+    "Block a Creeper with a shield to cancel its explosion",
+    "Placing a bed in the Nether causes a massive explosion",
+    "Endermen won't attack you if you wear a pumpkin on your head",
+    "Bone meal speeds up crop growth and tree growth",
+    "Placing a water bucket under you cancels fall damage",
+    "The Wither is immune to arrows while in diamond armor",
+    "Build a Nether portal at 1:8 scale (Nether coords × 8 in overworld)",
+    "Villagers can repair your items via job site blocks",
+    "Place torches before mining to prevent mob spawns",
+    "Fortune III pickaxe can triple your ore drops",
+    "A bed lets you skip the night and reset your spawn point",
+    "Powered rails with redstone propel you at high speed",
+    "Pistons can push almost any block",
+    "Combine books and an anvil to enchant with enchanted books",
+    "TNT can be duplicated with a sticky piston",
+    "Dive into water before hitting the ground to survive deadly falls",
+    "A campfire sends a smoke signal visible from far away",
+    "Cats naturally repel Creepers",
+    "Craft a compass to always find your spawn",
+  ]
+};
+
+function initTipOfDay() {
+  const el = document.getElementById('tipOfDayText');
+  if (!el) return;
+  const lang = window.currentLang || 'fr';
+  const tips = allDailyTips[lang] || allDailyTips.fr;
+  const dayIndex = Math.floor(Date.now() / 86400000) % tips.length;
+  el.textContent = tips[dayIndex];
+}
+
+// Initialise les fonctionnalités au chargement du DOM
 const minecraftRecipes = {
   // Outils en bois
   "épée en bois": { name: "Épée en bois", materials: "2 Planches de bois\n1 Bâton", craft: "Disposez les planches verticalement au-dessus du bâton" },
@@ -1791,7 +2157,7 @@ function findRecipe(description) {
   }
   
   return {
-    name: getUiText('recipeNotFoundName', "Recette non trouvée"),
+    name: getUiText('recipeNotFoundName', "Craft non trouvé"),
     materials: getUiText('recipeNotFoundMaterials', "Essayez avec des termes plus précis"),
     craft: getUiText(
       'recipeNotFoundCraft',
@@ -1839,10 +2205,15 @@ async function performRecipeSearch() {
     recipeNameElement.textContent = result.name;
     recipeIngredientsElement.textContent = result.materials;
     recipeInstructionsElement.textContent = result.craft;
+
+    // Afficher la grille de craft visuelle
+    renderCraftingGrid(result.name);
   } catch (error) {
     recipeNameElement.textContent = getUiText('recipeSearchErrorTitle', "Erreur");
     recipeIngredientsElement.textContent = getUiText('recipeSearchErrorBody', "Une erreur est survenue");
     recipeInstructionsElement.textContent = getUiText('recipeSearchErrorHint', "Veuillez réessayer.");
+    const container = document.getElementById('craftingGridDisplay');
+    if (container) container.innerHTML = '';
   } finally {
     // Réactiver le bouton
     searchRecipeButton.disabled = false;
@@ -1873,6 +2244,10 @@ document.querySelectorAll(".example-command[data-recipe]").forEach((example) => 
   });
 });
 
+// Initialisation des nouvelles fonctionnalités
+initTipOfDay();
+
 console.log("Guide Minecraft charge avec succes!");
 console.log("Bon jeu et bonne exploration!");
+
 
