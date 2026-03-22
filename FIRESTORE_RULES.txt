@@ -27,5 +27,19 @@ service cloud.firestore {
       allow update: if request.auth != null && 
                        request.auth.uid == resource.data.userId;
     }
+
+    // Règles pour le compteur d'usage IA (10 questions/mois par utilisateur)
+    match /aiUsage/{uid} {
+      // Lire uniquement son propre compteur
+      allow read: if request.auth != null && request.auth.uid == uid;
+      
+      // Écrire uniquement son propre compteur, avec validation
+      allow write: if request.auth != null && 
+                      request.auth.uid == uid &&
+                      request.resource.data.count is int &&
+                      request.resource.data.count >= 0 &&
+                      request.resource.data.count <= 10 &&
+                      request.resource.data.month is string;
+    }
   }
 }

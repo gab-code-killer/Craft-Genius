@@ -21,12 +21,15 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://craft-genius-w2t3.vercel.app/" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <nav class="navbar">
       <div class="container">
-        <div class="logo">⚡ Craft Genius</div>
+        <a href="index.html" class="logo">⚡ Craft Genius</a>
         <button class="hamburger" id="hamburger">
           <span></span>
           <span></span>
@@ -38,6 +41,7 @@
           <li><a href="#guides">Guides</a></li>
           <li><a href="#astuces">Astuces</a></li>
           <li><a href="#recettes">Craft</a></li>
+          <li><a href="#ia">🤖 IA</a></li>
         </ul>
         <div class="navbar-right">
           <button class="auth-btn" id="authBtn" title="Connexion">
@@ -417,6 +421,48 @@
       </div>
     </section>
 
+    <!-- Section IA Chat -->
+    <section id="ia" class="ai-section">
+      <div class="container">
+        <h2><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64" style="vertical-align:middle;margin-right:10px"><rect x="0" y="0" width="64" height="64" fill="#1b1b1b"/><rect x="0" y="0" width="64" height="16" fill="#4CAF50"/><rect x="0" y="12" width="64" height="4" fill="#3e8e41"/><rect x="0" y="16" width="64" height="48" fill="#8B5A2B"/><rect x="8" y="28" width="4" height="4" fill="#6d4421"/><rect x="20" y="40" width="4" height="4" fill="#6d4421"/><rect x="40" y="30" width="4" height="4" fill="#6d4421"/><rect x="50" y="44" width="4" height="4" fill="#6d4421"/><rect x="20" y="26" width="24" height="20" fill="#2a2a2a"/><rect x="24" y="30" width="6" height="6" fill="#00e5ff"/><rect x="34" y="30" width="6" height="6" fill="#00e5ff"/><rect x="26" y="40" width="12" height="3" fill="#00e5ff"/><rect x="31" y="20" width="2" height="6" fill="#aaaaaa"/><rect x="29" y="18" width="6" height="2" fill="#00e5ff"/></svg> Assistant IA Minecraft</h2>
+        <p class="subtitle">Posez vos questions Minecraft à notre IA — 10 questions gratuites par mois</p>
+
+        <!-- Non connecté -->
+        <div id="aiNotConnected" class="ai-not-connected" style="display: none">
+          <p>🔒 Vous devez être connecté pour utiliser l'assistant IA</p>
+          <a href="auth.html" class="btn-connect">Se connecter / S'inscrire</a>
+        </div>
+
+        <!-- Interface chat (connecté) -->
+        <div id="aiChatWrapper" class="ai-chat-wrapper" style="display: none">
+          <div class="ai-usage-bar">
+            <span id="aiUsageText">Chargement...</span>
+            <div class="ai-usage-track">
+              <div class="ai-usage-fill" id="aiUsageFill"></div>
+            </div>
+          </div>
+
+          <div class="ai-chat-box" id="aiChatBox">
+            <div class="ai-message ai-ai">
+              <span class="ai-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 64 64"><rect x="0" y="0" width="64" height="64" fill="#1b1b1b"/><rect x="0" y="0" width="64" height="16" fill="#4CAF50"/><rect x="0" y="12" width="64" height="4" fill="#3e8e41"/><rect x="0" y="16" width="64" height="48" fill="#8B5A2B"/><rect x="8" y="28" width="4" height="4" fill="#6d4421"/><rect x="20" y="40" width="4" height="4" fill="#6d4421"/><rect x="40" y="30" width="4" height="4" fill="#6d4421"/><rect x="50" y="44" width="4" height="4" fill="#6d4421"/><rect x="20" y="26" width="24" height="20" fill="#2a2a2a"/><rect x="24" y="30" width="6" height="6" fill="#00e5ff"/><rect x="34" y="30" width="6" height="6" fill="#00e5ff"/><rect x="26" y="40" width="12" height="3" fill="#00e5ff"/><rect x="31" y="20" width="2" height="6" fill="#aaaaaa"/><rect x="29" y="18" width="6" height="2" fill="#00e5ff"/></svg></span>
+              <div class="ai-bubble">Bonjour ! Je suis l'assistant Minecraft de Craft Genius. Posez-moi n'importe quelle question sur Minecraft : commandes, crafts, mobs, enchantements, redstone...</div>
+            </div>
+          </div>
+
+          <div id="aiLimitReached" class="ai-limit-reached" style="display: none">
+            <p>❌ Vous avez utilisé vos 10 questions ce mois-ci. Revenez le mois prochain !</p>
+          </div>
+
+          <div class="ai-input-row">
+            <textarea id="aiInput" placeholder="Posez votre question Minecraft..." rows="1" maxlength="500"></textarea>
+            <button id="aiSendBtn" class="ai-send-btn" title="Envoyer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Section Commentaires -->
     <section id="commentaires" class="comments-section">
       <div class="container">
@@ -484,5 +530,6 @@
 
     <script src="script.js"></script>
     <script src="comments.js"></script>
+    <script src="ai-chat.js"></script>
   </body>
 </html>
