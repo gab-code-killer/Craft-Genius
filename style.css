@@ -2042,6 +2042,60 @@ footer p {
 .ai-section {
     padding: 60px 20px 0;
     background: #212121;
+    position: relative;
+}
+
+/* AI Coming Soon Overlay */
+.ai-coming-soon-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-coming-soon-box {
+  text-align: center;
+  color: #fff;
+  padding: 40px 30px;
+}
+
+.ai-coming-soon-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  animation: ai-pulse 2s infinite;
+}
+
+@keyframes ai-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.ai-coming-soon-box h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.1rem;
+  color: #00e5ff;
+  margin-bottom: 12px;
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+}
+
+.ai-coming-soon-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  color: #4CAF50;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.ai-coming-soon-sub {
+  font-size: 0.9rem;
+  color: #aaa;
+  max-width: 300px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .ai-section h2 {
