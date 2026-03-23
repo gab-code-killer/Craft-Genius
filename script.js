@@ -7,6 +7,7 @@ const translations = {
     guides: "Guides",
     tips: "Astuces",
     recipes: "Craft",
+    ia: "🤖 IA",
 
     // Page
     pageTitle: "Craft Genius - Commandes & Astuces Minecraft",
@@ -167,6 +168,7 @@ const translations = {
     guides: "Guides",
     tips: "Tips",
     recipes: "Craft",
+    ia: "🤖 AI",
 
     // Page
     pageTitle: "Craft Genius - Minecraft Commands & Tips",
@@ -608,6 +610,7 @@ function translatePage(lang) {
   document.querySelectorAll('.nav-links a')[2].textContent = t.guides;
   document.querySelectorAll('.nav-links a')[3].textContent = t.tips;
   document.querySelectorAll('.nav-links a')[4].textContent = t.recipes;
+  document.querySelectorAll('.nav-links a')[5].textContent = t.ia;
   
   // Hero
   document.querySelector('.hero-content h1').textContent = t.heroTitle;
