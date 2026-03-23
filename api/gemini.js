@@ -1,3 +1,7 @@
+export const config = {
+  api: { bodyParser: true },
+};
+
 export default async function handler(req, res) {
   // Autoriser uniquement les requêtes POST depuis ton domaine
   res.setHeader("Access-Control-Allow-Origin", "https://craft-genius-w2t3.vercel.app");
