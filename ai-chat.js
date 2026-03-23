@@ -245,7 +245,18 @@ async function callGemini(userMessage) {
     }),
   });
 
-  const data = await response.json();
+  // Lire le texte brut d'abord pour voir ce qui revient vraiment
+  const text = await response.text();
+  if (!text) {
+    throw new Error(`Réponse vide du serveur (status HTTP ${response.status}) — vérifie que GEMINI_API_KEY est bien définie sur Vercel`);
+  }
+
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch (e) {
+    throw new Error(`Réponse inattendue: ${text.substring(0, 200)}`);
+  }
 
   if (!response.ok) {
     throw new Error(`Gemini ${response.status}: ${data?.error || "Erreur inconnue"}`);
