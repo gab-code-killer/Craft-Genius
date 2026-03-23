@@ -156,6 +156,17 @@ const translations = {
     commentPostedLocalSuccess: "✅ Commentaire publie!",
     commentJustNow: "a l'instant",
     
+    // IA Assistant
+    aiSectionTitle: "Craft Genius Assistant",
+    aiSectionSubtitle: "Posez vos questions Minecraft à notre IA — 10 questions gratuites par mois",
+    aiNotConnectedText: "🔒 Vous devez être connecté pour utiliser l'assistant IA",
+    aiNotConnectedAction: "Se connecter / S'inscrire",
+    aiUsageLimitText: "Limite atteinte — revenez le mois prochain",
+    aiUsageCountText: "questions utilisées ce mois",
+    aiLimitReachedText: "❌ Vous avez utilisé vos 10 questions ce mois-ci. Revenez le mois prochain !",
+    aiInputPlaceholder: "Posez votre question Minecraft...",
+    aiWelcomeMessage: "Bonjour ! Je suis l'assistant Minecraft de Craft Genius. Posez-moi n'importe quelle question sur Minecraft : commandes, crafts, mobs, enchantements, redstone...",
+    
     // Footer
     footerCopyright: "© 2025 Craft Genius - L'assistant Minecraft intelligent",
     footerCredit: "Créé par Gabriel Cardon | Site non affilié à Mojang Studios ou Microsoft"
@@ -316,6 +327,17 @@ const translations = {
     commentSavedLocalSuccess: "✅ Comment saved locally!",
     commentPostedLocalSuccess: "✅ Comment posted!",
     commentJustNow: "just now",
+    
+    // AI Assistant
+    aiSectionTitle: "Craft Genius Assistant",
+    aiSectionSubtitle: "Ask your Minecraft questions to our AI — 10 free questions per month",
+    aiNotConnectedText: "🔒 You must be signed in to use the AI assistant",
+    aiNotConnectedAction: "Sign in / Sign up",
+    aiUsageLimitText: "Limit reached — come back next month",
+    aiUsageCountText: "questions used this month",
+    aiLimitReachedText: "❌ You have used your 10 questions this month. Come back next month!",
+    aiInputPlaceholder: "Ask your Minecraft question...",
+    aiWelcomeMessage: "Hello! I'm the Craft Genius Minecraft assistant. Ask me anything about Minecraft: commands, crafts, mobs, enchantments, redstone...",
     
     // Footer
     footerCopyright: "© 2025 Craft Genius - The smart Minecraft assistant",
@@ -742,6 +764,27 @@ function translatePage(lang) {
   const commentsLoading = document.querySelector('#commentsContainer .loading');
   if (commentsLoading) commentsLoading.textContent = t.commentsLoading;
   
+  // AI section
+  const aiH2 = document.querySelector('#ia h2');
+  if (aiH2) {
+    const svgEl = aiH2.querySelector('svg');
+    aiH2.textContent = '';
+    if (svgEl) aiH2.appendChild(svgEl);
+    aiH2.appendChild(document.createTextNode(' ' + t.aiSectionTitle));
+  }
+  const aiSubtitle = document.querySelector('#ia .subtitle');
+  if (aiSubtitle) aiSubtitle.textContent = t.aiSectionSubtitle;
+  const aiNotConnTxt = document.querySelector('#aiNotConnected p');
+  if (aiNotConnTxt) aiNotConnTxt.textContent = t.aiNotConnectedText;
+  const aiNotConnLink = document.querySelector('#aiNotConnected .btn-connect');
+  if (aiNotConnLink) aiNotConnLink.textContent = t.aiNotConnectedAction;
+  const aiLimitP = document.querySelector('#aiLimitReached p');
+  if (aiLimitP) aiLimitP.textContent = t.aiLimitReachedText;
+  const aiTextarea = document.getElementById('aiInput');
+  if (aiTextarea) aiTextarea.placeholder = t.aiInputPlaceholder;
+  const aiWelcomeBubble = document.querySelector('#aiChatBox .ai-bubble');
+  if (aiWelcomeBubble) aiWelcomeBubble.textContent = t.aiWelcomeMessage;
+
   // Footer
   document.querySelectorAll('footer p')[0].textContent = t.footerCopyright;
   document.querySelectorAll('footer p')[1].textContent = t.footerCredit;

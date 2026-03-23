@@ -1,5 +1,5 @@
 // ============================================
-// Assistant IA Minecraft - Gemini Flash
+// Craft Genius Assistant - Gemini Flash
 // ============================================
 
 // IMPORTANT : Remplacez cette valeur par votre clé API depuis aistudio.google.com
@@ -19,6 +19,7 @@ const AI_SYSTEM_PROMPT =
 let aiCurrentUser = null;
 let aiDb = null;
 let aiUsageCount = 0;
+let aiChatHistory = []; // Historique de la conversation en cours
 
 // ============================================
 // Initialisation
@@ -78,9 +79,15 @@ function updateUsageBar() {
   const isLimitReached = aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
 
   if (usageText) {
+    const limitTxt = typeof getUiText === 'function'
+      ? getUiText('aiUsageLimitText', 'Limite atteinte — revenez le mois prochain')
+      : 'Limite atteinte — revenez le mois prochain';
+    const countLabel = typeof getUiText === 'function'
+      ? getUiText('aiUsageCountText', 'questions utilisées ce mois')
+      : 'questions utilisées ce mois';
     usageText.textContent = isLimitReached
-      ? "Limite atteinte — revenez le mois prochain"
-      : `${aiUsageCount} / ${MAX_QUESTIONS_PER_MONTH} questions utilisées ce mois`;
+      ? limitTxt
+      : `${aiUsageCount} / ${MAX_QUESTIONS_PER_MONTH} ${countLabel}`;
   }
 
   if (usageFill) {
@@ -229,6 +236,9 @@ async function sendAiMessage() {
   const message = aiInput.value.trim();
   if (!message) return;
 
+  // Ajouter le message de l'utilisateur à l'historique
+  aiChatHistory.push({ role: "user", parts: [{ text: message }] });
+
   // Afficher le message de l'utilisateur
   appendMessage("user", message);
   aiInput.value = "";
@@ -242,10 +252,13 @@ async function sendAiMessage() {
   const loadingId = appendLoadingMessage();
 
   try {
-    const response = await callGemini(message);
+    const response = await callGemini();
 
     removeLoadingMessage(loadingId);
     appendMessage("ai", response);
+
+    // Ajouter la réponse de l'IA à l'historique
+    aiChatHistory.push({ role: "model", parts: [{ text: response }] });
 
     // Incrémenter et sauvegarder le compteur
     aiUsageCount++;
@@ -266,13 +279,13 @@ async function sendAiMessage() {
 // Appel au proxy Vercel sécurisé (/api/gemini)
 // ============================================
 
-async function callGemini(userMessage) {
+async function callGemini() {
   const response = await fetch("/api/gemini", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       system_instruction: { parts: [{ text: AI_SYSTEM_PROMPT }] },
-      contents: [{ role: "user", parts: [{ text: userMessage }] }],
+      contents: aiChatHistory,
       generationConfig: { maxOutputTokens: 700, temperature: 0.7 },
     }),
   });
