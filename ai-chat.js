@@ -271,7 +271,7 @@ async function sendAiMessage() {
 
     // 2. Gestion spéciale de l'erreur 429 (quota dépassé)
     if (error.message && error.message.includes("429")) {
-      appendMessage("ai", "⏱️ Doucement ! L'IA reprend son souffle. Réessaie dans quelques secondes.");
+      appendMessage("ai", "⏱️ Doucement ! L'IA reprend son souffle. Réessaie dans 1 à 2 minutes.");
     } else {
       appendMessage("ai", `❌ Erreur: ${error.message}`);
     }
