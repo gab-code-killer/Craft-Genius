@@ -111,50 +111,82 @@ function getCurrentMonth() {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
 
-async function loadAiUsage(uid) {
-  if (!aiDb) {
-    aiUsageCount = 0;
-    updateUsageBar();
-    return;
-  }
+function getLocalUsageKey(uid) {
+  return `aiUsage_${uid}`;
+}
 
+function readLocalUsage(uid) {
+  try {
+    const raw = localStorage.getItem(getLocalUsageKey(uid));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed.count === "number" && typeof parsed.month === "string") {
+      return parsed;
+    }
+  } catch (_) {}
+  return null;
+}
+
+function writeLocalUsage(uid, count, month) {
+  try {
+    localStorage.setItem(getLocalUsageKey(uid), JSON.stringify({ count, month }));
+  } catch (_) {}
+}
+
+async function loadAiUsage(uid) {
   const currentMonth = getCurrentMonth();
 
-  try {
-    const doc = await aiDb.collection("aiUsage").doc(uid).get();
-
-    if (doc.exists) {
-      const data = doc.data();
-      // Si on est sur le même mois, on récupère le compteur, sinon on repart à 0
-      if (data.month === currentMonth) {
-        aiUsageCount = typeof data.count === "number" ? data.count : 0;
+  // Toujours essayer Firebase en premier
+  if (aiDb) {
+    try {
+      const doc = await aiDb.collection("aiUsage").doc(uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        if (data.month === currentMonth) {
+          aiUsageCount = typeof data.count === "number" ? data.count : 0;
+        } else {
+          // Nouveau mois — on repart à 0
+          aiUsageCount = 0;
+        }
       } else {
         aiUsageCount = 0;
       }
-    } else {
-      aiUsageCount = 0;
+      // Synchroniser localStorage avec la valeur Firebase
+      writeLocalUsage(uid, aiUsageCount, currentMonth);
+      updateUsageBar();
+      return;
+    } catch (error) {
+      console.error("Erreur lecture Firebase, bascule sur localStorage:", error);
     }
-  } catch (error) {
-    console.error("Erreur chargement usage IA:", error);
-    aiUsageCount = 0;
   }
 
+  // Fallback : localStorage (évite le contournement par rechargement)
+  const local = readLocalUsage(uid);
+  if (local && local.month === currentMonth) {
+    aiUsageCount = local.count;
+  } else {
+    aiUsageCount = 0;
+  }
   updateUsageBar();
 }
 
 async function saveAiUsage() {
-  if (!aiDb || !aiCurrentUser) return;
+  if (!aiCurrentUser) return;
+  const currentMonth = getCurrentMonth();
+  const uid = aiCurrentUser.uid;
 
+  // Sauvegarder immédiatement dans localStorage (résiste aux rechargements)
+  writeLocalUsage(uid, aiUsageCount, currentMonth);
+
+  // Puis sauvegarder dans Firebase
+  if (!aiDb) return;
   try {
-    await aiDb
-      .collection("aiUsage")
-      .doc(aiCurrentUser.uid)
-      .set({
-        count: aiUsageCount,
-        month: getCurrentMonth(),
-      });
+    await aiDb.collection("aiUsage").doc(uid).set({
+      count: aiUsageCount,
+      month: currentMonth,
+    });
   } catch (error) {
-    console.error("Erreur sauvegarde usage IA:", error);
+    console.error("Erreur sauvegarde Firebase (localStorage conservé):", error);
   }
 }
 
