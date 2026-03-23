@@ -244,9 +244,10 @@ async function sendAiMessage() {
   aiInput.value = "";
   aiInput.style.height = "auto";
 
-  const SEND_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
-  sendBtn.innerHTML = "⏳";
+  // 1. Bloquer immédiatement le bouton pour éviter les doubles clics
   sendBtn.disabled = true;
+  sendBtn.innerHTML = "⏳";
+  aiInput.disabled = true;
 
   // Afficher les points de chargement
   const loadingId = appendLoadingMessage();
@@ -268,10 +269,20 @@ async function sendAiMessage() {
     removeLoadingMessage(loadingId);
     console.error("Erreur Gemini:", error);
 
-    appendMessage("ai", `❌ Erreur: ${error.message}`);
+    // 2. Gestion spéciale de l'erreur 429 (quota dépassé)
+    if (error.message && error.message.includes("429")) {
+      appendMessage("ai", "⏱️ Doucement ! L'IA reprend son souffle. Réessaie dans quelques secondes.");
+    } else {
+      appendMessage("ai", `❌ Erreur: ${error.message}`);
+    }
   } finally {
-    sendBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
-    sendBtn.disabled = aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
+    // 3. Réactiver le bouton après 2 secondes de sécurité
+    setTimeout(() => {
+      const SEND_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
+      sendBtn.innerHTML = SEND_SVG;
+      sendBtn.disabled = aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
+      aiInput.disabled = aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
+    }, 2000);
   }
 }
 
