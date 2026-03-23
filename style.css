@@ -984,7 +984,7 @@ body {
 
 .command-examples {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
@@ -1253,6 +1253,7 @@ footer p {
     /* Navigation Mobile */
     .hamburger {
         display: flex;
+        margin-right: 0.8rem;
     }
     
     .nav-links {
@@ -1386,8 +1387,8 @@ footer p {
     
     /* Command Examples */
     .command-examples {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
     }
     
     .example-command {
@@ -1533,12 +1534,12 @@ footer p {
     
     /* Command Examples Very Small */
     .command-examples {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
     }
     
     .example-command {
-        padding: 1rem;
+        padding: 0.75rem;
     }
     
     .example-command code {
