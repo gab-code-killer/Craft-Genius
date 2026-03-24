@@ -4,7 +4,7 @@
 // Mettez le SHA-256 hash de votre mot de passe (pas le mot de passe lui-même !).
 // Pour générer votre hash : ouvrez /admin.html et cliquez sur "Générer mon hash".
 // ============================================
-const ADMIN_CODE_HASH ="fdab5f516c6da2570e8eb644906a3d562396d3deb26328cd6c9bcb87f5eb7a2f";
+const ADMIN_CODE_HASH = "e57604404f40cdf174f4a7f8756845db72f1aaab0b77c817434671851d75df08";
 
 // ============================================
 // Configuration Firebase (identique au reste du site)
@@ -73,6 +73,7 @@ async function handleLogin() {
   const btn = document.getElementById("adminLoginBtn");
 
   const enteredCode = input.value;
+  console.log("handleLogin appelé, longueur du code:", enteredCode.length);
 
   if (!enteredCode) {
     shakeInput();
@@ -91,6 +92,8 @@ async function handleLogin() {
 
   try {
     const enteredHash = await sha256(enteredCode);
+    console.log("Hash calculé  :", enteredHash);
+    console.log("Hash attendu  :", ADMIN_CODE_HASH);
     if (enteredHash === ADMIN_CODE_HASH) {
       sessionStorage.setItem("adminLoggedIn", "true");
       errorEl.style.display = "none";
@@ -98,9 +101,6 @@ async function handleLogin() {
     } else {
       errorEl.textContent = "❌ Code incorrect. Réessayez.";
       errorEl.style.display = "block";
-      // Afficher dans la console pour déboguer (ouvrez F12 → Console)
-      console.warn("Hash attendu  :", ADMIN_CODE_HASH);
-      console.warn("Hash calculé  :", enteredHash);
       input.value = "";
       input.focus();
       shakeInput();
@@ -108,7 +108,8 @@ async function handleLogin() {
       btn.disabled = false;
     }
   } catch (err) {
-    errorEl.textContent = "❌ Erreur de vérification : " + err.message;
+    console.error("Erreur sha256:", err);
+    errorEl.textContent = "❌ Erreur : " + err.message + " (vérifiez la console F12)";
     errorEl.style.display = "block";
     btn.textContent = "Accéder →";
     btn.disabled = false;
