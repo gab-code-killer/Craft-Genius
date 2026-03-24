@@ -460,6 +460,17 @@ document.addEventListener('DOMContentLoaded', function() {
           profileMenu.style.display = 'none';
         }
       });
+
+      // Vérifier le paramètre admin : afficher ou masquer l'écran "IA bientôt disponible"
+      const siteDb = firebase.firestore();
+      siteDb.collection('siteSettings').doc('main').get()
+        .then((doc) => {
+          if (doc.exists && doc.data().aiOverlayVisible === false) {
+            const overlay = document.querySelector('.ai-coming-soon-overlay');
+            if (overlay) overlay.style.display = 'none';
+          }
+        })
+        .catch(() => { /* Paramètre non bloquant */ });
     }
 
   
