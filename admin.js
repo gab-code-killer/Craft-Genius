@@ -4,7 +4,8 @@
 // Mettez le SHA-256 hash de votre mot de passe (pas le mot de passe lui-même !).
 // Pour générer votre hash : ouvrez /admin.html et cliquez sur "Générer mon hash".
 // ============================================
-const ADMIN_CODE_HASH = "";
+const ADMIN_CODE_HASH =
+  "97a54123a2535c71cc3b44fb693e86094d94d20a3dc241ba70943de2418902c9";
 
 // ============================================
 // Configuration Firebase (identique au reste du site)
@@ -38,14 +39,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Boutons
-  document.getElementById("adminLoginBtn").addEventListener("click", handleLogin);
+  document
+    .getElementById("adminLoginBtn")
+    .addEventListener("click", handleLogin);
   document.getElementById("adminCodeInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") handleLogin();
   });
-  document.getElementById("adminLogoutBtn").addEventListener("click", handleLogout);
-  document.getElementById("saveSettings").addEventListener("click", saveSettings);
-  document.getElementById("refreshComments").addEventListener("click", loadAllComments);
-  document.getElementById("aiOverlayToggle").addEventListener("change", updateToggleLabel);
+  document
+    .getElementById("adminLogoutBtn")
+    .addEventListener("click", handleLogout);
+  document
+    .getElementById("saveSettings")
+    .addEventListener("click", saveSettings);
+  document
+    .getElementById("refreshComments")
+    .addEventListener("click", loadAllComments);
+  document
+    .getElementById("aiOverlayToggle")
+    .addEventListener("change", updateToggleLabel);
 });
 
 // ============================================
@@ -64,7 +75,8 @@ async function handleLogin() {
   }
 
   if (!ADMIN_CODE_HASH) {
-    errorEl.textContent = "⚠️ Aucun hash configuré — lisez les commentaires dans admin.js";
+    errorEl.textContent =
+      "⚠️ Aucun hash configuré — lisez les commentaires dans admin.js";
     errorEl.style.display = "block";
     return;
   }
@@ -188,10 +200,10 @@ async function saveSettings() {
   const aiOverlayVisible = document.getElementById("aiOverlayToggle").checked;
 
   try {
-    await adminDB.collection("siteSettings").doc("main").set(
-      { aiOverlayVisible },
-      { merge: true }
-    );
+    await adminDB
+      .collection("siteSettings")
+      .doc("main")
+      .set({ aiOverlayVisible }, { merge: true });
     showSaveStatus("✅ Sauvegardé !", "success");
   } catch (err) {
     console.error("Erreur sauvegarde:", err);
@@ -236,11 +248,13 @@ async function loadAllComments() {
   const statsEl = document.getElementById("adminCommentsStats");
 
   if (!adminDB) {
-    container.innerHTML = "<p class='admin-error-msg'>Firebase non disponible.</p>";
+    container.innerHTML =
+      "<p class='admin-error-msg'>Firebase non disponible.</p>";
     return;
   }
 
-  container.innerHTML = "<p class='admin-loading'>⏳ Chargement des commentaires...</p>";
+  container.innerHTML =
+    "<p class='admin-loading'>⏳ Chargement des commentaires...</p>";
   statsEl.style.display = "none";
 
   try {
@@ -252,7 +266,8 @@ async function loadAllComments() {
     container.innerHTML = "";
 
     if (snapshot.empty) {
-      container.innerHTML = "<p class='admin-no-data'>Aucun commentaire pour le moment.</p>";
+      container.innerHTML =
+        "<p class='admin-no-data'>Aucun commentaire pour le moment.</p>";
       return;
     }
 
@@ -326,7 +341,9 @@ async function deleteAdminComment(commentId, btn) {
   try {
     await adminDB.collection("comments").doc(commentId).delete();
 
-    const item = document.querySelector(`.admin-comment-item[data-id="${commentId}"]`);
+    const item = document.querySelector(
+      `.admin-comment-item[data-id="${commentId}"]`,
+    );
     if (item) {
       item.style.transition = "opacity 0.3s";
       item.style.opacity = "0";
@@ -334,7 +351,8 @@ async function deleteAdminComment(commentId, btn) {
     }
 
     // Mettre à jour le compteur
-    const remaining = document.querySelectorAll(".admin-comment-item").length - 1;
+    const remaining =
+      document.querySelectorAll(".admin-comment-item").length - 1;
     document.getElementById("commentCount").textContent =
       remaining + (remaining > 1 ? " commentaires" : " commentaire");
 
