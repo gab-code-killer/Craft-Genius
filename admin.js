@@ -32,6 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
     adminDB = firebase.firestore();
   }
 
+  // Masquer le générateur de hash si un hash est déjà configuré
+  if (ADMIN_CODE_HASH) {
+    const hashGen = document.querySelector(".admin-hash-generator");
+    if (hashGen) hashGen.style.display = "none";
+  }
+
   // Vérifier si déjà connecté en session (survit aux rafraîchissements)
   if (sessionStorage.getItem("adminLoggedIn") === "true") {
     showDashboard();
