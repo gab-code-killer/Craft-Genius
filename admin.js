@@ -4,8 +4,7 @@
 // Mettez le SHA-256 hash de votre mot de passe (pas le mot de passe lui-même !).
 // Pour générer votre hash : ouvrez /admin.html et cliquez sur "Générer mon hash".
 // ============================================
-const ADMIN_CODE_HASH =
-  "97a54123a2535c71cc3b44fb693e86094d94d20a3dc241ba70943de2418902c9";
+const ADMIN_CODE_HASH ="fdab5f516c6da2570e8eb644906a3d562396d3deb26328cd6c9bcb87f5eb7a2f";
 
 // ============================================
 // Configuration Firebase (identique au reste du site)
