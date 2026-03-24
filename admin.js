@@ -98,6 +98,9 @@ async function handleLogin() {
     } else {
       errorEl.textContent = "❌ Code incorrect. Réessayez.";
       errorEl.style.display = "block";
+      // Afficher dans la console pour déboguer (ouvrez F12 → Console)
+      console.warn("Hash attendu  :", ADMIN_CODE_HASH);
+      console.warn("Hash calculé  :", enteredHash);
       input.value = "";
       input.focus();
       shakeInput();
