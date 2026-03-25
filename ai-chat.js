@@ -8,13 +8,17 @@
 const AI_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 64 64"><rect x="0" y="0" width="64" height="64" fill="#1b1b1b"/><rect x="0" y="0" width="64" height="16" fill="#4CAF50"/><rect x="0" y="12" width="64" height="4" fill="#3e8e41"/><rect x="0" y="16" width="64" height="48" fill="#8B5A2B"/><rect x="8" y="28" width="4" height="4" fill="#6d4421"/><rect x="20" y="40" width="4" height="4" fill="#6d4421"/><rect x="40" y="30" width="4" height="4" fill="#6d4421"/><rect x="50" y="44" width="4" height="4" fill="#6d4421"/><rect x="20" y="26" width="24" height="20" fill="#2a2a2a"/><rect x="24" y="30" width="6" height="6" fill="#00e5ff"/><rect x="34" y="30" width="6" height="6" fill="#00e5ff"/><rect x="26" y="40" width="12" height="3" fill="#00e5ff"/><rect x="31" y="20" width="2" height="6" fill="#aaaaaa"/><rect x="29" y="18" width="6" height="2" fill="#00e5ff"/></svg>`;
 
 const MAX_QUESTIONS_PER_MONTH = 10;
+const ADMIN_EMAIL = "gabzcardon@gmail.com";
+
+function isAdminUser() {
+  return !!(aiCurrentUser && aiCurrentUser.email === ADMIN_EMAIL);
+}
 
 const AI_SYSTEM_PROMPT =
   "Tu es un expert Minecraft qui aide les joueurs. " +
-  "Réponds uniquement aux questions liées à Minecraft (commandes, crafts, mobs, biomes, enchantements, redstone, fermes, construction, survie, nether, end, etc.). " +
+  "Réponds uniquement aux questions liées à Minecraft. " +
   "Si la question n'est pas liée à Minecraft, dis poliment que tu ne peux répondre qu'aux questions Minecraft. " +
-  "Réponds en français par défaut. Sois concis, clair et précis. " +
-  "Utilise des listes à puces quand c'est utile. Ne génère pas de code HTML, texte brut uniquement.";
+  "Réponds toujours dans la même langue que l'utilisateur.";
 
 let aiCurrentUser = null;
 let aiDb = null;
@@ -74,6 +78,15 @@ function updateUsageBar() {
   const sendBtn = document.getElementById("aiSendBtn");
   const aiInput = document.getElementById("aiInput");
 
+  if (isAdminUser()) {
+    if (usageText) usageText.textContent = "\u221e illimité";
+    if (usageFill) { usageFill.style.width = "100%"; usageFill.style.background = "#2ecc71"; }
+    if (limitReached) limitReached.style.display = "none";
+    if (sendBtn) sendBtn.disabled = false;
+    if (aiInput) aiInput.disabled = false;
+    return;
+  }
+
   const percent = (aiUsageCount / MAX_QUESTIONS_PER_MONTH) * 100;
   const remaining = MAX_QUESTIONS_PER_MONTH - aiUsageCount;
   const isLimitReached = aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
@@ -82,12 +95,13 @@ function updateUsageBar() {
     const limitTxt = typeof getUiText === 'function'
       ? getUiText('aiUsageLimitText', 'Limite atteinte — revenez le mois prochain')
       : 'Limite atteinte — revenez le mois prochain';
-    const countLabel = typeof getUiText === 'function'
-      ? getUiText('aiUsageCountText', 'questions utilisées ce mois')
-      : 'questions utilisées ce mois';
+    const usedLabel = typeof getUiText === 'function'
+      ? getUiText('aiUsageCountText', 'utilisé ce mois')
+      : 'utilisé ce mois';
+    const percentDisplay = Math.round(percent);
     usageText.textContent = isLimitReached
       ? limitTxt
-      : `${aiUsageCount} / ${MAX_QUESTIONS_PER_MONTH} ${countLabel}`;
+      : `${percentDisplay}% ${usedLabel}`;
   }
 
   if (usageFill) {
@@ -231,7 +245,7 @@ async function sendAiMessage() {
 
   if (!aiInput || !sendBtn) return;
   if (!aiCurrentUser) return;
-  if (aiUsageCount >= MAX_QUESTIONS_PER_MONTH) return;
+  if (!isAdminUser() && aiUsageCount >= MAX_QUESTIONS_PER_MONTH) return;
 
   const message = aiInput.value.trim();
   if (!message) return;
@@ -280,8 +294,8 @@ async function sendAiMessage() {
     setTimeout(() => {
       const SEND_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
       sendBtn.innerHTML = SEND_SVG;
-      sendBtn.disabled = aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
-      aiInput.disabled = aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
+      sendBtn.disabled = !isAdminUser() && aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
+      aiInput.disabled = !isAdminUser() && aiUsageCount >= MAX_QUESTIONS_PER_MONTH;
     }, 2000);
   }
 }

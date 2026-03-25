@@ -158,11 +158,11 @@ const translations = {
     
     // IA Assistant
     aiSectionTitle: "Craft Genius Assistant",
-    aiSectionSubtitle: "Posez vos questions Minecraft à notre IA — 10 questions gratuites par mois",
+    aiSectionSubtitle: "Posez vos questions Minecraft à notre IA — quota mensuel gratuit",
     aiNotConnectedText: "🔒 Vous devez être connecté pour utiliser l'assistant IA",
     aiNotConnectedAction: "Se connecter / S'inscrire",
     aiUsageLimitText: "Limite atteinte — revenez le mois prochain",
-    aiUsageCountText: "questions utilisées ce mois",
+    aiUsageCountText: "utilisé ce mois",
     aiLimitReachedText: "❌ Vous avez utilisé vos 10 questions ce mois-ci. Revenez le mois prochain !",
     aiInputPlaceholder: "Posez votre question Minecraft...",
     aiWelcomeMessage: "Bonjour ! Je suis l'assistant Minecraft de Craft Genius. Posez-moi n'importe quelle question sur Minecraft : commandes, crafts, mobs, enchantements, redstone...",
@@ -330,11 +330,11 @@ const translations = {
     
     // AI Assistant
     aiSectionTitle: "Craft Genius Assistant",
-    aiSectionSubtitle: "Ask your Minecraft questions to our AI — 10 free questions per month",
+    aiSectionSubtitle: "Ask your Minecraft questions to our AI — free monthly quota",
     aiNotConnectedText: "🔒 You must be signed in to use the AI assistant",
     aiNotConnectedAction: "Sign in / Sign up",
     aiUsageLimitText: "Limit reached — come back next month",
-    aiUsageCountText: "questions used this month",
+    aiUsageCountText: "used this month",
     aiLimitReachedText: "❌ You have used your 10 questions this month. Come back next month!",
     aiInputPlaceholder: "Ask your Minecraft question...",
     aiWelcomeMessage: "Hello! I'm the Craft Genius Minecraft assistant. Ask me anything about Minecraft: commands, crafts, mobs, enchantments, redstone...",
