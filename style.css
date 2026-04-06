@@ -86,12 +86,13 @@ body {
 
 .logo {
     font-family: 'Press Start 2P', 'Courier New', monospace;
-    font-size: 1rem;
+    font-size: 0.88rem;
     font-weight: 400;
     color: var(--mc-grass);
     text-shadow: 2px 2px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
     letter-spacing: -0.5px;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 /* Hamburger Menu */
@@ -127,17 +128,19 @@ body {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.1rem;
+    align-items: center;
 }
 
 .nav-links a {
     color: #CCCCCC;
     text-decoration: none;
     transition: color 0.2s;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -149,17 +152,18 @@ body {
 .nav-links a.mod-editor-link {
     background: linear-gradient(135deg, #2e2e2e, #1a1a1a);
     color: #666;
-    padding: 6px 14px;
+    padding: 5px 10px;
     border-radius: 6px;
     border: 2px solid #3a3a3a;
-    box-shadow: 0 3px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.5);
     transition: all 0.2s;
     text-shadow: none;
     cursor: not-allowed;
-    opacity: 0.7;
+    opacity: 0.65;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    font-size: 0.68rem;
 }
 
 .nav-links a.mod-editor-link:hover,
@@ -167,20 +171,42 @@ body {
     background: linear-gradient(135deg, #2e2e2e, #1a1a1a);
     color: #666;
     transform: none;
-    box-shadow: 0 3px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.5);
     text-shadow: none;
 }
 
 .mod-soon-badge {
-    font-size: 0.6em;
+    font-size: 0.65em;
     background: #3a3a3a;
-    color: #888;
+    color: #777;
     border: 1px solid #555;
     border-radius: 4px;
-    padding: 2px 5px;
+    padding: 1px 5px;
     font-family: sans-serif;
     white-space: nowrap;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+/* Mods Forge Nav Link */
+.nav-links a.mods-nav-link {
+    background: linear-gradient(135deg, #3a7a10, #275208);
+    color: #fff;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: 2px solid #5D9E31;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+    transition: all 0.2s;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    font-size: 0.72rem;
+}
+
+.nav-links a.mods-nav-link:hover,
+.nav-links a.mods-nav-link.active {
+    background: linear-gradient(135deg, #5D9E31, #3a7a10);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.4);
 }
 
 /* Language Selector */
@@ -1287,7 +1313,7 @@ footer p {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
     /* Navigation Mobile */
     .hamburger {
         display: flex;
@@ -1296,29 +1322,47 @@ footer p {
     
     .nav-links {
         position: absolute;
-        top: 60px;
+        top: 62px;
         left: 0;
         right: 0;
-        background: #2c3e50;
+        background: #1a1a1a;
+        border-top: 2px solid #5D9E31;
         flex-direction: column;
         gap: 0;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease;
+        transition: max-height 0.35s ease;
+        z-index: 200;
     }
     
     .nav-links.active {
-        max-height: 420px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        max-height: 520px;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.5);
     }
     
     .nav-links li {
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.07);
     }
     
     .nav-links a {
         display: block;
-        padding: 1.1rem;
+        padding: 0.95rem 1.4rem;
+        font-size: 0.8rem !important;
+        white-space: normal;
+    }
+
+    .nav-links a.mods-nav-link,
+    .nav-links a.mod-editor-link {
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+        box-shadow: none;
+        padding: 0.95rem 1.4rem;
+        opacity: 1;
+    }
+
+    .nav-links a.mod-editor-link {
+        opacity: 0.6;
     }
     
     /* Settings Menu */
