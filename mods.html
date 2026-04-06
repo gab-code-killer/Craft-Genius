@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mods Forge - Craft Genius</title>
+    <meta
+      name="description"
+      content="Découvrez les meilleurs mods Forge pour Minecraft et retrouvez toutes leurs recettes de craft."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="mods.css" />
+  </head>
+  <body>
+
+    <!-- ══════════════════════════════════════════
+         NAVIGATION
+    ══════════════════════════════════════════ -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="logo">⚡ Craft Genius</a>
+        <button class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html#commandes">Commandes</a></li>
+          <li><a href="index.html#guides">Guides</a></li>
+          <li><a href="index.html#astuces">Astuces</a></li>
+          <li><a href="index.html#recettes">Craft</a></li>
+          <li><a href="index.html#ia">🤖 IA</a></li>
+          <li><a href="mods.html" class="mods-nav-link active">🧩 Mods Forge</a></li>
+          <li><a href="#" class="mod-editor-link mod-editor-disabled" onclick="return false;">🔧 Éditeur de Mods <span class="mod-soon-badge">Prochainement</span></a></li>
+        </ul>
+        <div class="navbar-right">
+          <button class="settings-btn" id="settingsBtn" title="Paramètres">⚙️</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ══════════════════════════════════════════
+         EN-TÊTE DE PAGE
+    ══════════════════════════════════════════ -->
+    <header class="mods-hero">
+      <div class="container">
+        <div class="mods-hero-content">
+          <h1 class="mods-hero-title">🧩 Mods <span class="mods-hero-accent">Forge</span></h1>
+          <p class="mods-hero-sub">Explore les meilleurs mods Minecraft pour Forge.</p>
+          <div class="mods-search-bar">
+            <input type="text" id="modsSearchInput" class="mods-search-input" placeholder="🔍 Rechercher un mod..." autocomplete="off" />
+            <button class="mods-search-btn" id="modsSearchBtn">Rechercher</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════
+         CONTENU PRINCIPAL
+    ══════════════════════════════════════════ -->
+    <div class="mods-layout">
+      <div class="container mods-layout-inner">
+
+        <!-- ── Sidebar filtres ── -->
+        <aside class="mods-sidebar">
+          <div class="mods-filter-block">
+            <h3 class="mods-filter-title">Version</h3>
+            <select id="filterVersion" class="mods-select">
+              <option value="">Toutes</option>
+              <option value="1.21.1">1.21.1</option>
+              <option value="1.20.1">1.20.1</option>
+              <option value="1.19.4">1.19.4</option>
+              <option value="1.18.2">1.18.2</option>
+              <option value="1.16.5">1.16.5</option>
+              <option value="1.12.2">1.12.2</option>
+            </select>
+          </div>
+          <div class="mods-filter-block">
+            <h3 class="mods-filter-title">Trier par</h3>
+            <select id="filterSort" class="mods-select">
+              <option value="2">Popularité</option>
+              <option value="6">Téléchargements</option>
+              <option value="3">Dernière mise à jour</option>
+              <option value="1">En vedette</option>
+            </select>
+          </div>
+          <div class="mods-filter-block">
+            <h3 class="mods-filter-title">Catégorie</h3>
+            <div class="mods-cat-list" id="modsCatList">
+              <button class="mods-cat-btn active" data-cat="">Toutes</button>
+              <button class="mods-cat-btn" data-cat="423">⚙️ Technologie</button>
+              <button class="mods-cat-btn" data-cat="419">🔮 Magie</button>
+              <button class="mods-cat-btn" data-cat="422">⚔️ Aventure</button>
+              <button class="mods-cat-btn" data-cat="416">🌿 Nature</button>
+              <button class="mods-cat-btn" data-cat="421">🏗️ Construction</button>
+              <button class="mods-cat-btn" data-cat="435">🛠️ Utilitaire</button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- ── Zone principale ── -->
+        <main class="mods-main">
+
+          <!-- Barre du haut -->
+          <div class="mods-topbar">
+            <span class="mods-count" id="modsCount">Chargement...</span>
+            <span class="mods-page-info" id="modsPageInfo"></span>
+          </div>
+
+          <!-- État chargement / erreur -->
+          <div class="mods-state" id="modsLoading">
+            <div class="mods-spinner"></div>
+            <p>Chargement des mods...</p>
+          </div>
+          <div class="mods-state" id="modsError" style="display:none;">
+            <span style="font-size:2.5rem;">⚠️</span>
+            <p id="modsErrorMsg">Une erreur est survenue.</p>
+            <button class="mods-retry-btn" id="modsRetryBtn">Réessayer</button>
+          </div>
+
+          <!-- Grille mods -->
+          <div class="mods-grid" id="modsGrid" style="display:none;"></div>
+
+          <!-- Pagination -->
+          <div class="mods-pagination" id="modsPagination" style="display:none;">
+            <button class="mods-page-btn" id="modsPrevBtn">← Page précédente</button>
+            <div class="mods-page-numbers" id="modsPageNumbers"></div>
+            <button class="mods-page-btn" id="modsNextBtn">Page suivante →</button>
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         MODALE — Recettes d'un mod
+    ══════════════════════════════════════════ -->
+    <div class="mods-overlay" id="modsOverlay"></div>
+
+    <div class="mods-modal" id="modsModal" role="dialog" aria-modal="true" aria-labelledby="modsModalTitle">
+      <div class="mods-modal-header">
+        <div>
+          <h2 class="mods-modal-title" id="modsModalTitle">Nom du Mod</h2>
+          <p class="mods-modal-sub" id="modsModalSub">Recettes de craft</p>
+        </div>
+        <button class="mods-modal-close" id="modsModalClose" aria-label="Fermer">✕</button>
+      </div>
+      <div class="mods-modal-body" id="modsModalBody">
+        <!-- Les recettes seront insérées ici par JS -->
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SCRIPTS
+    ══════════════════════════════════════════ -->
+    <script src="mods.js"></script>
+  </body>
+</html>
