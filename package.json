@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@dsojevic/profanity-list": "^1.0.0",
-    "minecraft-textures": "^1.21.11"
+    "minecraft-textures": "^1.21.11",
+    "minecraft-versions": "^0.0.1"
   }
 }

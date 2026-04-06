@@ -41,6 +41,12 @@ service cloud.firestore {
                       request.resource.data.month is string;
     }
 
+    // Règles pour les projets de mods (éditeur de mods)
+    match /users/{uid}/modProjects/{projectId} {
+      // Lire et modifier uniquement ses propres projets
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
     // Règles pour les paramètres du site (panneau admin)
     match /siteSettings/{document} {
       // Tout le monde peut lire et écrire

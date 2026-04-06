@@ -1,0 +1,822 @@
+/* ============================================================
+   Mod Editor — Page d'accueil style MCreator
+   ============================================================ */
+
+/* ── Reset body ────────────────────────────────────────────── */
+.me-body {
+  margin: 0;
+  padding: 0;
+  background: #0d0d14;
+  color: #e0daf5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Grille de fond animée ─────────────────────────────────── */
+.me-home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.me-grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(120, 60, 200, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 60, 200, 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+  animation: gridDrift 30s linear infinite;
+}
+
+@keyframes gridDrift {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 40px; }
+}
+
+/* ── En-tête ───────────────────────────────────────────────── */
+.me-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  border-bottom: 1px solid rgba(120, 60, 200, 0.25);
+  background: rgba(13, 13, 20, 0.85);
+  backdrop-filter: blur(10px);
+}
+
+.me-back-btn {
+  color: #a080d0;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+  width: 90px;
+}
+
+.me-back-btn:hover { color: #c8a8f0; }
+
+.me-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.me-logo-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 0 10px rgba(160, 80, 255, 0.7));
+}
+
+.me-logo-title {
+  display: block;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  color: #c8a8f0;
+  line-height: 1.6;
+  text-shadow: 0 0 12px rgba(160, 80, 255, 0.5);
+}
+
+.me-logo-sub {
+  display: block;
+  font-size: 0.65rem;
+  color: #7050a0;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── Contenu central ───────────────────────────────────────── */
+.me-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 24px 80px;
+  position: relative;
+  z-index: 5;
+}
+
+.me-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.2rem;
+  color: #e0d0ff;
+  text-align: center;
+  text-shadow: 0 0 24px rgba(160, 80, 255, 0.5);
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+.me-subtitle {
+  color: #8870b0;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 52px;
+}
+
+/* ── Cartes d'action ───────────────────────────────────────── */
+.me-action-cards {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.me-card {
+  background: #16101f;
+  border: 2px solid #2e1f4a;
+  border-radius: 12px;
+  padding: 36px 40px;
+  width: 220px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.me-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: 10px;
+}
+
+.me-card--new::before {
+  background: radial-gradient(circle at 50% 0%, rgba(130, 60, 255, 0.15), transparent 70%);
+}
+
+.me-card--import::before {
+  background: radial-gradient(circle at 50% 0%, rgba(40, 160, 255, 0.12), transparent 70%);
+}
+
+.me-card:hover::before { opacity: 1; }
+
+.me-card--new:hover {
+  border-color: #7040e0;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 36px rgba(100, 40, 220, 0.35);
+}
+
+.me-card--import:hover {
+  border-color: #2870d0;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 36px rgba(30, 100, 220, 0.3);
+}
+
+.me-card-icon {
+  font-size: 2.4rem;
+  filter: drop-shadow(0 0 8px rgba(160, 100, 255, 0.5));
+}
+
+.me-card--import .me-card-icon {
+  filter: drop-shadow(0 0 8px rgba(60, 140, 255, 0.5));
+}
+
+.me-card-label {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #d0c0f0;
+}
+
+.me-card-desc {
+  font-size: 0.75rem;
+  color: #6050a0;
+  text-align: center;
+}
+
+/* ── Projets récents ───────────────────────────────────────── */
+.me-recent {
+  width: 100%;
+  max-width: 520px;
+}
+
+.me-recent-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #5040a0;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #1e1430;
+}
+
+.me-recent-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.me-recent-item {
+  background: #16101f;
+  border: 1px solid #2e1f4a;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.me-recent-item:hover {
+  border-color: #7040e0;
+  background: #1e1430;
+}
+
+.me-recent-item-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #d0c0f0;
+}
+
+.me-recent-item-meta {
+  font-size: 0.72rem;
+  color: #5040a0;
+}
+
+.me-recent-item-del {
+  background: rgba(180, 40, 40, 0.12);
+  border: 1px solid rgba(200, 50, 50, 0.25);
+  color: #c05050;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.me-recent-item-del:hover {
+  background: rgba(220, 50, 50, 0.3);
+  border-color: #e05555;
+  color: #ff7070;
+}
+
+.me-recent-empty {
+  color: #3a2a60;
+  font-size: 0.82rem;
+  font-style: italic;
+  display: none;
+}
+
+.me-recent-empty.visible { display: block; }
+
+/* ── Overlay ────────────────────────────────────────────────── */
+.me-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
+.me-overlay.open { display: block; }
+
+/* ── Modale ─────────────────────────────────────────────────── */
+.me-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: min(520px, 94vw);
+  background: #120d1e;
+  border: 2px solid #3a2060;
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(120, 60, 200, 0.15);
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+}
+
+.me-modal.open {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.me-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #1e1430;
+  background: #0f0a1a;
+}
+
+.me-modal-header h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.72rem;
+  color: #c0a0f0;
+  line-height: 1.6;
+}
+
+.me-modal-close {
+  background: none;
+  border: none;
+  color: #5040a0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+}
+
+.me-modal-close:hover {
+  color: #e05555;
+  background: rgba(224, 85, 85, 0.1);
+}
+
+.me-modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.me-modal-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 24px 22px;
+  border-top: 1px solid #1e1430;
+}
+
+/* ── Champs du formulaire ───────────────────────────────────── */
+.me-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.me-field label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #7060a0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.me-field-hint {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #4a3070;
+  padding: 2px 6px;
+  background: rgba(120, 60, 200, 0.1);
+  border-radius: 4px;
+}
+
+.me-field input[type="text"],
+.me-field select {
+  background: #0a0714;
+  border: 2px solid #2a1a50;
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: #e0d8f8;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.me-field input[type="text"]:focus,
+.me-field select:focus {
+  border-color: #8050e0;
+  box-shadow: 0 0 0 3px rgba(120, 60, 220, 0.2);
+}
+
+.me-field input::placeholder {
+  color: #3a2860;
+}
+
+/* ── Rangée ID ──────────────────────────────────────────────── */
+.me-id-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.me-id-row input {
+  flex: 1;
+  font-family: 'Courier New', monospace;
+  color: #90e090;
+}
+
+.me-id-lock {
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 10px;
+  background: #0a0714;
+  border: 2px solid #2a1a50;
+  border-radius: 8px;
+  line-height: 1;
+  transition: border-color 0.15s;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.me-id-lock:hover { border-color: #8050e0; }
+.me-id-lock.unlocked { filter: grayscale(1) opacity(0.5); }
+
+.me-id-preview {
+  font-size: 0.72rem;
+  color: #4a3870;
+  margin: 0;
+}
+
+.me-id-preview code {
+  color: #90e090;
+  font-family: 'Courier New', monospace;
+  background: rgba(60, 180, 60, 0.08);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* ── Loader radio ───────────────────────────────────────────── */
+.me-loader-group {
+  display: flex;
+  gap: 16px;
+}
+
+.me-loader-opt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #a090c0;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.me-loader-opt input[type="radio"] {
+  accent-color: #8050e0;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* ── Boutons ─────────────────────────────────────────────────── */
+.me-btn {
+  padding: 11px 22px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: 2px solid transparent;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.me-btn--ghost {
+  background: transparent;
+  border-color: #2a1a50;
+  color: #6050a0;
+}
+
+.me-btn--ghost:hover {
+  border-color: #5040a0;
+  color: #a090c0;
+}
+
+.me-btn--primary {
+  background: linear-gradient(135deg, #7040e0, #5020b0);
+  color: #fff;
+  border-color: #8050f0;
+  box-shadow: 0 4px 16px rgba(100, 40, 220, 0.4);
+}
+
+.me-btn--primary:hover {
+  background: linear-gradient(135deg, #8050f0, #6030c0);
+  box-shadow: 0 6px 20px rgba(100, 40, 220, 0.55);
+  transform: translateY(-1px);
+}
+
+.me-btn--primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Badge utilisateur ─────────────────────────────────────── */
+.me-user-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #5040a0;
+  background: rgba(80, 40, 160, 0.12);
+  border: 1px solid #2a1a50;
+  border-radius: 20px;
+  padding: 5px 12px;
+  white-space: nowrap;
+  cursor: default;
+  transition: color 0.3s;
+  width: 90px;
+  text-align: right;
+}
+
+/* ── Chargement liste ───────────────────────────────────────── */
+.me-recent-loading {
+  color: #3a2a60;
+  font-size: 0.82rem;
+  font-style: italic;
+  padding: 4px 0;
+  list-style: none;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .me-action-cards { gap: 16px; }
+  .me-card { width: 160px; padding: 28px 20px; }
+  .me-title { font-size: 0.75rem; }
+  .me-header { padding: 14px 16px; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   WORKSPACE VIEW  (.mew-*)
+════════════════════════════════════════════════════════════════ */
+.mew-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #0d0d14;
+  z-index: 100;
+  overflow: hidden;
+}
+
+/* ── Barre du haut ────────────────────────────────────────────── */
+.mew-topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: #11101c;
+  border-bottom: 1px solid #1e1640;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.mew-back-btn {
+  background: none;
+  border: 1px solid #2a1a50;
+  color: #7060c0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+.mew-back-btn:hover {
+  border-color: #8050e0;
+  color: #b080f0;
+}
+
+.mew-project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mew-project-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  color: #d0c0f8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mew-project-meta {
+  font-size: 0.7rem;
+  color: #4a3870;
+  font-weight: 700;
+}
+
+.mew-topbar-right {
+  display: flex;
+  gap: 10px;
+}
+
+.mew-export-btn {
+  background: linear-gradient(135deg, #2a1a50, #1a0d30);
+  border: 1px solid #3a2060;
+  color: #9070d0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  padding: 8px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+}
+.mew-export-btn:hover {
+  border-color: #7040e0;
+  color: #c090f8;
+}
+
+/* ── Layout principal ─────────────────────────────────────────── */
+.mew-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+.mew-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #0e0d1a;
+  border-right: 1px solid #1a1434;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 16px 14px;
+}
+
+/* ── Canvas (zone vide centrale) ─────────────────────────────── */
+.mew-canvas {
+  flex: 1;
+  background: #0d0d14;
+  position: relative;
+  overflow: hidden;
+}
+
+.mew-sidebar-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  color: #4a3880;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #1e1640;
+}
+
+.mew-elements-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mew-elements-empty {
+  font-size: 0.72rem;
+  color: #2a2050;
+  font-style: italic;
+  padding: 4px 0;
+}
+
+.mew-element-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: #14102a;
+  border: 1px solid #2a1a50;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  font-size: 0.78rem;
+  color: #c0a8f8;
+  font-weight: 700;
+  user-select: none;
+}
+
+.mew-element-item:hover {
+  border-color: #7040e0;
+  background: #1c1438;
+}
+
+.mew-element-item img {
+  width: 20px;
+  height: 20px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+/* ── Zone principale (droite) ───────────────────────────────── */
+.mew-main {
+  width: 280px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: 20px 16px;
+  background: #0a0a14;
+  border-left: 1px solid #1e1640;
+}
+
+.mew-main-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1rem;
+  color: #c0a8f8;
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+
+.mew-main-sub {
+  font-size: 0.8rem;
+  color: #3a2a60;
+  font-weight: 700;
+  margin: 0 0 30px;
+}
+
+/* ── Grille des types ────────────────────────────────────────── */
+.mew-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 18px;
+}
+
+.mew-type-card {
+  background: linear-gradient(145deg, #14102a, #0e0c1e);
+  border: 1px solid #1e1640;
+  border-radius: 14px;
+  padding: 24px 16px 20px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: inherit;
+  color: inherit;
+}
+
+.mew-type-card:hover {
+  border-color: #7040e0;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(100, 40, 200, 0.2);
+}
+
+.mew-type-card:active {
+  transform: translateY(0);
+}
+
+.mew-type-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.mew-type-icon-img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  border-radius: 4px;
+  display: block;
+}
+
+.mew-type-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.62rem;
+  color: #b090e8;
+}
+
+.mew-type-desc {
+  font-size: 0.68rem;
+  color: #3a2a60;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* ── Responsive workspace ────────────────────────────────────── */
+@media (max-width: 700px) {
+  .mew-sidebar { display: none; }
+  .mew-canvas { display: none; }
+  .mew-main { width: 100%; padding: 20px 16px; border-left: none; }
+  .mew-type-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
