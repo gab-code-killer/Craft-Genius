@@ -247,5 +247,32 @@ if (hamburger && navLinks) {
   });
 }
 
+// ── Chargement des versions Mojang ───────────────────────────
+async function loadVersions() {
+  const FALLBACK = ["1.21.4","1.21.1","1.21","1.20.6","1.20.4","1.20.2","1.20.1","1.20",
+    "1.19.4","1.19.2","1.19","1.18.2","1.18.1","1.18","1.17.1","1.17",
+    "1.16.5","1.16.4","1.16.3","1.16.2","1.16.1","1.16",
+    "1.15.2","1.15","1.14.4","1.14","1.13.2","1.13","1.12.2","1.12"];
+
+  function populate(versions) {
+    filterVersion.innerHTML = '<option value="">Toutes</option>';
+    versions.forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v; opt.textContent = v;
+      filterVersion.appendChild(opt);
+    });
+  }
+
+  try {
+    const res  = await fetch("https://launchermeta.mojang.com/mc/game/version_manifest_v2.json");
+    const data = await res.json();
+    const releases = data.versions.filter(v => v.type === "release").map(v => v.id);
+    populate(releases.length ? releases : FALLBACK);
+  } catch (_) {
+    populate(FALLBACK);
+  }
+}
+
 // ── Lancement ─────────────────────────────────────────────────
+loadVersions();
 fetchMods();
