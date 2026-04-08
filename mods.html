@@ -45,6 +45,44 @@
       </div>
     </nav>
 
+    <div class="settings-overlay" id="settingsOverlay"></div>
+
+    <!-- Menu des paramètres -->
+    <div class="settings-menu" id="settingsMenu">
+      <div class="settings-header">
+        <h3>⚙️ Paramètres</h3>
+        <button class="close-settings" id="closeSettings">✖</button>
+      </div>
+      <div class="settings-body">
+        <div class="setting-section">
+          <h4>🌍 Langue</h4>
+          <div class="setting-options">
+            <button class="setting-option active" data-lang="fr">
+              <span class="option-icon">🇫🇷</span>
+              <span>Français</span>
+            </button>
+            <button class="setting-option" data-lang="en">
+              <span class="option-icon">🇬🇧</span>
+              <span>English</span>
+            </button>
+          </div>
+        </div>
+        <div class="setting-section">
+          <h4>🎨 Thème</h4>
+          <div class="setting-options">
+            <button class="setting-option theme-option active" data-theme="light">
+              <span class="option-icon">☀️</span>
+              <span>Clair</span>
+            </button>
+            <button class="setting-option theme-option" data-theme="dark">
+              <span class="option-icon">🌙</span>
+              <span>Sombre</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ══════════════════════════════════════════
          EN-TÊTE DE PAGE
     ══════════════════════════════════════════ -->
@@ -159,6 +197,7 @@
     <!-- ══════════════════════════════════════════
          SCRIPTS
     ══════════════════════════════════════════ -->
+    <script src="script.js"></script>
     <script src="mods.js"></script>
   </body>
 </html>
