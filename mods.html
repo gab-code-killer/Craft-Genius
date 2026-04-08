@@ -196,7 +196,61 @@
     <!-- ══════════════════════════════════════════
          SCRIPTS
     ══════════════════════════════════════════ -->
-    <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Hamburger
+      const hamburger = document.getElementById('hamburger');
+      const navLinks  = document.getElementById('navLinks');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function () {
+          hamburger.classList.toggle('active');
+          navLinks.classList.toggle('active');
+        });
+        navLinks.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+          });
+        });
+        document.addEventListener('click', function (e) {
+          if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+          }
+        });
+      }
+
+      // Settings menu
+      const settingsBtn     = document.getElementById('settingsBtn');
+      const settingsMenu    = document.getElementById('settingsMenu');
+      const settingsOverlay = document.getElementById('settingsOverlay');
+      const closeSettings   = document.getElementById('closeSettings');
+      if (settingsBtn && settingsMenu && settingsOverlay && closeSettings) {
+        function openSettings()  { settingsMenu.classList.add('show');    settingsOverlay.classList.add('show'); }
+        function closeSettMenu() { settingsMenu.classList.remove('show'); settingsOverlay.classList.remove('show'); }
+        settingsBtn.addEventListener('click', function (e) { e.stopPropagation(); settingsMenu.classList.contains('show') ? closeSettMenu() : openSettings(); });
+        closeSettings.addEventListener('click', function (e) { e.stopPropagation(); closeSettMenu(); });
+        settingsOverlay.addEventListener('click', function (e) { if (e.target === settingsOverlay) closeSettMenu(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSettMenu(); });
+        settingsMenu.addEventListener('click', function (e) { e.stopPropagation(); });
+      }
+
+      // Theme
+      var savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.querySelectorAll('.theme-option').forEach(function (btn) {
+        if (btn.dataset.theme === savedTheme) btn.classList.add('active');
+        else btn.classList.remove('active');
+        btn.addEventListener('click', function () {
+          var t = this.dataset.theme;
+          document.documentElement.setAttribute('data-theme', t);
+          localStorage.setItem('theme', t);
+          document.querySelectorAll('.theme-option').forEach(function (b) { b.classList.remove('active'); });
+          this.classList.add('active');
+        });
+      });
+    });
+    </script>
     <script src="mods.js"></script>
   </body>
 </html>
