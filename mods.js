@@ -511,9 +511,9 @@ const TIPS = [
   const close   = document.getElementById("modsTipClose");
   if (!tip) return;
 
-  if (localStorage.getItem("tipsClosed")) { tip.style.display = "none"; return; }
+  if (localStorage.getItem("tipsClosed_v2")) { tip.style.display = "none"; return; }
 
-  let idx = parseInt(localStorage.getItem("tipIndex") || "0", 10) % TIPS.length;
+  let idx = parseInt(localStorage.getItem("tipIndex_v2") || "0", 10) % TIPS.length;
 
   function show(i) {
     idx = (i + TIPS.length) % TIPS.length;
@@ -521,14 +521,14 @@ const TIPS = [
     icon.textContent   = t.icon;
     content.innerHTML  = `<strong>${t.title}</strong>${t.text}`;
     counter.textContent = `${idx + 1} / ${TIPS.length}`;
-    localStorage.setItem("tipIndex", idx);
+    localStorage.setItem("tipIndex_v2", idx);
   }
 
   prev.addEventListener("click",  () => show(idx - 1));
   next.addEventListener("click",  () => show(idx + 1));
   close.addEventListener("click", () => {
     tip.style.display = "none";
-    localStorage.setItem("tipsClosed", "1");
+    localStorage.setItem("tipsClosed_v2", "1");
   });
 
   show(idx);
