@@ -507,10 +507,9 @@ const TIPS = [
   const content = document.getElementById("modsTipContent");
   const prev    = document.getElementById("modsTipPrev");
   const next    = document.getElementById("modsTipNext");
-  const close   = document.getElementById("modsTipClose");
   if (!tip) return;
 
-  if (localStorage.getItem("tipsClosed_v2")) { tip.style.display = "none"; return; }
+  if (localStorage.getItem("tipsClosed_v2")) localStorage.removeItem("tipsClosed_v2");
 
   let idx = parseInt(localStorage.getItem("tipIndex_v2") || "0", 10) % TIPS.length;
   let autoTimer;
@@ -545,11 +544,6 @@ const TIPS = [
 
   prev.addEventListener("click",  () => { show(idx - 1, -1); startAuto(); });
   next.addEventListener("click",  () => { show(idx + 1,  1); startAuto(); });
-  close.addEventListener("click", () => {
-    clearInterval(autoTimer);
-    tip.style.display = "none";
-    localStorage.setItem("tipsClosed_v2", "1");
-  });
 
   show(idx);
   startAuto();
