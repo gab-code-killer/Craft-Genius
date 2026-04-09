@@ -30,9 +30,13 @@ module.exports = async function handler(req, res) {
     searchFilter = "",
     categoryId  = "",
     gameVersion = "",
+    modLoader   = "",
     sortField   = 2,   // Popularity par défaut
     sortOrder   = "desc",
   } = req.query;
+
+  // CurseForge modLoaderType: 0=Any, 1=Forge, 2=Cauldron, 3=LiteLoader, 4=Fabric, 5=Quilt, 6=NeoForge
+  const loaderMap = { forge: 1, fabric: 4, quilt: 5, neoforge: 6 };
 
   const params = new URLSearchParams({
     gameId:    MINECRAFT_GAME_ID,
@@ -46,6 +50,7 @@ module.exports = async function handler(req, res) {
   if (searchFilter) params.set("searchFilter", searchFilter);
   if (categoryId)   params.set("categoryId", categoryId);
   if (gameVersion)  params.set("gameVersion", gameVersion);
+  if (modLoader && loaderMap[modLoader]) params.set("modLoaderType", loaderMap[modLoader]);
 
   try {
     const response = await fetch(

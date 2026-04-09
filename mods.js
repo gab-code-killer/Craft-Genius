@@ -9,8 +9,10 @@ let totalCount      = 0;
 let currentSearch   = "";
 let currentCategory = "";
 let currentVersion  = "";
+let currentLoader   = "";
 let currentSort     = "2";
 let isLoading       = false;
+let showFavoritesMode = false;
 
 // ── Éléments DOM ─────────────────────────────────────────────
 const modsGrid       = document.getElementById("modsGrid");
@@ -76,25 +78,29 @@ function renderCard(mod) {
   ).join("") || "";
 
   const url = mod.links?.websiteUrl || `https://www.curseforge.com/minecraft/mc-mods/${mod.slug}`;
+  const isFav = isFavorite(mod.id);
 
   return `
-    <a class="mod-card-cf" href="${url}" target="_blank" rel="noopener noreferrer">
-      <div class="mod-card-cf-logo">${logo}</div>
-      <div class="mod-card-cf-body">
-        <div class="mod-card-cf-top">
-          <span class="mod-card-cf-name">${mod.name}</span>
-          <span class="mod-card-cf-author">par ${mod.authors?.join(", ") || "?"}</span>
-        </div>
-        <p class="mod-card-cf-desc">${mod.summary || ""}</p>
-        <div class="mod-card-cf-footer">
-          <div class="mod-card-cf-tags">${relTag}${verTag}${cats}</div>
-          <div class="mod-card-cf-stats">
-            <span title="Téléchargements">⬇ ${dl}</span>
-            <span title="Mis à jour">🕒 ${ago}</span>
+    <div class="mod-card-cf-wrap">
+      <a class="mod-card-cf" href="${url}" target="_blank" rel="noopener noreferrer">
+        <div class="mod-card-cf-logo">${logo}</div>
+        <div class="mod-card-cf-body">
+          <div class="mod-card-cf-top">
+            <span class="mod-card-cf-name">${mod.name}</span>
+            <span class="mod-card-cf-author">par ${mod.authors?.join(", ") || "?"}</span>
+          </div>
+          <p class="mod-card-cf-desc">${mod.summary || ""}</p>
+          <div class="mod-card-cf-footer">
+            <div class="mod-card-cf-tags">${relTag}${verTag}${cats}</div>
+            <div class="mod-card-cf-stats">
+              <span title="Téléchargements">⬇ ${dl}</span>
+              <span title="Mis à jour">🕒 ${ago}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </a>`;
+      </a>
+      <button class="mod-fav-btn ${isFav ? "active" : ""}" data-id="${mod.id}" data-name="${mod.name.replace(/"/g,"&quot;")}" data-slug="${mod.slug}" data-logo="${mod.logo || ""}" data-url="${url}" title="${isFav ? "Retirer des favoris" : "Ajouter aux favoris"}">⭐</button>
+    </div>`;
 }
 
 // ── États visuels ─────────────────────────────────────────────
@@ -174,6 +180,7 @@ async function fetchMods() {
   if (currentSearch)   params.set("searchFilter", currentSearch);
   if (currentCategory) params.set("categoryId",   currentCategory);
   if (currentVersion)  params.set("gameVersion",  currentVersion);
+  if (currentLoader)   params.set("modLoader",    currentLoader);
 
   try {
     const res  = await fetch(`/api/mods?${params.toString()}`);
@@ -187,6 +194,7 @@ async function fetchMods() {
 
     modsCount.textContent = `${totalCount.toLocaleString("fr")} mods trouvés  (${from}–${to})`;
     modsGrid.innerHTML    = data.mods.map(renderCard).join("");
+    bindFavButtons();
 
     renderPagination();
     showGrid();
@@ -218,6 +226,17 @@ filterSort.addEventListener("change", () => {
   fetchMods();
 });
 
+// Loader buttons
+document.querySelectorAll(".mods-loader-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".mods-loader-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentLoader = btn.dataset.loader;
+    currentPage   = 0;
+    fetchMods();
+  });
+});
+
 document.querySelectorAll(".mods-cat-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".mods-cat-btn").forEach(b => b.classList.remove("active"));
@@ -246,6 +265,81 @@ if (hamburger && navLinks) {
     navLinks.classList.toggle("active");
   });
 }
+
+// ── Favoris (localStorage) ────────────────────────────────────
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem("modFavorites") || "[]"); }
+  catch (_) { return []; }
+}
+function saveFavorites(favs) {
+  localStorage.setItem("modFavorites", JSON.stringify(favs));
+  updateFavCount();
+}
+function isFavorite(id) {
+  return getFavorites().some(f => f.id === id);
+}
+function toggleFavorite(mod) {
+  let favs = getFavorites();
+  if (favs.some(f => f.id === mod.id)) {
+    favs = favs.filter(f => f.id !== mod.id);
+  } else {
+    favs.push(mod);
+  }
+  saveFavorites(favs);
+  return favs.some(f => f.id === mod.id);
+}
+function updateFavCount() {
+  const el = document.getElementById("modsFavCount");
+  if (el) el.textContent = getFavorites().length;
+}
+function bindFavButtons() {
+  document.querySelectorAll(".mod-fav-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      const mod = { id: Number(btn.dataset.id), name: btn.dataset.name, slug: btn.dataset.slug, logo: btn.dataset.logo, url: btn.dataset.url };
+      const isNowFav = toggleFavorite(mod);
+      btn.classList.toggle("active", isNowFav);
+      btn.title = isNowFav ? "Retirer des favoris" : "Ajouter aux favoris";
+    });
+  });
+}
+
+// Bouton "Voir mes favoris"
+const modsFavToggle = document.getElementById("modsFavToggle");
+if (modsFavToggle) {
+  modsFavToggle.addEventListener("click", () => {
+    showFavoritesMode = !showFavoritesMode;
+    if (showFavoritesMode) {
+      const favs = getFavorites();
+      modsCount.textContent = `${favs.length} mod(s) en favoris`;
+      modsPagination.style.display = "none";
+      modsLoading.style.display    = "none";
+      modsError.style.display      = "none";
+      if (favs.length === 0) {
+        modsGrid.style.display = "grid";
+        modsGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;opacity:.6;">Aucun favori pour l'instant.<br>Clique sur ⭐ sur un mod pour l'ajouter.</div>`;
+      } else {
+        modsGrid.style.display = "grid";
+        modsGrid.innerHTML = favs.map(f => `
+          <div class="mod-card-cf-wrap">
+            <a class="mod-card-cf" href="${f.url}" target="_blank" rel="noopener noreferrer">
+              <div class="mod-card-cf-logo">${f.logo ? `<img src="${f.logo}" alt="${f.name}" class="mod-card-logo" loading="lazy"/>` : `<div class="mod-card-logo mod-card-logo-fallback">🧩</div>`}</div>
+              <div class="mod-card-cf-body">
+                <div class="mod-card-cf-top"><span class="mod-card-cf-name">${f.name}</span></div>
+              </div>
+            </a>
+            <button class="mod-fav-btn active" data-id="${f.id}" data-name="${f.name}" data-slug="${f.slug || ""}" data-logo="${f.logo || ""}" data-url="${f.url}" title="Retirer des favoris">⭐</button>
+          </div>`).join("");
+        bindFavButtons();
+      }
+      modsFavToggle.textContent = `← Retour aux mods`;
+    } else {
+      modsFavToggle.textContent = `Voir mes favoris (${getFavorites().length})`;
+      fetchMods();
+    }
+  });
+}
+updateFavCount();
 
 // ── Chargement des versions Mojang ───────────────────────────
 async function loadVersions() {

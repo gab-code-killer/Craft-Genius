@@ -835,3 +835,96 @@
         font-size: 0.8rem;
     }
 }
+
+/* ── Loader buttons (Forge / Fabric / Quilt / NeoForge) ─────── */
+.mods-loader-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mods-loader-btn {
+  background: transparent;
+  color: #bbb;
+  border: 1px solid #333;
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mods-loader-btn:hover {
+  background: rgba(93,158,49,0.12);
+  color: #7ac840;
+  border-color: rgba(93,158,49,0.4);
+}
+
+.mods-loader-btn.active {
+  background: rgba(93,158,49,0.18);
+  border-color: #5D9E31;
+  color: #7ac840;
+  font-weight: 700;
+}
+
+/* ── Favoris toggle button ───────────────────────────────────── */
+.mods-fav-toggle {
+  width: 100%;
+  background: transparent;
+  color: #e8c840;
+  border: 1px solid #5a4a00;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mods-fav-toggle:hover {
+  background: rgba(232,200,64,0.1);
+  border-color: #e8c840;
+}
+
+/* ── Carte mod avec wrap (pour le bouton favori) ─────────────── */
+.mod-card-cf-wrap {
+  position: relative;
+}
+
+.mod-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #444;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  z-index: 2;
+  filter: grayscale(1);
+}
+
+.mod-card-cf-wrap:hover .mod-fav-btn {
+  opacity: 1;
+}
+
+.mod-fav-btn.active {
+  opacity: 1;
+  filter: none;
+  background: rgba(232,200,64,0.15);
+  border-color: #e8c840;
+}
+
+.mod-fav-btn:hover {
+  transform: scale(1.15);
+  filter: none;
+}
+
