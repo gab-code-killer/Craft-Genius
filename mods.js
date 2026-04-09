@@ -341,6 +341,17 @@ if (modsFavToggle) {
 }
 updateFavCount();
 
+// ── Bandeau conseil JEI ───────────────────────────────────────
+const modsTip      = document.querySelector(".mods-tip");
+const modsTipClose = document.querySelector(".mods-tip-close");
+if (modsTip && localStorage.getItem("jeiTipClosed")) modsTip.style.display = "none";
+if (modsTipClose) {
+  modsTipClose.addEventListener("click", () => {
+    modsTip.style.display = "none";
+    localStorage.setItem("jeiTipClosed", "1");
+  });
+}
+
 // ── Chargement des versions Mojang ───────────────────────────
 async function loadVersions() {
   const FALLBACK = ["1.21.4","1.21.1","1.21","1.20.6","1.20.4","1.20.2","1.20.1","1.20",
