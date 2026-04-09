@@ -539,7 +539,7 @@ const TIPS = [
 
   function startAuto() {
     clearInterval(autoTimer);
-    autoTimer = setInterval(() => show(idx + 1, 1), 15000);
+    autoTimer = setInterval(() => show(idx + 1, 1), 30000);
   }
 
   prev.addEventListener("click",  () => { show(idx - 1, -1); startAuto(); });
