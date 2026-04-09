@@ -100,6 +100,7 @@ function renderCard(mod) {
         </div>
       </a>
       <button class="mod-fav-btn ${isFav ? "active" : ""}" data-id="${mod.id}" data-name="${mod.name.replace(/"/g,"&quot;")}" data-slug="${mod.slug}" data-logo="${mod.logo || ""}" data-url="${url}" title="${isFav ? "Retirer des favoris" : "Ajouter aux favoris"}">⭐</button>
+      <button class="mod-recipe-btn" data-id="${mod.id}" data-name="${mod.name.replace(/"/g,"&quot;")}" title="Voir les recettes de craft">⚒</button>
     </div>`;
 }
 
@@ -195,6 +196,7 @@ async function fetchMods() {
     modsCount.textContent = `${totalCount.toLocaleString("fr")} mods trouvés  (${from}–${to})`;
     modsGrid.innerHTML    = data.mods.map(renderCard).join("");
     bindFavButtons();
+    bindRecipeButtons();
 
     renderPagination();
     showGrid();
@@ -365,6 +367,137 @@ async function loadVersions() {
   } catch (_) {
     populate(FALLBACK);
   }
+}
+
+// ── Modale Recettes ─────────────────────────────────────────
+const modsModal      = document.getElementById("modsModal");
+const modsOverlay    = document.getElementById("modsOverlay");
+const modsModalTitle = document.getElementById("modsModalTitle");
+const modsModalSub   = document.getElementById("modsModalSub");
+const modsModalBody  = document.getElementById("modsModalBody");
+const modsModalClose = document.getElementById("modsModalClose");
+
+function closeModal() {
+  modsModal.classList.remove("active");
+  modsOverlay.classList.remove("active");
+}
+
+if (modsModalClose) modsModalClose.addEventListener("click", closeModal);
+if (modsOverlay)    modsOverlay.addEventListener("click",    closeModal);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+function bindRecipeButtons() {
+  document.querySelectorAll(".mod-recipe-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      e.stopPropagation();
+      openRecipeModal(btn.dataset.id, btn.dataset.name);
+    });
+  });
+}
+
+async function openRecipeModal(modId, modName) {
+  modsModalTitle.textContent = modName;
+  modsModalSub.textContent   = "Chargement des recettes...";
+  modsModalBody.innerHTML    = `<div class="mods-state"><div class="mods-spinner"></div><p>Téléchargement du mod en cours…</p></div>`;
+  modsModal.classList.add("active");
+  modsOverlay.classList.add("active");
+
+  try {
+    const res  = await fetch(`/api/recipes?modId=${modId}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      modsModalSub.textContent = "Erreur";
+      modsModalBody.innerHTML  = `<div class="mods-state">❌ ${data.error || "Erreur inconnue"}</div>`;
+      return;
+    }
+
+    modsModalSub.textContent = data.count
+      ? `${data.count} recette(s) de craft trouvée(s)`
+      : "Aucune recette standard trouvée";
+
+    modsModalBody.innerHTML = data.recipes.length
+      ? data.recipes.map(renderRecipe).join("")
+      : `<div class="mods-state" style="opacity:.6">Ce mod n'a pas de recettes de craft standard (crafting table, fourneau…).<br>Il utilise peut-être un système de craft personnalisé.</div>`;
+  } catch (_) {
+    modsModalSub.textContent = "Erreur réseau";
+    modsModalBody.innerHTML  = `<div class="mods-state">❌ Impossible de contacter le serveur.</div>`;
+  }
+}
+
+function itemLabel(item) {
+  if (!item) return "";
+  if (Array.isArray(item)) return itemLabel(item[0]);
+  const id = item.item || item.tag || (typeof item === "string" ? item : "");
+  return id.split(":").pop().replace(/_/g, " ");
+}
+
+const RECIPE_TYPE_LABELS = {
+  "minecraft:crafting_shaped":    { label: "Table de craft",  cls: "badge-craft" },
+  "minecraft:crafting_shapeless": { label: "Craft libre",     cls: "badge-shapeless" },
+  "minecraft:smelting":           { label: "Fourneau",        cls: "badge-smelt" },
+  "minecraft:blasting":           { label: "Haut fourneau",   cls: "badge-smelt" },
+  "minecraft:smoking":            { label: "Fumoir",          cls: "badge-smelt" },
+  "minecraft:campfire_cooking":    { label: "Feu de camp",    cls: "badge-smelt" },
+  "minecraft:stonecutting":       { label: "Taille-pierre",   cls: "badge-cut" },
+  "minecraft:smithing":           { label: "Forge",           cls: "badge-smith" },
+  "minecraft:smithing_transform": { label: "Forge",           cls: "badge-smith" },
+};
+
+function renderRecipe(recipe) {
+  const name  = recipe.id.split("/").pop().replace(/_/g, " ");
+  const badge = RECIPE_TYPE_LABELS[recipe.type] || { label: recipe.type.split(":").pop(), cls: "badge-other" };
+  const resultLabel = itemLabel(recipe.result);
+  const resultCount = recipe.result?.count > 1 ? ` ×${recipe.result.count}` : "";
+
+  let visual = "";
+
+  if (recipe.type === "minecraft:crafting_shaped") {
+    const keyMap = recipe.key || {};
+    const rows   = recipe.pattern || [];
+    const cells  = [];
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        const ch   = rows[r]?.[c] || " ";
+        const item = ch === " " ? "" : keyMap[ch];
+        cells.push(`<div class="recipe-cell${item ? "" : " recipe-cell-empty"}">${itemLabel(item)}</div>`);
+      }
+    }
+    visual = `
+      <div class="recipe-row">
+        <div class="recipe-craft-grid">${cells.join("")}</div>
+        <div class="recipe-arrow">→</div>
+        <div class="recipe-result">${resultLabel}${resultCount}</div>
+      </div>`;
+
+  } else if (recipe.type === "minecraft:crafting_shapeless") {
+    const items = (recipe.ingredients || []).map(i => `<div class="recipe-cell">${itemLabel(i)}</div>`).join("");
+    visual = `
+      <div class="recipe-row">
+        <div class="recipe-shapeless">${items}</div>
+        <div class="recipe-arrow">→</div>
+        <div class="recipe-result">${resultLabel}${resultCount}</div>
+      </div>`;
+
+  } else {
+    const input = itemLabel(Array.isArray(recipe.ingredient) ? recipe.ingredient[0] : recipe.ingredient);
+    visual = `
+      <div class="recipe-row">
+        <div class="recipe-cell">${input || "?"}</div>
+        <div class="recipe-arrow">→</div>
+        <div class="recipe-result">${resultLabel}</div>
+      </div>`;
+  }
+
+  return `
+    <div class="mods-recipe">
+      <div class="mods-recipe-header">
+        <span class="mods-recipe-name">${name}</span>
+        <span class="recipe-type-badge ${badge.cls}">${badge.label}</span>
+      </div>
+      <div class="mods-recipe-visual">${visual}</div>
+    </div>`;
 }
 
 // ── Lancement ─────────────────────────────────────────────────
