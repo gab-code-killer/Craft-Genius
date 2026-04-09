@@ -891,6 +891,50 @@
   color: #aaa;
 }
 
+.mods-tip-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.mods-tip-arrow {
+  background: transparent;
+  border: 1px solid #444;
+  color: #aaa;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.mods-tip-arrow:hover {
+  border-color: #5D9E31;
+  color: #7ac840;
+}
+
+.mods-tip-counter {
+  font-size: 0.75rem;
+  color: #666;
+  min-width: 36px;
+  text-align: center;
+}
+
+.mods-tip code {
+  background: rgba(0,0,0,0.3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.82rem;
+  color: #aaa;
+}
+
 /* ── Loader buttons (Forge / Fabric / Quilt / NeoForge) ─────── */
 .mods-loader-btns {
   display: flex;

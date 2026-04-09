@@ -141,14 +141,16 @@
         <!-- ── Zone principale ── -->
         <main class="mods-main">
 
-          <!-- Conseil JEI -->
-          <div class="mods-tip">
-            <span class="mods-tip-icon">💡</span>
-            <div>
-              <strong>Voir toutes les recettes en jeu ?</strong>
-              Installe le mod <a href="https://www.curseforge.com/minecraft/mc-mods/jei" target="_blank" rel="noopener noreferrer">Just Enough Items (JEI)</a> — il affiche directement dans Minecraft les recettes de craft de tous tes mods installés.
+          <!-- Conseils -->
+          <div class="mods-tip" id="modsTip">
+            <span class="mods-tip-icon" id="modsTipIcon">💡</span>
+            <div class="mods-tip-content" id="modsTipContent"></div>
+            <div class="mods-tip-nav">
+              <button class="mods-tip-arrow" id="modsTipPrev" aria-label="Conseil précédent">‹</button>
+              <span class="mods-tip-counter" id="modsTipCounter">1 / 1</span>
+              <button class="mods-tip-arrow" id="modsTipNext" aria-label="Conseil suivant">›</button>
             </div>
-            <button class="mods-tip-close" aria-label="Fermer">✕</button>
+            <button class="mods-tip-close" id="modsTipClose" aria-label="Fermer">✕</button>
           </div>
 
           <!-- Barre du haut -->

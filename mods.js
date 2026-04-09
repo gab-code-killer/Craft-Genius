@@ -341,16 +341,77 @@ if (modsFavToggle) {
 }
 updateFavCount();
 
-// ── Bandeau conseil JEI ───────────────────────────────────────
-const modsTip      = document.querySelector(".mods-tip");
-const modsTipClose = document.querySelector(".mods-tip-close");
-if (modsTip && localStorage.getItem("jeiTipClosed")) modsTip.style.display = "none";
-if (modsTipClose) {
-  modsTipClose.addEventListener("click", () => {
-    modsTip.style.display = "none";
-    localStorage.setItem("jeiTipClosed", "1");
+// ── Bandeaux conseils ─────────────────────────────────────────
+const TIPS = [
+  {
+    icon: "💡",
+    title: "Voir toutes les recettes en jeu ?",
+    text: `Installe <a href="https://www.curseforge.com/minecraft/mc-mods/jei" target="_blank" rel="noopener noreferrer">Just Enough Items (JEI)</a> — il affiche dans Minecraft les recettes de craft de tous tes mods installés.`,
+  },
+  {
+    icon: "⚠️",
+    title: "Sauvegarde ton monde avant d'installer un mod !",
+    text: `Certains mods peuvent corrompre une sauvegarde existante. Fais une copie de ton dossier <code>.minecraft/saves</code> avant toute installation.`,
+  },
+  {
+    icon: "🔧",
+    title: "Forge ou Fabric ?",
+    text: `<strong>Forge</strong> = le plus de mods disponibles. <strong>Fabric</strong> = plus léger et mis à jour plus vite. Ils ne sont pas compatibles entre eux — choisis avant d'installer quoi que ce soit.`,
+  },
+  {
+    icon: "📦",
+    title: "Gérer tes mods facilement",
+    text: `Utilise l'application <a href="https://www.curseforge.com/download/app" target="_blank" rel="noopener noreferrer">CurseForge App</a> pour installer et mettre à jour tes mods en un clic, sans risque de conflit.`,
+  },
+  {
+    icon: "🚀",
+    title: "Jeu qui lag avec des mods ?",
+    text: `Installe <a href="https://www.curseforge.com/minecraft/mc-mods/sodium" target="_blank" rel="noopener noreferrer">Sodium</a> (Fabric) ou <a href="https://www.curseforge.com/minecraft/mc-mods/rubidium" target="_blank" rel="noopener noreferrer">Rubidium</a> (Forge) pour booster les FPS sans changer le gameplay.`,
+  },
+  {
+    icon: "📋",
+    title: "Vérifier la compatibilité des mods",
+    text: `Tous tes mods doivent être sur la <strong>même version de Minecraft</strong> et le <strong>même loader</strong> (Forge/Fabric). Un seul mod incompatible peut empêcher le jeu de démarrer.`,
+  },
+  {
+    icon: "🗺️",
+    title: "Minimap dans tous tes modpacks",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/journeymap" target="_blank" rel="noopener noreferrer">JourneyMap</a> ajoute une minimap et une carte du monde complète. Compatible avec la majorité des mods.`,
+  },
+];
+
+(function initTips() {
+  const tip     = document.getElementById("modsTip");
+  const icon    = document.getElementById("modsTipIcon");
+  const content = document.getElementById("modsTipContent");
+  const counter = document.getElementById("modsTipCounter");
+  const prev    = document.getElementById("modsTipPrev");
+  const next    = document.getElementById("modsTipNext");
+  const close   = document.getElementById("modsTipClose");
+  if (!tip) return;
+
+  if (localStorage.getItem("tipsClosed")) { tip.style.display = "none"; return; }
+
+  let idx = parseInt(localStorage.getItem("tipIndex") || "0", 10) % TIPS.length;
+
+  function show(i) {
+    idx = (i + TIPS.length) % TIPS.length;
+    const t = TIPS[idx];
+    icon.textContent   = t.icon;
+    content.innerHTML  = `<strong>${t.title}</strong>${t.text}`;
+    counter.textContent = `${idx + 1} / ${TIPS.length}`;
+    localStorage.setItem("tipIndex", idx);
+  }
+
+  prev.addEventListener("click",  () => show(idx - 1));
+  next.addEventListener("click",  () => show(idx + 1));
+  close.addEventListener("click", () => {
+    tip.style.display = "none";
+    localStorage.setItem("tipsClosed", "1");
   });
-}
+
+  show(idx);
+})();
 
 // ── Chargement des versions Mojang ───────────────────────────
 async function loadVersions() {
