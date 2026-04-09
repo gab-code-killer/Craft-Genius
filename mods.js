@@ -343,14 +343,140 @@ updateFavCount();
 
 // ── Bandeaux conseils ─────────────────────────────────────────
 const TIPS = [
+  // ── Objets & recettes ────────────────────────────────────────
   {
     icon: "💡",
     title: "Voir toutes les recettes en jeu ?",
     text: `Installe <a href="https://www.curseforge.com/minecraft/mc-mods/jei" target="_blank" rel="noopener noreferrer">Just Enough Items (JEI)</a> — il affiche dans Minecraft les recettes de craft de tous tes mods installés.`,
   },
   {
+    icon: "🍎",
+    title: "Suivre la faim et la saturation",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/appleskin" target="_blank" rel="noopener noreferrer">AppleSkin</a> affiche visuellement ta saturation et les gains de faim de chaque aliment — indispensable pour survivre.`,
+  },
+  {
+    icon: "📦",
+    title: "Trier ton inventaire en un clic",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/inventory-sorter" target="_blank" rel="noopener noreferrer">Inventory Sorter</a> trie automatiquement ton inventaire ou un coffre d'un simple clic molette.`,
+  },
+  {
+    icon: "🖱️",
+    title: "Déplacer plusieurs objets à la fois",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/mouse-tweaks" target="_blank" rel="noopener noreferrer">Mouse Tweaks</a> améliore le glisser-déposer dans les inventaires — gain de temps énorme pour les crafts en masse.`,
+  },
+  {
+    icon: "🚛",
+    title: "Transporter des blocs et des mobs",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/carry-on" target="_blank" rel="noopener noreferrer">Carry On</a> te permet de porter des blocs (coffres, machines) et même des animaux directement dans tes bras.`,
+  },
+  {
+    icon: "🗄️",
+    title: "Des coffres plus grands ?",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/iron-chests" target="_blank" rel="noopener noreferrer">Iron Chests</a> ajoute des coffres en fer, or, diamant, émeraude… chacun plus grand que le précédent.`,
+  },
+  {
+    icon: "🗂️",
+    title: "Organiser tes ressources efficacement",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/storage-drawers" target="_blank" rel="noopener noreferrer">Storage Drawers</a> crée des tiroirs visuels pour stocker de grandes quantités de ressources d'un seul type.`,
+  },
+  {
+    icon: "🎒",
+    title: "Plus d'inventaire en déplacement",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks" target="_blank" rel="noopener noreferrer">Sophisticated Backpacks</a> ajoute des sacs à dos améliorables avec filtres, tri automatique et même craft intégré.`,
+  },
+  // ── Construction & décoration ────────────────────────────────
+  {
+    icon: "🏗️",
+    title: "Des blocs décoratifs variés",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/chisel" target="_blank" rel="noopener noreferrer">Chisel</a> ajoute des dizaines de variantes visuelles pour chaque bloc — parfait pour des constructions détaillées.`,
+  },
+  {
+    icon: "🌉",
+    title: "Construire des ponts rapidement",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/macaws-bridges" target="_blank" rel="noopener noreferrer">Macaw's Bridges</a> ajoute des ponts en bois, pierre, métal dans différents styles architecturaux.`,
+  },
+  {
+    icon: "🚪",
+    title: "Plus de styles de portes",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/macaws-doors" target="_blank" rel="noopener noreferrer">Macaw's Doors</a> ajoute des dizaines de portes différentes — coulissantes, en verre, métal, bois exotique…`,
+  },
+  {
+    icon: "🏡",
+    title: "Variété dans tes constructions",
+    text: `Mélange plusieurs types de blocs, escaliers, dalles et murs pour créer du relief. Les détails font toute la différence entre une maison basique et une vraie construction.`,
+  },
+  {
+    icon: "🌿",
+    title: "Rendre tes zones plus vivantes",
+    text: `Ajoute végétation, fontaines et chemins entre tes bâtiments. Ça transforme complètement l'ambiance d'une base ou d'un village.`,
+  },
+  // ── Animaux & biomes ─────────────────────────────────────────
+  {
+    icon: "🐾",
+    title: "Plus d'animaux réalistes",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/alexs-mobs" target="_blank" rel="noopener noreferrer">Alex's Mobs</a> ajoute des dizaines d'animaux uniques avec des comportements réalistes dans leurs biomes naturels.`,
+  },
+  {
+    icon: "🌍",
+    title: "Plus de diversité de paysages",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/biomes-o-plenty" target="_blank" rel="noopener noreferrer">Biomes O' Plenty</a> ajoute plus de 80 nouveaux biomes — forêts tropicales, toundras, marécages mystiques…`,
+  },
+  {
+    icon: "🐟",
+    title: "Enrichir les zones aquatiques",
+    text: `Installe des mods aquatiques pour ajouter des poissons, requins et créatures marines. Idéal pour construire un aquarium ou un zoo sous-marin.`,
+  },
+  {
+    icon: "🦁",
+    title: "Construire un zoo réaliste",
+    text: `Place chaque animal dans son biome naturel (forêt, savane, rivière) avec des enclos personnalisés. Ajoute des panneaux explicatifs pour un vrai aspect parc animalier.`,
+  },
+  // ── Exploration & déplacement ────────────────────────────────
+  {
+    icon: "🗺️",
+    title: "Minimap et carte du monde",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/journeymap" target="_blank" rel="noopener noreferrer">JourneyMap</a> ajoute une minimap et une carte complète du monde. Marque tes points d'intérêt pour ne jamais te perdre.`,
+  },
+  {
+    icon: "🪨",
+    title: "Se téléporter rapidement",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/waystones" target="_blank" rel="noopener noreferrer">Waystones</a> ajoute des pierres de téléportation que tu poses dans le monde — reviens à ta base en un instant.`,
+  },
+  {
+    icon: "🧭",
+    title: "Trouver les biomes et structures",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/natures-compass" target="_blank" rel="noopener noreferrer">Nature's Compass</a> et <a href="https://www.curseforge.com/minecraft/mc-mods/explorers-compass" target="_blank" rel="noopener noreferrer">Explorer's Compass</a> localisent biomes et structures importantes en quelques secondes.`,
+  },
+  {
+    icon: "🎒",
+    title: "Bien préparer ses expéditions",
+    text: `Pars toujours avec beaucoup de nourriture, potions de soin et un lit. Pose un waystone ou un sac de couchage près de tes zones d'exploration.`,
+  },
+  // ── Machines & automatisation ────────────────────────────────
+  {
+    icon: "⚙️",
+    title: "Machines et mécanismes complexes",
+    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/create" target="_blank" rel="noopener noreferrer">Create</a> est le mod d'automatisation le plus complet — convoyeurs, engrenages, presses, moulins à vent… tout en vanilla style.`,
+  },
+  {
+    icon: "🌾",
+    title: "Fermes automatiques",
+    text: `Installe des mods de ferme automatique pour récolter cultures et animaux sans effort. Combiné avec Create ou des pipes, tu peux tout automatiser.`,
+  },
+  {
+    icon: "🔄",
+    title: "Tri automatique des coffres",
+    text: `Installe des mods de tri (pipes, convoyeurs, hoppers améliorés) pour organizater tes coffres automatiquement. Fini de chercher où tu as mis tes matériaux.`,
+  },
+  {
+    icon: "🪵",
+    title: "Récolter intelligemment",
+    text: `Des mods de récolte intelligente coupent les arbres entiers, récoltent toute la canne à sucre d'un coup ou ramassent automatiquement les plantations à maturité.`,
+  },
+  // ── Général ──────────────────────────────────────────────────
+  {
     icon: "⚠️",
-    title: "Sauvegarde ton monde avant d'installer un mod !",
+    title: "Sauvegarde avant d'installer un mod !",
     text: `Certains mods peuvent corrompre une sauvegarde existante. Fais une copie de ton dossier <code>.minecraft/saves</code> avant toute installation.`,
   },
   {
@@ -359,9 +485,9 @@ const TIPS = [
     text: `<strong>Forge</strong> = le plus de mods disponibles. <strong>Fabric</strong> = plus léger et mis à jour plus vite. Ils ne sont pas compatibles entre eux — choisis avant d'installer quoi que ce soit.`,
   },
   {
-    icon: "📦",
-    title: "Gérer tes mods facilement",
-    text: `Utilise l'application <a href="https://www.curseforge.com/download/app" target="_blank" rel="noopener noreferrer">CurseForge App</a> pour installer et mettre à jour tes mods en un clic, sans risque de conflit.`,
+    icon: "📋",
+    title: "Vérifier la compatibilité des mods",
+    text: `Tous tes mods doivent être sur la <strong>même version de Minecraft</strong> et le <strong>même loader</strong> (Forge/Fabric). Un seul mod incompatible peut empêcher le jeu de démarrer.`,
   },
   {
     icon: "🚀",
@@ -369,14 +495,9 @@ const TIPS = [
     text: `Installe <a href="https://www.curseforge.com/minecraft/mc-mods/sodium" target="_blank" rel="noopener noreferrer">Sodium</a> (Fabric) ou <a href="https://www.curseforge.com/minecraft/mc-mods/rubidium" target="_blank" rel="noopener noreferrer">Rubidium</a> (Forge) pour booster les FPS sans changer le gameplay.`,
   },
   {
-    icon: "📋",
-    title: "Vérifier la compatibilité des mods",
-    text: `Tous tes mods doivent être sur la <strong>même version de Minecraft</strong> et le <strong>même loader</strong> (Forge/Fabric). Un seul mod incompatible peut empêcher le jeu de démarrer.`,
-  },
-  {
-    icon: "🗺️",
-    title: "Minimap dans tous tes modpacks",
-    text: `<a href="https://www.curseforge.com/minecraft/mc-mods/journeymap" target="_blank" rel="noopener noreferrer">JourneyMap</a> ajoute une minimap et une carte du monde complète. Compatible avec la majorité des mods.`,
+    icon: "📦",
+    title: "Gérer tes mods facilement",
+    text: `Utilise l'application <a href="https://www.curseforge.com/download/app" target="_blank" rel="noopener noreferrer">CurseForge App</a> pour installer et mettre à jour tes mods en un clic, sans risque de conflit.`,
   },
 ];
 
