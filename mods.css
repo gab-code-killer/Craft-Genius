@@ -928,6 +928,26 @@
   color: #aaa;
 }
 
+/* Animations slide conseils */
+.mods-tip-icon,
+.mods-tip-content {
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.tip-slide-out-left  { opacity: 0; transform: translateX(-30px); }
+.tip-slide-out-right { opacity: 0; transform: translateX( 30px); }
+.tip-slide-in-right  { animation: tipSlideInRight 0.35s ease forwards; }
+.tip-slide-in-left   { animation: tipSlideInLeft  0.35s ease forwards; }
+
+@keyframes tipSlideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes tipSlideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 /* ── Loader buttons (Forge / Fabric / Quilt / NeoForge) ─────── */
 .mods-loader-btns {
   display: flex;

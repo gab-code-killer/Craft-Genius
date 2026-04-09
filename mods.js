@@ -515,21 +515,36 @@ const TIPS = [
   let idx = parseInt(localStorage.getItem("tipIndex_v2") || "0", 10) % TIPS.length;
   let autoTimer;
 
-  function show(i) {
+  function show(i, dir = 1) {
     idx = (i + TIPS.length) % TIPS.length;
     const t = TIPS[idx];
-    icon.textContent  = t.icon;
-    content.innerHTML = `<strong>${t.title}</strong>${t.text}`;
+    // Animation slide
+    const slideOut = dir >= 0 ? "tip-slide-out-left" : "tip-slide-out-right";
+    const slideIn  = dir >= 0 ? "tip-slide-in-right" : "tip-slide-in-left";
+    content.classList.add(slideOut);
+    icon.classList.add(slideOut);
+    setTimeout(() => {
+      icon.textContent  = t.icon;
+      content.innerHTML = `<strong>${t.title}</strong>${t.text}`;
+      content.classList.remove(slideOut);
+      icon.classList.remove(slideOut);
+      content.classList.add(slideIn);
+      icon.classList.add(slideIn);
+      setTimeout(() => {
+        content.classList.remove(slideIn);
+        icon.classList.remove(slideIn);
+      }, 350);
+    }, 200);
     localStorage.setItem("tipIndex_v2", idx);
   }
 
   function startAuto() {
     clearInterval(autoTimer);
-    autoTimer = setInterval(() => show(idx + 1), 15000);
+    autoTimer = setInterval(() => show(idx + 1, 1), 15000);
   }
 
-  prev.addEventListener("click",  () => { show(idx - 1); startAuto(); });
-  next.addEventListener("click",  () => { show(idx + 1); startAuto(); });
+  prev.addEventListener("click",  () => { show(idx - 1, -1); startAuto(); });
+  next.addEventListener("click",  () => { show(idx + 1,  1); startAuto(); });
   close.addEventListener("click", () => {
     clearInterval(autoTimer);
     tip.style.display = "none";
