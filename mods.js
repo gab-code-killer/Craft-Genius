@@ -505,7 +505,6 @@ const TIPS = [
   const tip     = document.getElementById("modsTip");
   const icon    = document.getElementById("modsTipIcon");
   const content = document.getElementById("modsTipContent");
-  const counter = document.getElementById("modsTipCounter");
   const prev    = document.getElementById("modsTipPrev");
   const next    = document.getElementById("modsTipNext");
   const close   = document.getElementById("modsTipClose");
@@ -514,24 +513,31 @@ const TIPS = [
   if (localStorage.getItem("tipsClosed_v2")) { tip.style.display = "none"; return; }
 
   let idx = parseInt(localStorage.getItem("tipIndex_v2") || "0", 10) % TIPS.length;
+  let autoTimer;
 
   function show(i) {
     idx = (i + TIPS.length) % TIPS.length;
     const t = TIPS[idx];
-    icon.textContent   = t.icon;
-    content.innerHTML  = `<strong>${t.title}</strong>${t.text}`;
-    counter.textContent = `${idx + 1} / ${TIPS.length}`;
+    icon.textContent  = t.icon;
+    content.innerHTML = `<strong>${t.title}</strong>${t.text}`;
     localStorage.setItem("tipIndex_v2", idx);
   }
 
-  prev.addEventListener("click",  () => show(idx - 1));
-  next.addEventListener("click",  () => show(idx + 1));
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => show(idx + 1), 15000);
+  }
+
+  prev.addEventListener("click",  () => { show(idx - 1); startAuto(); });
+  next.addEventListener("click",  () => { show(idx + 1); startAuto(); });
   close.addEventListener("click", () => {
+    clearInterval(autoTimer);
     tip.style.display = "none";
     localStorage.setItem("tipsClosed_v2", "1");
   });
 
   show(idx);
+  startAuto();
 })();
 
 // ── Chargement des versions Mojang ───────────────────────────
