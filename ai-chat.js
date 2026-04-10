@@ -444,23 +444,55 @@ function removeLoadingMessage(id) {
 }
 
 // ============================================
-// Historique des conversations (Firebase)
+// Historique des conversations (localStorage + Firebase sync)
 // ============================================
 
+function getConvKey(uid) {
+  return "aiConversations_" + uid;
+}
+
+function readLocalConvs(uid) {
+  try {
+    const raw = localStorage.getItem(getConvKey(uid));
+    return raw ? JSON.parse(raw) : [];
+  } catch (_) { return []; }
+}
+
+function writeLocalConvs(uid, convs) {
+  try {
+    localStorage.setItem(getConvKey(uid), JSON.stringify(convs));
+  } catch (_) {}
+}
+
+function generateConvId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
 async function loadConversations() {
-  if (!aiDb || !aiCurrentUser) return;
+  if (!aiCurrentUser) return;
+  const uid = aiCurrentUser.uid;
+
+  // 1. Afficher depuis localStorage immédiatement
+  const local = readLocalConvs(uid);
+  renderConvList(local);
+
+  // 2. Essayer de synchroniser depuis Firestore (si règles configurées)
+  if (!aiDb) return;
   try {
     const snap = await aiDb
       .collection("users")
-      .doc(aiCurrentUser.uid)
+      .doc(uid)
       .collection("aiConversations")
       .orderBy("updatedAt", "desc")
       .limit(30)
       .get();
-    const convs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-    renderConvList(convs);
-  } catch (e) {
-    console.error("Erreur chargement conversations:", e);
+    if (snap.empty) return;
+    const remote = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    // Fusionner : les convs distantes remplacent le localStorage
+    writeLocalConvs(uid, remote);
+    renderConvList(remote);
+  } catch (_) {
+    // Règles Firestore pas encore configurées — localStorage suffit
   }
 }
 
@@ -469,12 +501,16 @@ function renderConvList(convs) {
   if (!list) return;
   list.innerHTML = "";
 
-  if (!convs || convs.length === 0) {
+  const sorted = [...(convs || [])].sort((a, b) =>
+    (b.updatedAt || 0) - (a.updatedAt || 0)
+  );
+
+  if (!sorted.length) {
     list.innerHTML = '<p class="ai-conv-empty">Aucune conversation<br>pour le moment</p>';
     return;
   }
 
-  convs.forEach((conv) => {
+  sorted.forEach((conv) => {
     const item = document.createElement("div");
     item.className = "ai-conv-item" + (conv.id === currentConvId ? " active" : "");
     item.dataset.id = conv.id;
@@ -501,54 +537,63 @@ function renderConvList(convs) {
 }
 
 async function createConversation(firstMessage) {
-  if (!aiDb || !aiCurrentUser) return null;
-  const title =
-    firstMessage.slice(0, 40) + (firstMessage.length > 40 ? "…" : "");
-  const now = firebase.firestore.FieldValue.serverTimestamp();
-  try {
-    const ref = await aiDb
-      .collection("users")
-      .doc(aiCurrentUser.uid)
-      .collection("aiConversations")
-      .add({ title, createdAt: now, updatedAt: now, messages: [] });
-    return ref.id;
-  } catch (e) {
-    console.error("Erreur création conversation:", e);
-    return null;
+  if (!aiCurrentUser) return null;
+  const uid = aiCurrentUser.uid;
+  const id = generateConvId();
+  const title = firstMessage.slice(0, 40) + (firstMessage.length > 40 ? "…" : "");
+  const now = Date.now();
+
+  const conv = { id, title, updatedAt: now, messages: [] };
+
+  // Sauvegarder dans localStorage
+  const convs = readLocalConvs(uid);
+  convs.unshift(conv);
+  writeLocalConvs(uid, convs);
+
+  // Essayer Firebase en arrière-plan (sans bloquer)
+  if (aiDb) {
+    aiDb.collection("users").doc(uid).collection("aiConversations").doc(id)
+      .set({ title, createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp(), messages: [] })
+      .catch(() => {});
   }
+
+  return id;
 }
 
 async function saveConversationMessages() {
-  if (!aiDb || !aiCurrentUser || !currentConvId) return;
+  if (!aiCurrentUser || !currentConvId) return;
+  const uid = aiCurrentUser.uid;
   const messages = aiChatHistory.map((m) => ({
     role: m.role,
     text: m.parts[0].text,
   }));
-  try {
-    await aiDb
-      .collection("users")
-      .doc(aiCurrentUser.uid)
-      .collection("aiConversations")
-      .doc(currentConvId)
-      .update({
-        messages,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-  } catch (e) {
-    console.error("Erreur sauvegarde messages:", e);
+  const now = Date.now();
+
+  // Mettre à jour dans localStorage
+  const convs = readLocalConvs(uid);
+  const idx = convs.findIndex((c) => c.id === currentConvId);
+  if (idx !== -1) {
+    convs[idx].messages = messages;
+    convs[idx].updatedAt = now;
+    writeLocalConvs(uid, convs);
+  }
+
+  // Essayer Firebase en arrière-plan
+  if (aiDb) {
+    aiDb.collection("users").doc(uid).collection("aiConversations").doc(currentConvId)
+      .update({ messages, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+      .catch(() => {});
   }
 }
 
 async function openConversation(convId) {
-  if (!aiDb || !aiCurrentUser) return;
+  if (!aiCurrentUser) return;
   currentConvId = convId;
 
-  // Mettre à jour l'état actif dans la sidebar
   document.querySelectorAll(".ai-conv-item").forEach((el) => {
     el.classList.toggle("active", el.dataset.id === convId);
   });
 
-  // Fermer le sidebar mobile
   const sidebar = document.getElementById("aiSidebar");
   if (sidebar) sidebar.classList.remove("open");
 
@@ -557,39 +602,50 @@ async function openConversation(convId) {
   chatBox.innerHTML = "";
   aiChatHistory = [];
 
-  try {
-    const doc = await aiDb
-      .collection("users")
-      .doc(aiCurrentUser.uid)
-      .collection("aiConversations")
-      .doc(convId)
-      .get();
-    const messages = doc.data()?.messages || [];
-    messages.forEach((msg) => {
-      const role = msg.role === "user" ? "user" : "ai";
-      aiChatHistory.push({ role: msg.role, parts: [{ text: msg.text }] });
-      appendMessage(role, msg.text);
-    });
-  } catch (e) {
-    console.error("Erreur chargement conversation:", e);
+  // Charger depuis localStorage
+  const uid = aiCurrentUser.uid;
+  const convs = readLocalConvs(uid);
+  const conv = convs.find((c) => c.id === convId);
+  const messages = conv?.messages || [];
+
+  // Essayer Firestore si localStorage vide
+  if (messages.length === 0 && aiDb) {
+    try {
+      const doc = await aiDb
+        .collection("users").doc(uid)
+        .collection("aiConversations").doc(convId).get();
+      const remoteMessages = doc.data()?.messages || [];
+      remoteMessages.forEach((msg) => {
+        aiChatHistory.push({ role: msg.role, parts: [{ text: msg.text }] });
+        appendMessage(msg.role === "user" ? "user" : "ai", msg.text);
+      });
+      return;
+    } catch (_) {}
   }
+
+  messages.forEach((msg) => {
+    aiChatHistory.push({ role: msg.role, parts: [{ text: msg.text }] });
+    appendMessage(msg.role === "user" ? "user" : "ai", msg.text);
+  });
 }
 
 async function deleteConversation(convId) {
-  if (!aiDb || !aiCurrentUser) return;
-  try {
-    await aiDb
-      .collection("users")
-      .doc(aiCurrentUser.uid)
-      .collection("aiConversations")
-      .doc(convId)
-      .delete();
-    if (currentConvId === convId) {
-      startNewConversation();
-    }
-    await loadConversations();
-  } catch (e) {
-    console.error("Erreur suppression conversation:", e);
+  if (!aiCurrentUser) return;
+  const uid = aiCurrentUser.uid;
+
+  // Supprimer du localStorage
+  const convs = readLocalConvs(uid).filter((c) => c.id !== convId);
+  writeLocalConvs(uid, convs);
+  renderConvList(convs);
+
+  if (currentConvId === convId) {
+    startNewConversation();
+  }
+
+  // Essayer Firestore en arrière-plan
+  if (aiDb) {
+    aiDb.collection("users").doc(uid).collection("aiConversations").doc(convId)
+      .delete().catch(() => {});
   }
 }
 
@@ -610,7 +666,6 @@ function startNewConversation() {
     el.classList.remove("active")
   );
 
-  // Fermer le sidebar mobile si ouvert
   const sidebar = document.getElementById("aiSidebar");
   if (sidebar) sidebar.classList.remove("open");
 }
