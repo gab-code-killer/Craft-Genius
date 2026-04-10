@@ -306,8 +306,10 @@ async function sendAiMessage() {
     removeLoadingMessage(loadingId);
     console.error("Erreur Gemini:", error);
 
-    // 2. Gestion spéciale de l'erreur 429 (quota dépassé)
-    if (error.message && error.message.includes("429")) {
+    // 2. Messages d'erreur selon le code HTTP
+    if (error.message && error.message.includes("503")) {
+      appendMessage("ai", "🔄 L'IA est temporairement surchargée. Réessaie dans quelques instants.");
+    } else if (error.message && error.message.includes("429")) {
       appendMessage("ai", "⏱️ Doucement ! L'IA reprend son souffle. Réessaie dans 1 à 2 minutes.");
     } else {
       appendMessage("ai", `❌ Erreur: ${error.message}`);
@@ -327,39 +329,51 @@ async function sendAiMessage() {
 // Appel au proxy Vercel sécurisé (/api/gemini)
 // ============================================
 
-async function callGemini() {
-  const response = await fetch("/api/gemini", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      system_instruction: { parts: [{ text: AI_SYSTEM_PROMPT }] },
-      contents: aiChatHistory,
-      generationConfig: { maxOutputTokens: 700, temperature: 0.7 },
-    }),
+async function callGemini(retries = 3, delayMs = 4000) {
+  const body = JSON.stringify({
+    system_instruction: { parts: [{ text: AI_SYSTEM_PROMPT }] },
+    contents: aiChatHistory,
+    generationConfig: { maxOutputTokens: 700, temperature: 0.7 },
   });
 
-  // Lire le texte brut d'abord pour voir ce qui revient vraiment
-  const text = await response.text();
-  if (!text) {
-    throw new Error(`Réponse vide du serveur (status HTTP ${response.status}) — vérifie que GEMINI_API_KEY est bien définie sur Vercel`);
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const response = await fetch("/api/gemini", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body,
+    });
+
+    // Lire le texte brut d'abord pour voir ce qui revient vraiment
+    const text = await response.text();
+    if (!text) {
+      throw new Error(`Réponse vide du serveur (status HTTP ${response.status}) — vérifie que GEMINI_API_KEY est bien définie sur Vercel`);
+    }
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      throw new Error(`Réponse inattendue: ${text.substring(0, 200)}`);
+    }
+
+    // Retry automatique sur 503 (forte demande) et 429 (rate limit)
+    if ((response.status === 503 || response.status === 429) && attempt < retries) {
+      await new Promise((r) => setTimeout(r, delayMs * attempt));
+      continue;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Gemini ${response.status}: ${data?.error || "Erreur inconnue"}`);
+    }
+
+    if (data.candidates?.[0]?.content?.parts) {
+      return data.candidates[0].content.parts[0].text;
+    }
+
+    throw new Error("Réponse Gemini invalide");
   }
 
-  let data;
-  try {
-    data = JSON.parse(text);
-  } catch (e) {
-    throw new Error(`Réponse inattendue: ${text.substring(0, 200)}`);
-  }
-
-  if (!response.ok) {
-    throw new Error(`Gemini ${response.status}: ${data?.error || "Erreur inconnue"}`);
-  }
-
-  if (data.candidates?.[0]?.content?.parts) {
-    return data.candidates[0].content.parts[0].text;
-  }
-
-  throw new Error("Réponse Gemini invalide");
+  throw new Error("Gemini 503: This model is currently experiencing high demand.");
 }
 
 // ============================================
