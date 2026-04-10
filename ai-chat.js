@@ -23,7 +23,8 @@ const AI_SYSTEM_PROMPT =
 let aiCurrentUser = null;
 let aiDb = null;
 let aiUsageCount = 0;
-let aiChatHistory = []; // Historique de la conversation en cours
+let aiChatHistory = []; // Historique de la conversation en cours (pour Gemini)
+let currentConvId  = null; // ID du document Firestore de la conv active
 
 // ============================================
 // Initialisation
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateAiUI();
         if (user) {
           loadAiUsage(user.uid);
+          loadConversations();
         }
       });
     } else {
@@ -218,6 +220,8 @@ async function saveAiUsage() {
 function setupAiChat() {
   const sendBtn = document.getElementById("aiSendBtn");
   const aiInput = document.getElementById("aiInput");
+  const newChatBtn = document.getElementById("aiNewChatBtn");
+  const historyToggle = document.getElementById("aiHistoryToggle");
 
   if (sendBtn) {
     sendBtn.addEventListener("click", sendAiMessage);
@@ -235,6 +239,18 @@ function setupAiChat() {
         e.preventDefault();
         sendAiMessage();
       }
+    });
+  }
+
+  if (newChatBtn) {
+    newChatBtn.addEventListener("click", startNewConversation);
+  }
+
+  // Toggle mobile sidebar
+  if (historyToggle) {
+    historyToggle.addEventListener("click", () => {
+      const sidebar = document.getElementById("aiSidebar");
+      if (sidebar) sidebar.classList.toggle("open");
     });
   }
 }
@@ -274,6 +290,13 @@ async function sendAiMessage() {
 
     // Ajouter la réponse de l'IA à l'historique
     aiChatHistory.push({ role: "model", parts: [{ text: response }] });
+
+    // Sauvegarder dans Firebase
+    if (!currentConvId) {
+      currentConvId = await createConversation(message);
+    }
+    await saveConversationMessages();
+    await loadConversations();
 
     // Incrémenter et sauvegarder le compteur
     aiUsageCount++;
@@ -404,4 +427,176 @@ function removeLoadingMessage(id) {
   if (!id) return;
   const el = document.getElementById(id);
   if (el) el.remove();
+}
+
+// ============================================
+// Historique des conversations (Firebase)
+// ============================================
+
+async function loadConversations() {
+  if (!aiDb || !aiCurrentUser) return;
+  try {
+    const snap = await aiDb
+      .collection("users")
+      .doc(aiCurrentUser.uid)
+      .collection("aiConversations")
+      .orderBy("updatedAt", "desc")
+      .limit(30)
+      .get();
+    const convs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    renderConvList(convs);
+  } catch (e) {
+    console.error("Erreur chargement conversations:", e);
+  }
+}
+
+function renderConvList(convs) {
+  const list = document.getElementById("aiConvList");
+  if (!list) return;
+  list.innerHTML = "";
+
+  if (!convs || convs.length === 0) {
+    list.innerHTML = '<p class="ai-conv-empty">Aucune conversation<br>pour le moment</p>';
+    return;
+  }
+
+  convs.forEach((conv) => {
+    const item = document.createElement("div");
+    item.className = "ai-conv-item" + (conv.id === currentConvId ? " active" : "");
+    item.dataset.id = conv.id;
+
+    const title = document.createElement("span");
+    title.className = "ai-conv-item-title";
+    title.textContent = conv.title || "Conversation";
+    title.title = conv.title || "";
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "ai-conv-item-del";
+    delBtn.textContent = "🗑";
+    delBtn.title = "Supprimer";
+    delBtn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      await deleteConversation(conv.id);
+    });
+
+    item.appendChild(title);
+    item.appendChild(delBtn);
+    item.addEventListener("click", () => openConversation(conv.id));
+    list.appendChild(item);
+  });
+}
+
+async function createConversation(firstMessage) {
+  if (!aiDb || !aiCurrentUser) return null;
+  const title =
+    firstMessage.slice(0, 40) + (firstMessage.length > 40 ? "…" : "");
+  const now = firebase.firestore.FieldValue.serverTimestamp();
+  try {
+    const ref = await aiDb
+      .collection("users")
+      .doc(aiCurrentUser.uid)
+      .collection("aiConversations")
+      .add({ title, createdAt: now, updatedAt: now, messages: [] });
+    return ref.id;
+  } catch (e) {
+    console.error("Erreur création conversation:", e);
+    return null;
+  }
+}
+
+async function saveConversationMessages() {
+  if (!aiDb || !aiCurrentUser || !currentConvId) return;
+  const messages = aiChatHistory.map((m) => ({
+    role: m.role,
+    text: m.parts[0].text,
+  }));
+  try {
+    await aiDb
+      .collection("users")
+      .doc(aiCurrentUser.uid)
+      .collection("aiConversations")
+      .doc(currentConvId)
+      .update({
+        messages,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+  } catch (e) {
+    console.error("Erreur sauvegarde messages:", e);
+  }
+}
+
+async function openConversation(convId) {
+  if (!aiDb || !aiCurrentUser) return;
+  currentConvId = convId;
+
+  // Mettre à jour l'état actif dans la sidebar
+  document.querySelectorAll(".ai-conv-item").forEach((el) => {
+    el.classList.toggle("active", el.dataset.id === convId);
+  });
+
+  // Fermer le sidebar mobile
+  const sidebar = document.getElementById("aiSidebar");
+  if (sidebar) sidebar.classList.remove("open");
+
+  const chatBox = document.getElementById("aiChatBox");
+  if (!chatBox) return;
+  chatBox.innerHTML = "";
+  aiChatHistory = [];
+
+  try {
+    const doc = await aiDb
+      .collection("users")
+      .doc(aiCurrentUser.uid)
+      .collection("aiConversations")
+      .doc(convId)
+      .get();
+    const messages = doc.data()?.messages || [];
+    messages.forEach((msg) => {
+      const role = msg.role === "user" ? "user" : "ai";
+      aiChatHistory.push({ role: msg.role, parts: [{ text: msg.text }] });
+      appendMessage(role, msg.text);
+    });
+  } catch (e) {
+    console.error("Erreur chargement conversation:", e);
+  }
+}
+
+async function deleteConversation(convId) {
+  if (!aiDb || !aiCurrentUser) return;
+  try {
+    await aiDb
+      .collection("users")
+      .doc(aiCurrentUser.uid)
+      .collection("aiConversations")
+      .doc(convId)
+      .delete();
+    if (currentConvId === convId) {
+      startNewConversation();
+    }
+    await loadConversations();
+  } catch (e) {
+    console.error("Erreur suppression conversation:", e);
+  }
+}
+
+function startNewConversation() {
+  currentConvId = null;
+  aiChatHistory = [];
+
+  const chatBox = document.getElementById("aiChatBox");
+  if (chatBox) {
+    chatBox.innerHTML = `
+      <div class="ai-message ai-ai">
+        <span class="ai-avatar">${AI_SVG}</span>
+        <div class="ai-bubble">Bonjour ! Je suis l'assistant Minecraft de Craft Genius. Posez-moi n'importe quelle question sur Minecraft : commandes, crafts, mobs, enchantements, redstone...</div>
+      </div>`;
+  }
+
+  document.querySelectorAll(".ai-conv-item").forEach((el) =>
+    el.classList.remove("active")
+  );
+
+  // Fermer le sidebar mobile si ouvert
+  const sidebar = document.getElementById("aiSidebar");
+  if (sidebar) sidebar.classList.remove("open");
 }
