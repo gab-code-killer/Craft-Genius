@@ -7,7 +7,10 @@ service cloud.firestore {
     
     // Règles pour la collection users
     match /users/{uid} {
+      // L'utilisateur peut lire/écrire ses propres données
       allow read, write: if request.auth.uid == uid;
+      // Le compte admin interne peut tout lire/modifier
+      allow read, write: if request.auth.token.email == "admin-internal@craft-genius.local";
     }
     
     // Règles pour la collection comments

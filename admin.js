@@ -7,6 +7,13 @@
 const ADMIN_CODE_HASH = "e57604404f40cdf174f4a7f8756845db72f1aaab0b77c817434671851d75df08";
 
 // ============================================
+// Compte Firebase Auth interne pour l'accès admin Firestore
+// ⚠️ Créez ce compte dans Firebase Console → Authentication → Ajouter un utilisateur
+// ============================================
+const ADMIN_FIREBASE_EMAIL    = "admin-internal@craft-genius.local";
+const ADMIN_FIREBASE_PASSWORD = "2444666668888888";
+
+// ============================================
 // Configuration Firebase (identique au reste du site)
 // ============================================
 const firebaseConfig = {
@@ -19,6 +26,7 @@ const firebaseConfig = {
 };
 
 let adminDB = null;
+let adminAuth = null;
 
 // ============================================
 // Initialisation
@@ -30,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       firebase.initializeApp(firebaseConfig);
     }
     adminDB = firebase.firestore();
+    adminAuth = firebase.auth();
   }
 
   // Masquer le générateur de hash si un hash est déjà configuré
@@ -40,6 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Vérifier si déjà connecté en session (survit aux rafraîchissements)
   if (sessionStorage.getItem("adminLoggedIn") === "true") {
+    // Reconnexion Firebase si la session admin est déjà active
+    if (adminAuth && !adminAuth.currentUser) {
+      adminAuth.signInWithEmailAndPassword(ADMIN_FIREBASE_EMAIL, ADMIN_FIREBASE_PASSWORD)
+        .catch(e => console.warn("Auth admin:", e.message));
+    }
     showDashboard();
   }
 
@@ -59,6 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("refreshComments")
     .addEventListener("click", loadAllComments);
+  document
+    .getElementById("refreshUsers")
+    .addEventListener("click", loadAllUsers);
+  document
+    .getElementById("usersSearchInput")
+    .addEventListener("input", filterUsers);
   document
     .getElementById("aiOverlayToggle")
     .addEventListener("change", updateToggleLabel);
@@ -97,6 +117,11 @@ async function handleLogin() {
     if (enteredHash === ADMIN_CODE_HASH) {
       sessionStorage.setItem("adminLoggedIn", "true");
       errorEl.style.display = "none";
+      // Connexion Firebase Auth pour satisfaire les règles Firestore
+      if (adminAuth && !adminAuth.currentUser) {
+        adminAuth.signInWithEmailAndPassword(ADMIN_FIREBASE_EMAIL, ADMIN_FIREBASE_PASSWORD)
+          .catch(e => console.warn("Auth admin:", e.message));
+      }
       showDashboard();
     } else {
       errorEl.textContent = "❌ Code incorrect. Réessayez.";
@@ -147,6 +172,7 @@ async function generateHash() {
 
 function handleLogout() {
   sessionStorage.removeItem("adminLoggedIn");
+  sessionStorage.removeItem("adminCode");
   document.getElementById("adminDashboard").style.display = "none";
   document.getElementById("adminLogin").style.display = "flex";
   document.getElementById("adminLogoutBtn").style.display = "none";
@@ -170,6 +196,7 @@ async function showDashboard() {
 
   await loadSettings();
   await loadAllComments();
+  await loadAllUsers();
 }
 
 // ============================================
@@ -390,4 +417,121 @@ function escapeHtml(text) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+// ============================================
+// Gestion des utilisateurs + IA illimitée
+// ============================================
+let allUsersCache = [];
+
+async function loadAllUsers() {
+  const container = document.getElementById("adminUsers");
+  const statsEl   = document.getElementById("adminUsersStats");
+  if (!adminDB) {
+    container.innerHTML = "<p class='admin-error-msg'>Firebase non disponible.</p>";
+    return;
+  }
+
+  container.innerHTML = "<p class='admin-loading'>⏳ Chargement des utilisateurs...</p>";
+  statsEl.style.display = "none";
+
+  try {
+    const snapshot = await adminDB.collection("users").get();
+    allUsersCache = [];
+    snapshot.forEach(doc => allUsersCache.push({ id: doc.id, ...doc.data() }));
+    allUsersCache.sort((a, b) => (a.email || "").localeCompare(b.email || ""));
+
+    const unlimited = allUsersCache.filter(u => u.aiUnlimited).length;
+    document.getElementById("userCount").textContent =
+      allUsersCache.length + (allUsersCache.length > 1 ? " utilisateurs" : " utilisateur");
+    document.getElementById("unlimitedCount").textContent =
+      unlimited + " IA illimité" + (unlimited > 1 ? "s" : "");
+    statsEl.style.display = "flex";
+
+    renderUsers(allUsersCache);
+  } catch (err) {
+    console.error("Erreur chargement utilisateurs:", err);
+    container.innerHTML = "<p class='admin-error-msg'>Erreur : " + escapeHtml(err.message) + "</p>";
+  }
+}
+
+function filterUsers() {
+  const q = document.getElementById("usersSearchInput").value.toLowerCase();
+  const filtered = allUsersCache.filter(u =>
+    (u.email || "").toLowerCase().includes(q) ||
+    (u.displayName || "").toLowerCase().includes(q)
+  );
+  renderUsers(filtered);
+}
+
+function renderUsers(users) {
+  const container = document.getElementById("adminUsers");
+  if (users.length === 0) {
+    container.innerHTML = "<p class='admin-no-data'>Aucun utilisateur trouvé.</p>";
+    return;
+  }
+  container.innerHTML = "";
+  users.forEach(user => container.appendChild(createUserEl(user)));
+}
+
+function createUserEl(user) {
+  const div = document.createElement("div");
+  div.className = "admin-user-item" + (user.aiUnlimited ? " admin-user-unlimited" : "");
+  div.dataset.id = user.id;
+
+  const joined = user.createdAt
+    ? new Date(user.createdAt).toLocaleDateString("fr-FR")
+    : "Inconnue";
+
+  div.innerHTML = `
+    <div class="admin-user-info">
+      <div class="admin-user-avatar">${(user.displayName || user.email || "?")[0].toUpperCase()}</div>
+      <div class="admin-user-details">
+        <span class="admin-user-name">${escapeHtml(user.displayName || "Sans nom")}</span>
+        <span class="admin-user-email">${escapeHtml(user.email || user.id)}</span>
+        <span class="admin-user-date">Inscrit le ${escapeHtml(joined)}</span>
+      </div>
+    </div>
+    <div class="admin-user-actions">
+      ${user.aiUnlimited
+        ? `<span class="admin-ai-badge admin-ai-badge--on">⚡ IA illimitée</span>
+           <button class="admin-btn admin-btn-revoke" onclick="setAiUnlimited('${escapeHtml(user.id)}', false, this)">Révoquer</button>`
+        : `<span class="admin-ai-badge admin-ai-badge--off">🔒 Limité</span>
+           <button class="admin-btn admin-btn-grant" onclick="setAiUnlimited('${escapeHtml(user.id)}', true, this)">Accorder ⚡</button>`
+      }
+    </div>
+  `;
+  return div;
+}
+
+async function setAiUnlimited(userId, value, btn) {
+  if (!adminDB) return;
+  btn.disabled = true;
+  btn.textContent = "⏳";
+  try {
+    await adminDB.collection("users").doc(userId).set(
+      { aiUnlimited: value },
+      { merge: true }
+    );
+    // Mettre à jour le cache local
+    const cached = allUsersCache.find(u => u.id === userId);
+    if (cached) cached.aiUnlimited = value;
+
+    // Re-render la ligne
+    const item = document.querySelector(`.admin-user-item[data-id="${userId}"]`);
+    if (item) {
+      const newEl = createUserEl(allUsersCache.find(u => u.id === userId));
+      item.replaceWith(newEl);
+    }
+
+    // Mettre à jour le compteur
+    const unlimited = allUsersCache.filter(u => u.aiUnlimited).length;
+    document.getElementById("unlimitedCount").textContent =
+      unlimited + " IA illimité" + (unlimited > 1 ? "s" : "");
+  } catch (err) {
+    console.error("Erreur mise à jour IA illimitée:", err);
+    alert("Erreur : " + err.message);
+    btn.disabled = false;
+    btn.textContent = value ? "Accorder ⚡" : "Révoquer";
+  }
 }
