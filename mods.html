@@ -266,6 +266,173 @@
           this.classList.add('active');
         });
       });
+
+      // ── Traductions ─────────────────────────────────────────
+      var modsTranslations = {
+        fr: {
+          heroSub:        'Explore les meilleurs mods Minecraft sur CurseForge.',
+          searchPlaceholder: '🔍 Rechercher un mod...',
+          searchBtn:      'Rechercher',
+          filterLoader:   'Mod Loader',
+          filterAll:      'Tous',
+          filterVersion:  'Version',
+          filterAllVers:  'Toutes',
+          filterSort:     'Trier par',
+          sortPopular:    'Popularité',
+          sortDownloads:  'Téléchargements',
+          sortUpdated:    'Dernière mise à jour',
+          sortFeatured:   'En vedette',
+          favTitle:       '⭐ Favoris',
+          favBtn:         'Voir mes favoris',
+          loading:        'Chargement des mods...',
+          error:          'Une erreur est survenue.',
+          retryBtn:       'Réessayer',
+          prevPage:       '← Page précédente',
+          nextPage:       'Page suivante →',
+          modalSub:       'Recettes de craft',
+          loginBtn:       '🔒 Se connecter',
+          logout:         '🚪 Déconnexion',
+          settingsTitle:  '⚙️ Paramètres',
+          langLabel:      '🌍 Langue',
+          themeLabel:     '🎨 Thème',
+          themeLight:     'Clair',
+          themeDark:      'Sombre',
+          noFavs:         "Aucun favori pour l'instant.<br>Clique sur ⭐ sur un mod pour l'ajouter.",
+          favCount:       'mod(s) en favoris',
+          prevTip:        'Conseil précédent',
+          nextTip:        'Conseil suivant',
+        },
+        en: {
+          heroSub:        'Explore the best Minecraft mods on CurseForge.',
+          searchPlaceholder: '🔍 Search for a mod...',
+          searchBtn:      'Search',
+          filterLoader:   'Mod Loader',
+          filterAll:      'All',
+          filterVersion:  'Version',
+          filterAllVers:  'All',
+          filterSort:     'Sort by',
+          sortPopular:    'Popularity',
+          sortDownloads:  'Downloads',
+          sortUpdated:    'Last updated',
+          sortFeatured:   'Featured',
+          favTitle:       '⭐ Favorites',
+          favBtn:         'View my favorites',
+          loading:        'Loading mods...',
+          error:          'An error occurred.',
+          retryBtn:       'Retry',
+          prevPage:       '← Previous page',
+          nextPage:       'Next page →',
+          modalSub:       'Craft recipes',
+          loginBtn:       '🔒 Sign in',
+          logout:         '🚪 Sign out',
+          settingsTitle:  '⚙️ Settings',
+          langLabel:      '🌍 Language',
+          themeLabel:     '🎨 Theme',
+          themeLight:     'Light',
+          themeDark:      'Dark',
+          noFavs:         "No favorites yet.<br>Click ⭐ on a mod to add it.",
+          favCount:       'favorite mod(s)',
+          prevTip:        'Previous tip',
+          nextTip:        'Next tip',
+        }
+      };
+
+      function applyModsLang(lang) {
+        var t = modsTranslations[lang] || modsTranslations.fr;
+        var set = function(id, prop, val) { var el = document.getElementById(id); if (el) el[prop] = val; };
+        var setTxt = function(id, val) { set(id, 'textContent', val); };
+        var setAll = function(sel, prop, val) { document.querySelectorAll(sel).forEach(function(el) { el[prop] = val; }); };
+
+        // Hero
+        var heroSub = document.querySelector('.mods-hero-sub');
+        if (heroSub) heroSub.textContent = t.heroSub;
+        var searchInput = document.getElementById('modsSearchInput');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+        var searchBtn = document.getElementById('modsSearchBtn');
+        if (searchBtn) searchBtn.textContent = t.searchBtn;
+
+        // Sidebar
+        var filterTitles = document.querySelectorAll('.mods-filter-title');
+        var labels = [t.filterLoader, t.filterVersion, t.filterSort, t.favTitle];
+        filterTitles.forEach(function(el, i) { if (labels[i]) el.textContent = labels[i]; });
+
+        var allBtn = document.querySelector('.mods-loader-btn[data-loader=""]');
+        if (allBtn) allBtn.textContent = t.filterAll;
+
+        var favToggle = document.getElementById('modsFavToggle');
+        if (favToggle && !favToggle.textContent.includes('←')) {
+          var count = document.getElementById('modsFavCount');
+          var n = count ? count.textContent : '0';
+          favToggle.innerHTML = t.favBtn + ' (<span id="modsFavCount">' + n + '</span>)';
+        }
+
+        // Version select first option
+        var versionSel = document.getElementById('filterVersion');
+        if (versionSel && versionSel.options[0]) versionSel.options[0].textContent = t.filterAllVers;
+
+        // Sort options
+        var sortSel = document.getElementById('filterSort');
+        if (sortSel) {
+          var sortLabels = [t.sortPopular, t.sortDownloads, t.sortUpdated, t.sortFeatured];
+          Array.from(sortSel.options).forEach(function(opt, i) { if (sortLabels[i]) opt.textContent = sortLabels[i]; });
+        }
+
+        // États chargement
+        var loadingEl = document.querySelector('#modsLoading p');
+        if (loadingEl) loadingEl.textContent = t.loading;
+        var retryBtn = document.getElementById('modsRetryBtn');
+        if (retryBtn) retryBtn.textContent = t.retryBtn;
+
+        // Pagination
+        var prevBtn = document.getElementById('modsPrevBtn');
+        if (prevBtn) prevBtn.textContent = t.prevPage;
+        var nextBtn = document.getElementById('modsNextBtn');
+        if (nextBtn) nextBtn.textContent = t.nextPage;
+
+        // Modal
+        var modalSub = document.getElementById('modsModalSub');
+        if (modalSub) modalSub.textContent = t.modalSub;
+
+        // Auth btn (si pas connecté)
+        var authBtn = document.getElementById('authBtn');
+        if (authBtn && authBtn.querySelector('.auth-avatar') === null) authBtn.textContent = t.loginBtn;
+        var logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) logoutBtn.textContent = t.logout;
+
+        // Settings menu labels
+        var settingsH3 = document.querySelector('.settings-header h3');
+        if (settingsH3) settingsH3.textContent = t.settingsTitle;
+        var sectionTitles = document.querySelectorAll('.settings-body .setting-section h4');
+        if (sectionTitles[0]) sectionTitles[0].textContent = t.langLabel;
+        if (sectionTitles[1]) sectionTitles[1].textContent = t.themeLabel;
+        var themeOptions = document.querySelectorAll('.theme-option span:last-child');
+        if (themeOptions[0]) themeOptions[0].textContent = t.themeLight;
+        if (themeOptions[1]) themeOptions[1].textContent = t.themeDark;
+
+        // Tips nav aria-labels
+        var tipPrev = document.getElementById('modsTipPrev');
+        if (tipPrev) tipPrev.setAttribute('aria-label', t.prevTip);
+        var tipNext = document.getElementById('modsTipNext');
+        if (tipNext) tipNext.setAttribute('aria-label', t.nextTip);
+
+        // Stocker la langue pour mods.js (favoris, grille)
+        window._modsLang = lang;
+        window._modsT = t;
+      }
+
+      // Init langue
+      var savedLang = localStorage.getItem('lang') || 'fr';
+      document.querySelectorAll('.setting-option[data-lang]').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.lang === savedLang);
+        btn.addEventListener('click', function() {
+          var l = this.dataset.lang;
+          localStorage.setItem('lang', l);
+          document.querySelectorAll('.setting-option[data-lang]').forEach(function(b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          applyModsLang(l);
+        });
+      });
+      applyModsLang(savedLang);
     });
     </script>
     <!-- Firebase SDK (pour les favoris) -->

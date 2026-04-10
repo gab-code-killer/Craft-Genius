@@ -192,7 +192,7 @@ async function fetchMods() {
     const from = currentPage * PAGE_SIZE + 1;
     const to   = Math.min(from + data.mods.length - 1, totalCount);
 
-    modsCount.textContent = `${totalCount.toLocaleString("fr")} mods trouvés  (${from}–${to})`;
+    modsCount.textContent = `${totalCount.toLocaleString(window._modsLang || 'fr')} mods trouvés  (${from}–${to})`;
     modsGrid.innerHTML    = data.mods.map(renderCard).join("");
     bindFavButtons();
 
@@ -354,7 +354,9 @@ function bindFavButtons() {
       const mod = { id: Number(btn.dataset.id), name: btn.dataset.name, slug: btn.dataset.slug, logo: btn.dataset.logo, url: btn.dataset.url };
       const isNowFav = await toggleFavorite(mod);
       btn.classList.toggle("active", isNowFav);
-      btn.title = isNowFav ? "Retirer des favoris" : "Ajouter aux favoris";
+      btn.title = isNowFav
+        ? (window._modsLang === 'en' ? 'Remove from favorites' : 'Retirer des favoris')
+        : (window._modsLang === 'en' ? 'Add to favorites' : 'Ajouter aux favoris');
     });
   });
 }
@@ -369,13 +371,13 @@ if (modsFavToggle) {
     showFavoritesMode = !showFavoritesMode;
     if (showFavoritesMode) {
       const favs = getFavorites();
-      modsCount.textContent = `${favs.length} mod(s) en favoris`;
+      modsCount.textContent = `${favs.length} ${(window._modsT && window._modsT.favCount) || 'mod(s) en favoris'}`;
       modsPagination.style.display = "none";
       modsLoading.style.display    = "none";
       modsError.style.display      = "none";
       if (favs.length === 0) {
         modsGrid.style.display = "grid";
-        modsGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;opacity:.6;">Aucun favori pour l'instant.<br>Clique sur ⭐ sur un mod pour l'ajouter.</div>`;
+        modsGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2rem;opacity:.6;">${(window._modsT && window._modsT.noFavs) || "Aucun favori pour l'instant.<br>Clique sur ⭐ sur un mod pour l'ajouter."}</div>`;
       } else {
         modsGrid.style.display = "grid";
         modsGrid.innerHTML = favs.map(f => `
@@ -390,9 +392,9 @@ if (modsFavToggle) {
           </div>`).join("");
         bindFavButtons();
       }
-      modsFavToggle.textContent = `← Retour aux mods`;
+      modsFavToggle.textContent = `← ${(window._modsT && window._modsLang === 'en') ? 'Back to mods' : 'Retour aux mods'}`;
     } else {
-      modsFavToggle.textContent = `Voir mes favoris (${getFavorites().length})`;
+      modsFavToggle.innerHTML = `${(window._modsT && window._modsT.favBtn) || 'Voir mes favoris'} (<span id="modsFavCount">${getFavorites().length}</span>)`;
       fetchMods();
     }
   });
