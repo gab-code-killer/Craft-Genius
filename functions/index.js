@@ -1,7 +1,73 @@
 const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+const crypto = require("crypto");
 
-// Fonction proxy sécurisée — la clé API Gemini reste côté serveur
-exports.callGemini = functions.https.onCall(async (data, context) => {
+admin.initializeApp();
+const db = admin.firestore();
+
+// ============================================
+// Utilitaire : SHA-256 (Node.js natif)
+// ============================================
+function sha256(text) {
+  return crypto.createHash("sha256").update(text).digest("hex");
+}
+
+// ============================================
+// Vérification du code admin
+// ============================================
+async function verifyAdmin(adminCode) {
+  if (!adminCode) return false;
+  const doc = await db.collection("siteSettings").doc("main").get();
+  if (!doc.exists) return false;
+  const storedHash = doc.data().adminCodeHash;
+  if (!storedHash) return false;
+  return sha256(adminCode) === storedHash;
+}
+
+// ============================================
+// listAdminUsers — liste tous les utilisateurs
+// ============================================
+exports.listAdminUsers = functions.https.onCall(async (data) => {
+  if (!(await verifyAdmin(data.adminCode))) {
+    throw new functions.https.HttpsError("permission-denied", "Accès refusé.");
+  }
+
+  const snapshot = await db.collection("users").orderBy("email").get();
+  const users = [];
+  snapshot.forEach((doc) => {
+    const d = doc.data();
+    users.push({
+      id: doc.id,
+      email: d.email || "",
+      displayName: d.displayName || "",
+      aiUnlimited: d.aiUnlimited || false,
+      createdAt: d.createdAt ? d.createdAt.toMillis() : null,
+    });
+  });
+  return { users };
+});
+
+// ============================================
+// setUserAiUnlimited — toggle IA illimitée
+// ============================================
+exports.setUserAiUnlimited = functions.https.onCall(async (data) => {
+  if (!(await verifyAdmin(data.adminCode))) {
+    throw new functions.https.HttpsError("permission-denied", "Accès refusé.");
+  }
+
+  const { userId, value } = data;
+  if (!userId || typeof value !== "boolean") {
+    throw new functions.https.HttpsError("invalid-argument", "userId et value requis.");
+  }
+
+  await db.collection("users").doc(userId).set({ aiUnlimited: value }, { merge: true });
+  return { success: true };
+});
+
+// ============================================
+// askGemini — proxy sécurisé vers l'API Gemini
+// ============================================
+exports.askGemini = functions.https.onCall(async (data, context) => {
   // Bloquer les utilisateurs non connectés
   if (!context.auth) {
     throw new functions.https.HttpsError(
