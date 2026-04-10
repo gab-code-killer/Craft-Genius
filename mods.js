@@ -578,3 +578,59 @@ async function loadVersions() {
 // ── Lancement ─────────────────────────────────────────────────
 loadVersions();
 fetchMods();
+
+// ── Auth Firebase (bouton profil dans la navbar) ──────────────
+(function initAuth() {
+  if (typeof firebase === "undefined") return;
+  const firebaseConfig = {
+    apiKey: "AIzaSyDV9nR4R9DrLBF7xkQzihLtzl8cOipUaC0",
+    authDomain: "craft-genius-201e6.firebaseapp.com",
+    projectId: "craft-genius-201e6",
+    storageBucket: "craft-genius-201e6.firebasestorage.app",
+    messagingSenderId: "476192035823",
+    appId: "1:476192035823:web:9f3c8a72fa2eef9bb99c1a",
+  };
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+  const auth        = firebase.auth();
+  const db          = firebase.firestore();
+  const authBtn     = document.getElementById("authBtn");
+  const profileMenu = document.getElementById("profileMenu");
+  const logoutBtn   = document.getElementById("logoutBtn");
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      const letter = (user.email || "?").charAt(0).toUpperCase();
+      authBtn.innerHTML = `<span class="auth-avatar">${letter}</span>`;
+      authBtn.title = "Profil";
+      authBtn.onclick = () => {
+        profileMenu.style.display = profileMenu.style.display === "none" ? "block" : "none";
+      };
+      document.getElementById("profileEmail").textContent = user.email || "";
+      db.collection("users").doc(user.uid).get().then(doc => {
+        if (doc.exists && doc.data().username) {
+          document.getElementById("profileUsername").textContent = doc.data().username;
+        }
+      }).catch(() => {});
+    } else {
+      authBtn.innerHTML = "🔒 Se connecter";
+      authBtn.title = "Connexion";
+      authBtn.onclick = () => { window.location.href = "auth.html"; };
+      if (profileMenu) profileMenu.style.display = "none";
+    }
+  });
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut().then(() => { profileMenu.style.display = "none"; });
+    });
+  }
+
+  // Fermer le menu profil en cliquant ailleurs
+  document.addEventListener("click", e => {
+    if (profileMenu && authBtn &&
+        !authBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+      profileMenu.style.display = "none";
+    }
+  });
+})();

@@ -40,10 +40,20 @@
           <li><a href="#" class="mod-editor-link mod-editor-disabled" onclick="return false;">🔧 Éditeur de Mods <span class="mod-soon-badge">Prochainement</span></a></li>
         </ul>
         <div class="navbar-right">
+          <button class="auth-btn" id="authBtn" title="Connexion">🔒 Se connecter</button>
           <button class="settings-btn" id="settingsBtn" title="Paramètres">⚙️</button>
         </div>
       </div>
     </nav>
+
+    <!-- Profile Menu -->
+    <div class="profile-menu" id="profileMenu" style="display:none">
+      <div class="profile-header">
+        <p id="profileUsername">Utilisateur</p>
+        <p id="profileEmail" style="font-size:0.85rem;color:var(--text-secondary)"></p>
+      </div>
+      <button class="profile-btn" id="logoutBtn">🚪 Déconnexion</button>
+    </div>
 
     <div class="settings-overlay" id="settingsOverlay"></div>
 
