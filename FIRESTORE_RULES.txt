@@ -12,6 +12,11 @@ service cloud.firestore {
       // Le compte admin interne peut tout lire/modifier
       allow read, write: if request.auth.token.email == "admin-internal@craft-genius.local";
     }
+
+    // Sous-collection data (favoris, etc.)
+    match /users/{uid}/data/{doc} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
     
     // Règles pour la collection comments
     match /comments/{document=**} {

@@ -266,43 +266,101 @@ if (hamburger && navLinks) {
   });
 }
 
-// ── Favoris (localStorage) ────────────────────────────────────
-function getFavorites() {
-  try { return JSON.parse(localStorage.getItem("modFavorites") || "[]"); }
-  catch (_) { return []; }
+// ── Favoris (Firestore si connecté, localStorage sinon) ─────
+let currentUser = null;   // mis à jour par onAuthStateChanged
+let favsCache   = null;   // cache en mémoire pour éviter des reads Firestore répétés
+
+function getDb() {
+  return typeof firebase !== "undefined" && firebase.apps.length
+    ? firebase.firestore() : null;
 }
-function saveFavorites(favs) {
-  localStorage.setItem("modFavorites", JSON.stringify(favs));
+
+async function loadFavorites() {
+  if (currentUser && getDb()) {
+    try {
+      const doc = await getDb().collection("users").doc(currentUser.uid)
+        .collection("data").doc("favorites").get();
+      favsCache = doc.exists ? (doc.data().list || []) : [];
+      // Migration : importer les favoris localStorage s'il y en a
+      const local = (() => { try { return JSON.parse(localStorage.getItem("modFavorites") || "[]"); } catch { return []; } })();
+      if (local.length > 0) {
+        const merged = [...favsCache];
+        local.forEach(lf => { if (!merged.some(f => f.id === lf.id)) merged.push(lf); });
+        await saveFavoritesToFirestore(merged);
+        localStorage.removeItem("modFavorites");
+        favsCache = merged;
+      }
+    } catch (_) {
+      favsCache = [];
+    }
+  } else {
+    try { favsCache = JSON.parse(localStorage.getItem("modFavorites") || "[]"); }
+    catch (_) { favsCache = []; }
+  }
+  updateFavCount();
+  // Mettre à jour les boutons ⭐ déjà affichés
+  document.querySelectorAll(".mod-fav-btn").forEach(btn => {
+    const fav = isFavorite(Number(btn.dataset.id));
+    btn.classList.toggle("active", fav);
+    btn.title = fav ? "Retirer des favoris" : "Ajouter aux favoris";
+  });
+}
+
+async function saveFavoritesToFirestore(favs) {
+  if (!currentUser || !getDb()) return;
+  await getDb().collection("users").doc(currentUser.uid)
+    .collection("data").doc("favorites")
+    .set({ list: favs }, { merge: false });
+}
+
+function getFavorites() {
+  return favsCache || [];
+}
+
+async function saveFavorites(favs) {
+  favsCache = favs;
+  if (currentUser && getDb()) {
+    saveFavoritesToFirestore(favs).catch(() => {});
+  } else {
+    localStorage.setItem("modFavorites", JSON.stringify(favs));
+  }
   updateFavCount();
 }
+
 function isFavorite(id) {
   return getFavorites().some(f => f.id === id);
 }
-function toggleFavorite(mod) {
+
+async function toggleFavorite(mod) {
   let favs = getFavorites();
   if (favs.some(f => f.id === mod.id)) {
     favs = favs.filter(f => f.id !== mod.id);
   } else {
     favs.push(mod);
   }
-  saveFavorites(favs);
+  await saveFavorites(favs);
   return favs.some(f => f.id === mod.id);
 }
+
 function updateFavCount() {
   const el = document.getElementById("modsFavCount");
   if (el) el.textContent = getFavorites().length;
 }
+
 function bindFavButtons() {
   document.querySelectorAll(".mod-fav-btn").forEach(btn => {
-    btn.addEventListener("click", e => {
+    btn.addEventListener("click", async e => {
       e.preventDefault(); e.stopPropagation();
       const mod = { id: Number(btn.dataset.id), name: btn.dataset.name, slug: btn.dataset.slug, logo: btn.dataset.logo, url: btn.dataset.url };
-      const isNowFav = toggleFavorite(mod);
+      const isNowFav = await toggleFavorite(mod);
       btn.classList.toggle("active", isNowFav);
       btn.title = isNowFav ? "Retirer des favoris" : "Ajouter aux favoris";
     });
   });
 }
+
+// Charger les favoris initialement (sans user = localStorage)
+loadFavorites();
 
 // Bouton "Voir mes favoris"
 const modsFavToggle = document.getElementById("modsFavToggle");
@@ -339,7 +397,6 @@ if (modsFavToggle) {
     }
   });
 }
-updateFavCount();
 
 // ── Bandeaux conseils ─────────────────────────────────────────
 const TIPS = [
@@ -599,6 +656,7 @@ fetchMods();
   const logoutBtn   = document.getElementById("logoutBtn");
 
   auth.onAuthStateChanged(user => {
+    currentUser = user;
     if (user) {
       const letter = (user.email || "?").charAt(0).toUpperCase();
       authBtn.innerHTML = `<span class="auth-avatar">${letter}</span>`;
@@ -612,11 +670,15 @@ fetchMods();
           document.getElementById("profileUsername").textContent = doc.data().username;
         }
       }).catch(() => {});
+      // Charger les favoris depuis Firestore
+      loadFavorites();
     } else {
       authBtn.innerHTML = "🔒 Se connecter";
       authBtn.title = "Connexion";
       authBtn.onclick = () => { window.location.href = "auth.html"; };
       if (profileMenu) profileMenu.style.display = "none";
+      // Repasser sur localStorage
+      loadFavorites();
     }
   });
 
