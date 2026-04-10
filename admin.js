@@ -81,8 +81,25 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("input", filterUsers);
   document
     .getElementById("aiOverlayToggle")
-    .addEventListener("change", updateToggleLabel);
+    .addEventListener("change", () => { markDirty(); updateToggleLabel(); });
 });
+
+// ============================================
+// Dirty state (modifications non sauvegardées)
+// ============================================
+let settingsDirty = false;
+
+function markDirty() {
+  settingsDirty = true;
+  const bar = document.querySelector(".admin-save-bar");
+  if (bar) bar.classList.add("admin-save-bar--dirty");
+}
+
+function markClean() {
+  settingsDirty = false;
+  const bar = document.querySelector(".admin-save-bar");
+  if (bar) bar.classList.remove("admin-save-bar--dirty");
+}
 
 // ============================================
 // Connexion Admin
@@ -171,6 +188,28 @@ async function generateHash() {
 }
 
 function handleLogout() {
+  if (settingsDirty) {
+    document.getElementById("logoutConfirmModal").style.display = "flex";
+    document.getElementById("logoutSaveQuit").onclick = async () => {
+      document.getElementById("logoutConfirmModal").style.display = "none";
+      await saveSettings();
+      doLogout();
+    };
+    document.getElementById("logoutDiscard").onclick = () => {
+      document.getElementById("logoutConfirmModal").style.display = "none";
+      markClean();
+      doLogout();
+    };
+    document.getElementById("logoutCancel").onclick = () => {
+      document.getElementById("logoutConfirmModal").style.display = "none";
+    };
+    return;
+  }
+  doLogout();
+}
+
+function doLogout() {
+  markClean();
   sessionStorage.removeItem("adminLoggedIn");
   sessionStorage.removeItem("adminCode");
   document.getElementById("adminDashboard").style.display = "none";
@@ -241,6 +280,7 @@ async function saveSettings() {
       .doc("main")
       .set({ aiOverlayVisible }, { merge: true });
     showSaveStatus("✅ Sauvegardé !", "success");
+    markClean();
   } catch (err) {
     console.error("Erreur sauvegarde:", err);
     showSaveStatus("❌ Erreur : " + err.message, "error");
