@@ -253,6 +253,23 @@
   flex-wrap: wrap;
 }
 
+/* ── Barre de sauvegarde globale ── */
+.admin-save-bar {
+  position: sticky;
+  bottom: 0;
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 2px solid #4CAF50;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  z-index: 100;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+  margin-top: 8px;
+}
+
 /* ── Paramètres ── */
 .admin-settings-list {
   padding: 20px 24px;
@@ -737,8 +754,4 @@
   .admin-card-footer {
     padding: 14px 16px;
   }
-}
-
-body {
-  background-color: #0f3460;
 }
