@@ -394,6 +394,100 @@ function closeWorkspace() {
 
 wsBtnBack.addEventListener('click', closeWorkspace);
 
+// ── Lancer Minecraft ──────────────────────────────────────────
+const wsBtnLaunch = document.getElementById('wsBtnLaunch');
+
+function generateLauncherScript(project) {
+  const pseudoPrompt = 'MonPseudo'; // placeholder remplacé à la génération
+  return `// ============================================================
+// Launcher Minecraft — généré par Craft Genius Mod Editor
+// Projet : ${project.name}  |  ID : ${project.id}
+// Version : ${project.version}  |  Loader : ${project.loader}
+// ============================================================
+// Prérequis : Node.js + npm install minecraft-launcher-core
+// Lancement  : node launch-${escHtml(project.id)}.js
+// ============================================================
+
+const { Client, Authenticator } = require('minecraft-launcher-core');
+const path = require('path');
+
+const launcher = new Client();
+
+const opts = {
+  // Mode offline (pas besoin d'un vrai compte Microsoft)
+  authorization: Authenticator.getAuth("${pseudoPrompt}"),
+
+  // Dossier .minecraft (créé automatiquement)
+  root: path.join(process.env.APPDATA || process.env.HOME, '.craftgenius-test'),
+
+  version: {
+    number: "${project.version}",
+    type: "release"
+  },
+
+  memory: {
+    max: "4G",
+    min: "2G"
+  }
+};
+
+console.log('[Craft Genius] Lancement de Minecraft ${project.version} (${project.loader})...');
+console.log('[Craft Genius] Dossier :', opts.root);
+console.log('');
+
+launcher.launch(opts);
+
+launcher.on('debug',    (e) => console.log('[debug]', e));
+launcher.on('data',     (e) => console.log('[mc]', e));
+launcher.on('progress', (e) => {
+  const pct = e.total ? Math.round((e.task / e.total) * 100) : 0;
+  process.stdout.write(\`\\r[téléchargement] \${e.type} — \${pct}%   \`);
+});
+launcher.on('close', (code) => {
+  console.log('\\n[Craft Genius] Minecraft fermé (code ' + code + ')');
+});
+`;
+}
+
+wsBtnLaunch.addEventListener('click', () => {
+  if (!currentProject) return;
+
+  // Afficher une modale d'info avant de télécharger le script
+  const overlay = document.createElement('div');
+  overlay.id = 'launchOverlay';
+  Object.assign(overlay.style, {
+    position: 'fixed', inset: '0',
+    background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)',
+    zIndex: '500', display: 'flex', alignItems: 'center', justifyContent: 'center',
+  });
+
+  const box = document.createElement('div');
+  Object.assign(box.style, {
+    background: '#0f1a10', border: '2px solid #2a5a20',
+    borderRadius: '14px', padding: '28px 32px', maxWidth: '480px', width: '90vw',
+    boxShadow: '0 24px 80px rgba(0,0,0,0.7)',
+    fontFamily: 'inherit', color: '#90e090',
+  });
+
+  const pseudo = prompt('Ton pseudo Minecraft (mode offline) :', 'MonPseudo') || 'MonPseudo';
+
+  overlay.remove();
+
+  // Générer le script avec le pseudo fourni
+  let script = generateLauncherScript(currentProject);
+  script = script.replace('"MonPseudo"', JSON.stringify(pseudo));
+
+  const blob = new Blob([script], { type: 'text/javascript' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `launch-${currentProject.id}.js`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  showToast('📥 Script téléchargé ! Lance-le avec : node launch-' + currentProject.id + '.js');
+});
+
 document.querySelectorAll('.mew-type-card').forEach(card => {
   card.addEventListener('click', () => {
     const type = card.dataset.type;

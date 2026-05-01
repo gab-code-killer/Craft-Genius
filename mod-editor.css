@@ -648,6 +648,23 @@
   color: #c090f8;
 }
 
+.mew-launch-btn {
+  background: linear-gradient(135deg, #1a3a1a, #0d2a10);
+  border: 1px solid #2a5a20;
+  color: #60c060;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  padding: 8px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.mew-launch-btn:hover {
+  border-color: #40c040;
+  color: #90e890;
+  box-shadow: 0 0 12px rgba(60, 200, 60, 0.3);
+}
+
 /* ── Layout principal ─────────────────────────────────────────── */
 .mew-layout {
   display: flex;

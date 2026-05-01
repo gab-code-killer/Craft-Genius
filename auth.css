@@ -208,6 +208,55 @@
     font-size: 0.95rem;
 }
 
+/* Microsoft Button */
+.btn-microsoft {
+    width: 100%;
+    padding: 12px 16px;
+    background: #ffffff;
+    color: #333;
+    border: 1px solid #dadce0;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s, box-shadow 0.2s;
+    margin-bottom: 16px;
+}
+
+.btn-microsoft:hover {
+    background: #f5f5f5;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.btn-microsoft:active {
+    background: #ebebeb;
+}
+
+/* Séparateur "ou" */
+.auth-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 16px 0;
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.auth-separator::before,
+.auth-separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.auth-separator span {
+    padding: 0 10px;
+}
+
 /* Responsive */
 @media (max-width: 480px) {
     .auth-wrapper {

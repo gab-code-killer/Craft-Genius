@@ -321,6 +321,79 @@ signupFormElement.addEventListener("submit", async (e) => {
 });
 
 // ============================================
+// CONNEXION MICROSOFT
+// ============================================
+async function signInWithMicrosoft() {
+  const provider = new firebase.auth.OAuthProvider("microsoft.com");
+  provider.setCustomParameters({ prompt: "select_account" });
+
+  const errorEl =
+    document.getElementById("loginForm").style.display !== "none"
+      ? document.getElementById("loginError")
+      : document.getElementById("signupError");
+
+  try {
+    showLoading(true);
+    const result = await auth.signInWithPopup(provider);
+    const user = result.user;
+
+    // Vérifier si l'utilisateur existe déjà dans Firestore
+    const userDoc = await db.collection("users").doc(user.uid).get();
+
+    if (!userDoc.exists) {
+      // Nouveau compte : créer le document Firestore
+      const username =
+        user.displayName ||
+        (user.email ? user.email.split("@")[0] : "User" + Date.now());
+      await db.collection("users").doc(user.uid).set({
+        username: username,
+        email: user.email || "",
+        createdAt: new Date(),
+        favorites: [],
+        history: [],
+        provider: "microsoft.com",
+      });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          username: username,
+          createdAt: new Date(),
+        }),
+      );
+    } else {
+      const userData = userDoc.data();
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          username: userData.username,
+          createdAt: userData.createdAt,
+        }),
+      );
+    }
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 500);
+  } catch (error) {
+    showLoading(false);
+    let msg = "❌ Erreur de connexion Microsoft";
+    if (error.code === "auth/popup-closed-by-user") {
+      msg = "❌ Fenêtre fermée avant la connexion";
+    } else if (error.code === "auth/popup-blocked") {
+      msg = "❌ Popup bloquée — autorisez les popups pour ce site";
+    } else if (error.code === "auth/account-exists-with-different-credential") {
+      msg = "❌ Un compte existe déjà avec cet email";
+    }
+    showMessage(errorEl, msg, "error");
+    console.error("Erreur Microsoft:", error);
+  }
+}
+
+// ============================================
 // Vérifier l'état de connexion à la charge
 // ============================================
 auth.onAuthStateChanged((user) => {

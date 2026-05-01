@@ -54,6 +54,11 @@
             </div>
             <button type="submit" class="btn-auth">Se connecter</button>
           </form>
+          <div class="auth-separator"><span>ou</span></div>
+          <button type="button" class="btn-microsoft" id="loginMicrosoftBtn" onclick="signInWithMicrosoft()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" width="20" height="20"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="ffb900"/></svg>
+            Continuer avec Microsoft
+          </button>
           <p class="auth-toggle">
             Pas de compte?
             <button type="button" class="link-btn" onclick="toggleAuth()">
@@ -110,6 +115,11 @@
             </div>
             <button type="submit" class="btn-auth">S'inscrire</button>
           </form>
+          <div class="auth-separator"><span>ou</span></div>
+          <button type="button" class="btn-microsoft" id="signupMicrosoftBtn" onclick="signInWithMicrosoft()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" width="20" height="20"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+            S'inscrire avec Microsoft
+          </button>
           <p class="auth-toggle">
             Déjà inscrit?
             <button type="button" class="link-btn" onclick="toggleAuth()">
