@@ -495,3 +495,516 @@ Let me check the git status and log to understand what's happening.
 _**User (2026-05-01 19:09:00Z)**_
 
 https://craft-genius-w2t3-7qi7xtwd2-gabriels-projects-7c6587f9.vercel.app/auth.html
+
+_**User (2026-05-07 10:22:20Z)**_
+
+mais quand je clique sur s'inscrire avec microsoft la page s'ouvre mais aprait sa ne connect pas mon compte au site
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+The user says the Microsoft popup opens but after signing in, it doesn't connect to the site. Let me look at the `signInWithMicrosoft` function to see if there's an issue with the flow.
+
+---
+
+_**User (2026-05-07 10:26:22Z)**_
+
+auth.js:392 Erreur Microsoft: FirebaseError: Firebase: An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address. (auth/account-exists-with-different-credential).
+    at z (assert.ts:136:55)
+    at H (assert.ts:83:10)
+    at ce (index.ts:318:17)
+    at ie (index.ts:183:13)
+    at async se (index.ts:231:9)
+    at async Ot (credential.ts:37:9)
+    at async Gn.onAuthEvent (abstract_popup_redir…operation.ts:103:12)
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+auth.js:392 Erreur Microsoft: FirebaseError: Firebase: An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address. (auth/account-exists-with-different-credential).
+    at z (assert.ts:136:55)
+    at H (assert.ts:83:10)
+    at ce (index.ts:318:17)
+    at ie (index.ts:183:13)
+    at async se (index.ts:231:9)
+    at async Ot (credential.ts:37:9)
+    at async Gn.onAuthEvent (abstract_popup_redir…operation.ts:103:12)
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+auth.js:392 Erreur Microsoft: FirebaseError: Firebase: This operation has been cancelled due to another conflicting popup being opened. (auth/cancelled-popup-request).
+    at z (assert.ts:136:55)
+    at H (assert.ts:83:10)
+    at Gn.cancel (popup.ts:270:17)
+    at new Gn (popup.ts:216:41)
+    at popup.ts:97:18
+    at Ii.signInWithPopup (auth.ts:304:7)
+    at signInWithMicrosoft (auth.js:337:31)
+    at HTMLButtonElement.onclick (auth.html:119:111)
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+identitytoolkit.goog…QzihLtzl8cOipUaC0:1 
+ Failed to load resource: the server responded with a status of 400 ()
+auth.js:392 Erreur Microsoft: FirebaseError: Firebase: Error getting verification code from microsoft.com response: error=server_error&state=AMbdmDnQjXRtw1gSyQ_BJj3n33WB8g9gR7sg76vjxiH--lMr9uPuZvQrAjuBuHhyxryg0xWzl5own47TIKFpm6SyQfUdFVDWXwrFLkIAj3726ELQnWEORiMjDUZd6WkzVaH6D9jBjee7Q0sGKTgwzton8nQIVX_EcKacPhWj3re-sh1TBHksW21SPLQAZ0xT4ajyvoYRSgwgg1JfMNOiDoDmpHmCyoVbVrqJWPQln6EU1K63YLluNMBznKVbqPzsKoPN90ld_fnMdE2ZFh5p9XQJI2pQJyqDV2cnd4Sy_SXfi1zpwBiEVnempftEcZVycErAiULQEp3bIaaQYSyN_AqANdA9dfjM72nriQNE (auth/invalid-credential).
+    at W (assert.ts:100:18)
+    at ie (index.ts:208:15)
+    at async se (index.ts:231:9)
+    at async Ot (credential.ts:37:9)
+    at async Gn.onAuthEvent (abstract_popup_redir…operation.ts:103:12)
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+popup.ts:289 Cross-Origin-Opener-Policy policy would block the window.closed call.
+auth.js:392 Erreur Microsoft: FirebaseError: Firebase: An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address. (auth/account-exists-with-different-credential).
+    at z (assert.ts:136:55)
+    at H (assert.ts:83:10)
+    at ce (index.ts:318:17)
+    at ie (index.ts:183:13)
+    at async se (index.ts:231:9)
+    at async Ot (credential.ts:37:9)
+    at async Gn.onAuthEvent (abstract_popup_redir…operation.ts:103:12)
+﻿
+
+ Write a comment to generate code. Try typing: '// add red borders to all the divs'. NEW
+
+ voila toute les erreur que j'ai dans la console
+
+_**User (2026-05-07 10:33:45Z)**_
+
+Gestion des comptes utilisateur
+Association de comptes utilisateur
+Actions des utilisateurs
+Fonctions de blocage
+Journalisation des activités des utilisateurs
+Quota d'inscriptions
+Règles relatives aux mots de passe
+Domaines
+Domaines autorisés
+SMS
+Règles pour les SMS par région
+Prévention des fraudes
+reCAPTCHA
+Association de comptes utilisateur
+Lorsqu'un utilisateur se connecte à l'aide de différents fournisseurs d'identité, vous pouvez choisir de fusionner automatiquement les comptes lors de la connexion. En savoir plus
+
+
+Associer les comptes qui utilisent la même adresse e-mail
+
+Créer plusieurs comptes pour chaque fournisseur d'identité
+
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+Sélectionne **"Associer les comptes qui utilisent la même adresse e-mail"** puis clique **Save/Enregistrer**.
+
+Ensuite reteste le bouton Microsoft sur ton site (après que Vercel ait fini de déployer — Ctrl+Shift+R pour vider le cache).
+
+---
+
+_**User (2026-05-07 10:34:41Z)**_
+
+mais c'était déja sur ca
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+Alors le vrai problème est l'erreur **`auth/invalid-credential` avec `error=server_error`** — Microsoft rejette la requête côté Azure.
+
+Les causes probables :
+
+**1. Client Secret expiré ou mauvais** — Va dans Azure → ton App **Craft Genius** → **Certificates & secrets** → vérifie que ton secret est toujours là et n'a pas expiré. Si tu n'es pas sûr, crée-en un nouveau et remet-le dans Firebase Console → Authentication → Microsoft.
+
+**2. URL de redirection incorrecte dans Azure** — Va dans Azure → **Authentication** → vérifie que l'URI est exactement :
+```
+https://craft-genius-201e6.firebaseapp.com/__/auth/handler
+```
+Sans espace, sans slash en fin. Supprime et recolle si nécessaire.
+
+**3. Attends le nouveau déploiement** — La console montrait encore l'ancienne version popup (`auth.js:337`). Fais **Ctrl+Shift+R** pour vérifier si Vercel a déployé le nouveau code.
+
+Commence par vérifier l'URL de redirection dans Azure, c'est la cause la plus fréquente du `server_error`.
+
+---
+
+_**User (2026-05-07 10:39:48Z)**_
+
+comment on avait fait encore sur azure
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+1. Va sur [portal.azure.com](https://portal.azure.com)
+2. Clique **"Gérer Microsoft Entra ID"**
+3. Menu gauche → **"App registrations"** / **"Inscriptions d'applications"**
+4. Clique sur **Craft Genius**
+
+Ensuite deux choses à vérifier :
+
+**Vérifier l'URL de redirection :**
+- Menu gauche → **Authentication**
+- Sous **Web → Redirect URIs**, l'URL doit être exactement :
+```
+https://craft-genius-201e6.firebaseapp.com/__/auth/handler
+```
+
+**Vérifier le Client Secret :**
+- Menu gauche → **Certificates & secrets**
+- Si le secret existe encore et n'a pas expiré, copie sa **Valeur**
+- Va sur Firebase Console → Authentication → Sign-in method → **Microsoft** → recolle la valeur dans **Client Secret** → Save
+
+---
+
+_**User (2026-05-07 10:42:02Z)**_
+
+
+Rechercher dans votre locataire
+Informations de base
+Nom
+Répertoire par défaut
+ID de tenant
+c3a219f6-bdb8-4b0e-9d78-22baa9ba7cef
+Domaine principal
+gabzcardongmail.onmicrosoft.com
+Licence
+Microsoft Entra ID gratuit
+Utilisateurs
+1
+Groupes
+0
+Applications
+1
+Appareils
+0
+Alertes
+
+Effectuer une migration vers la stratégie des méthodes d’authentification convergée
+Veuillez effectuer une migration de vos méthodes d’authentification en dehors des stratégies MFA et SSPR héritées avant septembre 2025 pour éviter tout impact sur le service
+Découvrir plus d’informations
+Mon flux
+
+Essayez le centre d’administration Microsoft Entra
+Sécurisez votre environnement d’identité avec Microsoft Entra ID, la gestion des autorisations, etc.
+Accéder à Microsoft Entra
+GC
+
+Gabriel Cardon
+63b366a3-8659-4faa-b88d-0db3363d9517
+Administrateur général
+Afficher les informations sur le rôle
+Afficher le profil
+
+Microsoft Entra Connect
+
+Non activé
+Synchronisation jamais exécutée
+Accéder à Microsoft Entra Connect
+Fonctionnalités principales
+Icône IDP
+Protection de l’identité
+Affichez les utilisateurs à risque, les identités de charge de travail à risque et les connexions à risque dans votre locataire.
+
+Révisions d’accès
+Assurez-vous que seules les personnes appropriées ont un accès continu.
+
+Méthodes d’authentification
+Configurez vos utilisateurs dans la stratégie des méthodes d’authentification pour activer l’authentification sans mot de passe.
+
+Microsoft Entra Domain Services
+Applications lift-and-shift héritées qui s’exécutent localement dans Azure.
+
+Restrictions liées au locataire
+Spécifiez la liste des locataires auxquels leurs utilisateurs sont autorisés à accéder.
+Actions rapides
+
+
+Ajoutez un utilisateur
+
+
+Ajouter un groupe
+
+
+Ajouter une application d’entreprise
+
+
+Ajouter l’inscription de l’application
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+Clique sur **"Ajouter l'inscription de l'application"** en bas, ou cherche **"App registrations"** dans la barre de recherche en haut.
+
+Puis clique sur **Craft Genius** dans la liste.
+
+---
+
+_**User (2026-05-07 10:42:38Z)**_
+
+Inscrire une application
+* Nom
+Nom d'affichage côté utilisateur pour cette application (il peut être modifié ultérieurement).
+Types de comptes pris en charge
+Choisir les types de comptes qui peuvent utiliser cette application ou accéder à cette API
+Locataire unique seulement : Répertoire par défaut
+M’aider à choisir
+URI de redirection (facultatif)
+Nous retournerons la réponse d'authentification à cet URI une fois l'utilisateur authentifié. Fournir ceci maintenant est facultatif et cela peut être modifié ultérieurement, mais une valeur est requise pour la plupart des scénarios d'authentification.
+Sélectionner une plateforme
+par ex., https://example.com/auth
+Inscrivez ici une application sur laquelle vous travaillez. Intégrez des applications de la galerie et d’autres applications externes à votre organisation en les ajoutant à partir de Applications d’entreprise.
+En continuant, vous acceptez les stratégies de la plateforme Microsoft 
+
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+Tu es sur la page de création d'une nouvelle app, mais tu veux accéder à **l'app existante** Craft Genius.
+
+Clique sur 
+
+---
+
+_**User (2026-05-07 10:45:14Z)**_
+
+c:\Users\bertr\AppData\Local\Packages\Microsoft.ScreenSketch_8wekyb3d8bbwe\TempState\Recordings\20260507-1044-56.1160809.mp4
+
+_**User (2026-05-07 10:46:32Z)**_
+
+voila
+
+_**User (2026-05-07 11:05:16Z)**_
+
+ensuite
+
+_**User (2026-05-07 11:05:52Z)**_
+
+Azure Active Directory Authentication Library (ADAL) and Azure AD Graph no longer receive new feature updates. We continue to provide technical support and security updates. Applications should be upgraded to Microsoft Authentication Library (MSAL) and Microsoft Graph. En savoir plus
+
+Toutes les applications
+Applications détenues
+Applications supprimées
+Deactivated applications
+Applications du compte personnel
+Commencez à taper un nom ou un ID d'application (client) pour filtrer ces résultats
+0 applications trouvées
+Nom d'affichage
+ID d'application (client)
+ID de l'objet
+Aucun résultat.
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+L'app n'est pas dans cet onglet. Clique sur l'onglet **"Applications du compte personnel"** — c'est là que se trouve Craft Genius car tu es connecté avec un compte Microsoft personnel (Gmail).
+
+---
+
+_**User (2026-05-07 11:06:34Z)**_
+
+Azure Active Directory Authentication Library (ADAL) and Azure AD Graph no longer receive new feature updates. We continue to provide technical support and security updates. Applications should be upgraded to Microsoft Authentication Library (MSAL) and Microsoft Graph. En savoir plus
+
+Toutes les applications
+Applications détenues
+Applications supprimées
+Deactivated applications
+Applications du compte personnel
+Ces applications sont associées au compte gabzcardon@gmail.commais ne sont contenues dans aucun répertoire. Elles apparaissent ici, si bien que vous pouvez les gérer, mais elles ne seront pas disponibles pour les autres utilisateurs ou administrateurs de ce répertoire. La possibilité de créer des applications hors d’un répertoire a été déconseillée. Vous pouvez inscrire des applications dans ce répertoire (Répertoire par défaut) ou obtenir votre propre répertoire en adhérant au programme pour les développeurs M365 ou en vous inscrivant à Azure. En savoir plus
+Commencez à taper un nom ou un ID d'application pour filtrer ces résultats
+Il n'y a aucune application ici.
+
+_**User (2026-05-07 11:10:10Z)**_
+
+je fait quoi
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+Tu es sur la bonne page ! Je vois le nouveau **Client ID** : `70e5314b-d7e8-40ea-939f-f2d9031c1944`
+
+Maintenant :
+
+**1. Crée un Client Secret**
+- Menu gauche → **"Gérer"** → **"Certificats et secrets"**
+- **+ Nouveau 
+
+---
+
+_**User (2026-05-07 11:15:17Z)**_
+
+voila c'est fait
+
+_**User (2026-05-07 11:23:03Z)**_
+
+sa fonctionne a fonctionner avec le compte de ma mere mais plus maintenant quand j'ésaille de me connecter sa ouvre la bonne page mais je reste sur la page autantification
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+The user says it worked once with their mother's account but now when they try to log in, it opens the right Microsoft page but they stay on the auth page (don't get redirected to index.html). This could be a few issues:
+
+1. The `onAuthStateChanged` listener is redirecting them back to auth.html because they're already logged in, or conversely not detecting the login
+2. The `getRedirectResult` might not be working properly
+3. There might be a Firestore permission issue when trying to read/write the user document
+
+Let me check the auth.js code more carefully, especially the `onAuthStateChanged` and `getRedirectResult` parts.
+
+---
+
+_**User (2026-05-07 11:31:52Z)**_
+
+il y a une erreur en rouge dans la console qui appariat et qui disparait la sec pls tard
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+Pour capturer l'erreur qui disparaît rapidement :
+
+1. **F12 → Console**
+2. Clique l'icône **⚙️ (engrenage)** ou cherche **"Preserve log"** → coche-le
+3. Recharge la page et reteste Microsoft
+4. L'erreur restera visible même après la redirection
+
+Dis-moi ce que tu vois.
+
+---
+
+_**User (2026-05-07 11:33:11Z)**_
+
+Navigated to https://craft-genius-201e6.firebaseapp.com/__/auth/handler?apiKey=AIzaSyDV9nR4R9DrLBF7xkQzihLtzl8cOipUaC0&appName=%5BDEFAULT%5D&authType=signInViaRedirect&redirectUrl=https%3A%2F%2Fcraft-genius.com%2Fauth.html&v=10.7.0&providerId=microsoft.com&customParameters=%7B%22prompt%22%3A%22select_account%22%7D
+authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:192  GET https://craft-genius-201e6.firebaseapp.com/__/firebase/init.json 404 (Not Found)
+l.send @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:192
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:203
+I @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:165
+Vg.Ke @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:202
+g @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:554
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:555
+a @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+c @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+e.Pb @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:172
+lg @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:175
+hg @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:175
+I.Zi @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:174
+a @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+c @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+Rf @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:165
+a
+Kf @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:165
+cg @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:171
+I.then @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:168
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:555
+a @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+c @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+e.Pb @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:172
+lg @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:175
+hg @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:175
+I.Zi @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:174
+a @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+c @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:164
+Rf @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:165
+a
+Kf @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:165
+cg @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:171
+I.then @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:168
+Zp.bb @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:553
+Zp.start @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:552
+jq @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:564
+(anonymous) @ authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com:10Understand this error
+Navigated to https://login.microsoftonline.com/common/oauth2/v2.0/authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnI9Tnz2WzyeFDKxGRRS8xg6MZ6BfiH9qS1jvl3bW3VznGehYkRmDG0aM-rJUmW6YVtqcEa2AZXVP8u6huangJy8CVySrWPBrvZ0TBRpWKSrhOObMJgOfZAzW8uVWM4S95mdWpJaLjgC94IG31fv3sOCrAWDy1vjshS3AoACe9BM1ObfIkqgIj1HrAPexnYNd2X14YowiAR92g33bp67DcYbAs_4N2C0-A85PUCMcGApNoLGQB6Z5ayyZ3fPb_xxa1tK4TLJ_VTV2UHHgNDZaqr_XI4-9fcqVaZgAg1JhJkrJJvkyCGkYpZSznvISOe1MdUabjjawthd65v0OLVP1uYeVZKDI0YKYCF&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com
+Me.htm?v=3:1 true
+
+_**User (2026-05-07 11:36:34Z)**_
+
+[Terminal 4b3b40a7-fde1-401d-b939-6e41b9d0f0aa notification: command completed with exit code 0. Use send_to_terminal to send another command or kill_terminal to stop it.]
+Terminal output:
+PS C:\Users\bertr\Documents\Gabriel\code\Craft-Genius> firebase login
+i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+
+? Allow Firebase to collect CLI and Emulator Suite usage and error reporting 
+information? Yes
+i  To change your data collection preference at any time, run `firebase logout` and log in again.
+
+Visit this URL on this device to log in:
+https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=624751871&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+
+Waiting for authentication...
+
++  Success! Logged in as gabzcardon@gmail.com
+
+   ╭────────────────────────────────────────────────────────────────────╮
+   │                                                                    │
+   │                 Update available 11.30.0 → 15.17.0                 │
+   │           To update to the latest version using npm, run           │
+   │                   npm install -g firebase-tools                    │
+   │   For other CLI management options, visit the CLI documentation    │
+   │         (https://firebase.google.com/docs/cli#update-cli)          │
+   │                                                                    │
+   │                                                                    │
+   │                                                                    │
+   ╰────────────────────────────────────────────────────────────────────╯
+
+
+
+_**User (2026-05-07 11:40:35Z)**_
+
+Navigated to https://craft-genius-201e6.firebaseapp.com/__/auth/handler?apiKey=AIzaSyDV9nR4R9DrLBF7xkQzihLtzl8cOipUaC0&appName=%5BDEFAULT%5D&authType=signInViaRedirect&redirectUrl=https%3A%2F%2Fcraft-genius.com%2Fauth.html&v=10.7.0&providerId=microsoft.com&customParameters=%7B%22prompt%22%3A%22select_account%22%7D
+Navigated to https://login.microsoftonline.com/common/oauth2/v2.0/authorize?response_type=code&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&redirect_uri=https%3A%2F%2Fcraft-genius-201e6.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDn51XiMYEI28QWD4mhbbZknUQYpkaHbTp9S3iAISliC6SkvoaJKrKSgapTWN0UZROj8c-otH-Usf7ChWrnNVAplICqJKmixlSzDTf4ZlPvfvvl8Ggv7uywPkyuy5f_4w0BnakRGWdYgVPxsE58FHPTfcE3Vb1DF21JKZN8M3zud7Pa-EdDtAwFXBXcRctfcLC61OBhBgzddItDTXTzqz7uoPx7BGBxvlNUoZ7t5rUax8d3YWmfTmwb5MOfGwVnvu_KC8qGT2Zqs1UfYuwWFGvpV1CKtF5IjKjM9pM9uoAsdpkQlgPCF1S8zeU9nz5Qc8KVzQhADsy_tv6wTepV6bPeODrbiuklbZ26r&scope=profile%20email%20openid%20User.Read&prompt=select_account&context_uri=https%3A%2F%2Fcraft-genius.com
+Me.htm?v=3:1 true
+Navigated to https://login.live.com/ppsecure/partnerpost.srf?flow=fido&client_id=70e5314b-d7e8-40ea-939f-f2d9031c1944&scope=profile+email+openid+User.Read&redirect_uri=https%3a%2f%2fcraft-genius-201e6.firebaseapp.com%2f__%2fauth%2fhandler&response_type=code&state=AMbdmDn51XiMYEI28QWD4mhbbZknUQYpkaHbTp9S3iAISliC6SkvoaJKrKSgapTWN0UZROj8c-otH-Usf7ChWrnNVAplICqJKmixlSzDTf4ZlPvfvvl8Ggv7uywPkyuy5f_4w0BnakRGWdYgVPxsE58FHPTfcE3Vb1DF21JKZN8M3zud7Pa-EdDtAwFXBXcRctfcLC61OBhBgzddItDTXTzqz7uoPx7BGBxvlNUoZ7t5rUax8d3YWmfTmwb5MOfGwVnvu_KC8qGT2Zqs1UfYuwWFGvpV1CKtF5IjKjM9pM9uoAsdpkQlgPCF1S8zeU9nz5Qc8KVzQhADsy_tv6wTepV6bPeODrbiuklbZ26r&uaid=46ac50538c0942bfb709d48699448ed6&msproxy=1&issuer=mso&tenant=common&ui_locales=fr-FR&epctrc=tBbc1BOgrLz2rO6NrxcbG%2fFJK%2fyqD379K7Y5DgwGXy8%3d3%3a1%3aCANARY%3afhael0xtZXMAGAXsQDpfpKHdizOVamtBsFodm5NrSAs%3d&epct=PAQABDgEAAAAdDD7nC9b5Q7JPd_okEQRFRXZvU3RzQXJ0aWZhY3RzCAAAAAAAq-n3upvqw3Vb9EM0ef1OIdQsatf9qCuEB3QWLz4ANoDNoUP_56ijvQIPI7g_vfpWdEDcv7MKOqoQfLDbABh7vZ_InTsOuppjBD0B40IBjhyb915QbC3tvmzoVvEp5JxdokFet8tuonpsMtnxLvAjX_eb-GAcIlAQmX48IuYsyOQw1Hilg3YnaMQQ36urujf8-YcOyVE7bt4g1fBJwaJmsCAA&jshs=0
+Navigated to https://craft-genius-201e6.firebaseapp.com/__/auth/handler?code=M.C561_SN1.2.U.DrX3!WQd7Fw0Gg7dpMHP8Izj!Jc1RwglKwLQ2LDGffn2kZZxMOQUsVW1T777xsz1OqgJwPlh8ElyiYSoayE4zGJgXUIWuV2XHMi78AwUDRknGv8C75U!NK5I696HqTqPAEIM3Rxfp78DiXtTGJbYJYiPAHUfRvjqMtETfZA*LR0TRxqwYxN87To7pfcHpdPhGemoigYzRMhJYgqVx*wQXhHReFysx*0hm6yCGS14ofBNr9Xv7J0r5zn66epUi!cfRJ0adHVs6YGeyqPhpVvGlhqxWCdJyISq*Fy3XlmhmPnmzYvXQw7P9Tjop2aisVTNvI1I3UebGP*!QgpPvJHd7GiR9MjSpqIN!28eLVM7RrS8vaJOLTE4KfnIN2L!KHEBYXLODfSgXS9QjFD9CqK0oP8NN7BWeGlFlsMBUbovyqWP6iuUzXVLdjaE6FWDNSUKJy0pO939LaC6l6qDEOKl14hFrKUSZ7UzSAduXz!8VlhFMDthKwCESJsr9a0geu0!bWdo!pEP5soRdBXdtEbZElUwMqxZmG9MGiobw0Z0EyoW94ExaZUtzj938H71g12i5TKRqZ1YeQAz5N2mE95MZd2itKMtgnQv9iN!8FJH8QLIwobDCbseKTL0G5WeBay5JiUyL0Je!YSUi3zxCzmv3qA%24&state=AMbdmDn51XiMYEI28QWD4mhbbZknUQYpkaHbTp9S3iAISliC6SkvoaJKrKSgapTWN0UZROj8c-otH-Usf7ChWrnNVAplICqJKmixlSzDTf4ZlPvfvvl8Ggv7uywPkyuy5f_4w0BnakRGWdYgVPxsE58FHPTfcE3Vb1DF21JKZN8M3zud7Pa-EdDtAwFXBXcRctfcLC61OBhBgzddItDTXTzqz7uoPx7BGBxvlNUoZ7t5rUax8d3YWmfTmwb5MOfGwVnvu_KC8qGT2Zqs1UfYuwWFGvpV1CKtF5IjKjM9pM9uoAsdpkQlgPCF1S8zeU9nz5Qc8KVzQhADsy_tv6wTepV6bPeODrbiuklbZ26r
+Navigated to https://craft-genius.com/auth.htmlµ
+
+_**User (2026-05-07 11:43:13Z)**_
+
+Gestion des comptes utilisateur
+Association de comptes utilisateur
+Actions des utilisateurs
+Fonctions de blocage
+Journalisation des activités des utilisateurs
+Quota d'inscriptions
+Règles relatives aux mots de passe
+Domaines
+Domaines autorisés
+SMS
+Règles pour les SMS par région
+Prévention des fraudes
+reCAPTCHA
+Domaines autorisés
+Pour des raisons de sécurité, vous devez autoriser les domaines pour les redirections OAuth afin d'utiliser l'authentification Google, tierce ou par téléphone. En savoir plus
+
+Domaine autorisé	Type	Actions
+localhost	Default	
+craft-genius-201e6.firebaseapp.com	Default	
+craft-genius-201e6.web.app	Default	
+craft-genius.com	Custom	
+
+
+---
+
+_**Agent (copilot/claude-sonnet-4.6)**_
+
+`craft-genius.com` est déjà dans la liste. Le flux OAuth semble fonctionner correctement d'après les logs.
+
+**Est-ce que tu as été connecté ou pas ?** Va sur `https://craft-genius.com` et regarde si ton compte Microsoft apparaît dans le menu de profil en haut à droite.
+
+Si tu n'es pas connecté, ouvre **F12 → Console** sur `craft-genius.com/auth.html` et dis-moi ce qui s'affiche après la redirection.
