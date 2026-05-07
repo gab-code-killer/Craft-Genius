@@ -171,6 +171,18 @@ body {
     text-shadow: none;
 }
 
+.nav-links a.mod-editor-link--microsoft {
+    background: linear-gradient(135deg, #0066cc, #004a99);
+    border-color: #2a84e0;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.nav-links a.mod-editor-link--microsoft:hover {
+    background: linear-gradient(135deg, #2a84e0, #0055bb);
+    border-color: #60aaff;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+}
+
 .mod-soon-badge {
     font-size: 0.65em;
     background: #3a3a3a;

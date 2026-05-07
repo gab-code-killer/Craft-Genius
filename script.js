@@ -394,6 +394,13 @@ document.addEventListener('DOMContentLoaded', function() {
             profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
           };
 
+          // Bouton Éditeur de Mods visible uniquement pour les comptes Microsoft
+          const isMicrosoft = user.providerData && user.providerData.some(p => p.providerId === 'microsoft.com');
+          const navMicrosoftSignin = document.getElementById('navMicrosoftSignin');
+          const navModEditor = document.getElementById('navModEditor');
+          if (navMicrosoftSignin) navMicrosoftSignin.style.display = isMicrosoft ? 'none' : '';
+          if (navModEditor) navModEditor.style.display = isMicrosoft ? '' : 'none';
+
           // Récupérer le username depuis Firestore
           const db = firebase.firestore();
           db.collection('users').doc(user.uid).get()
@@ -438,6 +445,12 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'auth.html';
           };
           profileMenu.style.display = 'none';
+
+          // Pas de compte Microsoft : afficher bouton connexion, masquer éditeur
+          const navMicrosoftSigninOut = document.getElementById('navMicrosoftSignin');
+          const navModEditorOut = document.getElementById('navModEditor');
+          if (navMicrosoftSigninOut) navMicrosoftSigninOut.style.display = '';
+          if (navModEditorOut) navModEditorOut.style.display = 'none';
         }
       });
       
