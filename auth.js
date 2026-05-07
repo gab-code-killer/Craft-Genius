@@ -342,8 +342,13 @@ async function signInWithMicrosoft() {
 
 // Traiter le résultat du redirect Microsoft au retour
 auth.getRedirectResult().then(async (result) => {
-  if (!result || !result.user) return;
+  console.log("[Microsoft] getRedirectResult résultat:", result);
+  if (!result || !result.user) {
+    console.log("[Microsoft] Pas de résultat redirect, user null");
+    return;
+  }
   const user = result.user;
+  console.log("[Microsoft] Utilisateur connecté:", user.uid, user.email);
 
   try {
     const userDoc = await db.collection("users").doc(user.uid).get();
@@ -376,7 +381,7 @@ auth.getRedirectResult().then(async (result) => {
   }
   window.location.href = "index.html";
 }).catch((error) => {
-  console.error("Erreur redirect Microsoft:", error);
+  console.error("[Microsoft] Erreur getRedirectResult:", error.code, error.message);
 });
 
 // ============================================
@@ -384,6 +389,7 @@ auth.getRedirectResult().then(async (result) => {
 // ============================================
 let redirectHandled = false;
 auth.onAuthStateChanged((user) => {
+  console.log("[Auth] onAuthStateChanged:", user ? user.uid : "null");
   if (user && !redirectHandled) {
     redirectHandled = true;
     window.location.href = "index.html";
