@@ -345,29 +345,34 @@ auth.getRedirectResult().then(async (result) => {
   if (!result || !result.user) return;
   const user = result.user;
 
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists) {
-    const username =
-      user.displayName ||
-      (user.email ? user.email.split("@")[0] : "User" + Date.now());
-    await db.collection("users").doc(user.uid).set({
-      username: username,
-      email: user.email || "",
-      createdAt: new Date(),
-      favorites: [],
-      history: [],
-      provider: "microsoft.com",
-    });
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ uid: user.uid, email: user.email, username: username, createdAt: new Date() }),
-    );
-  } else {
-    const userData = userDoc.data();
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ uid: user.uid, email: user.email, username: userData.username, createdAt: userData.createdAt }),
-    );
+  try {
+    const userDoc = await db.collection("users").doc(user.uid).get();
+    if (!userDoc.exists) {
+      const username =
+        user.displayName ||
+        (user.email ? user.email.split("@")[0] : "User" + Date.now());
+      await db.collection("users").doc(user.uid).set({
+        username: username,
+        email: user.email || "",
+        createdAt: new Date(),
+        favorites: [],
+        history: [],
+        provider: "microsoft.com",
+      });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ uid: user.uid, email: user.email, username: username, createdAt: new Date() }),
+      );
+    } else {
+      const userData = userDoc.data();
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ uid: user.uid, email: user.email, username: userData.username, createdAt: userData.createdAt }),
+      );
+    }
+  } catch (e) {
+    console.error("Erreur Firestore:", e);
+    // On redirige quand même même si Firestore échoue
   }
   window.location.href = "index.html";
 }).catch((error) => {
@@ -377,9 +382,10 @@ auth.getRedirectResult().then(async (result) => {
 // ============================================
 // Vérifier l'état de connexion à la charge
 // ============================================
+let redirectHandled = false;
 auth.onAuthStateChanged((user) => {
-  if (user) {
-    // L'utilisateur est connecté, rediriger vers index
+  if (user && !redirectHandled) {
+    redirectHandled = true;
     window.location.href = "index.html";
   }
 });
