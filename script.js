@@ -401,6 +401,10 @@ document.addEventListener('DOMContentLoaded', function() {
           if (navMicrosoftSignin) navMicrosoftSignin.style.display = isMicrosoft ? 'none' : '';
           if (navModEditor) navModEditor.style.display = isMicrosoft ? '' : 'none';
 
+          // Masquer le bouton S'inscrire quand connecté
+          const registerBtn = document.getElementById('registerBtn');
+          if (registerBtn) registerBtn.style.display = 'none';
+
           // Récupérer le username depuis Firestore
           const db = firebase.firestore();
           db.collection('users').doc(user.uid).get()
@@ -451,6 +455,10 @@ document.addEventListener('DOMContentLoaded', function() {
           const navModEditorOut = document.getElementById('navModEditor');
           if (navMicrosoftSigninOut) navMicrosoftSigninOut.style.display = '';
           if (navModEditorOut) navModEditorOut.style.display = 'none';
+
+          // Afficher le bouton S'inscrire quand déconnecté
+          const registerBtnOut = document.getElementById('registerBtn');
+          if (registerBtnOut) registerBtnOut.style.display = '';
         }
       });
       

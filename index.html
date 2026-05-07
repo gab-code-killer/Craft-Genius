@@ -55,9 +55,14 @@
           <li id="navModEditor" style="display:none"><a href="mod-editor.html" class="mod-editor-link">🔧 Éditeur de Mods</a></li>
         </ul>
         <div class="navbar-right">
-          <button class="auth-btn" id="authBtn" title="Connexion">
-            🔒 Se connecter
-          </button>
+          <div class="auth-btns" id="authBtns">
+            <button class="auth-btn" id="authBtn" title="Connexion">
+              🔒 Se connecter
+            </button>
+            <button class="register-btn" id="registerBtn" title="Inscription" onclick="window.location.href='auth.html?tab=signup'">
+              ✏️ S'inscrire
+            </button>
+          </div>
           <button class="settings-btn" id="settingsBtn" title="Paramètres">
             ⚙️
           </button>

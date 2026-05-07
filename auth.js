@@ -393,4 +393,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Récupérer le thème sauvegardé s'il existe
   const savedTheme = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", savedTheme);
+
+  // Ouvrir directement l'onglet inscription si ?tab=signup
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("tab") === "signup") {
+    loginForm.style.display = "none";
+    signupForm.style.display = "block";
+  }
 });
