@@ -148,7 +148,7 @@ body {
 .nav-links a.mod-editor-link {
     background: linear-gradient(135deg, #4a2080, #2a1060);
     color: #fff;
-    padding: 6px 10px;
+    padding: 5px 9px;
     border-radius: 5px;
     border: 1.5px solid #7040c0;
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
@@ -159,7 +159,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 0.77rem;
+    font-size: 0.72rem;
 }
 
 .nav-links a.mod-editor-link:hover,
@@ -200,13 +200,13 @@ body {
 .nav-links a.mods-nav-link {
     background: linear-gradient(135deg, #3a7a10, #275208);
     color: #fff;
-    padding: 6px 10px;
+    padding: 5px 9px;
     border-radius: 5px;
     border: 1.5px solid #5D9E31;
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
     transition: all 0.2s;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    font-size: 0.79rem;
+    font-size: 0.74rem;
 }
 
 .nav-links a.mods-nav-link:hover,
@@ -250,10 +250,10 @@ body {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1.5px solid rgba(255, 255, 255, 0.3);
-    padding: 6px 10px;
+    padding: 5px 9px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.79rem;
+    font-size: 0.74rem;
     font-weight: 600;
     transition: all 0.3s;
     white-space: nowrap;
@@ -279,10 +279,10 @@ body {
     background: rgba(93, 158, 49, 0.15);
     color: #a0e060;
     border: 1.5px solid rgba(93, 158, 49, 0.5);
-    padding: 6px 10px;
+    padding: 5px 9px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.79rem;
+    font-size: 0.74rem;
     font-weight: 600;
     transition: all 0.3s;
     white-space: nowrap;
