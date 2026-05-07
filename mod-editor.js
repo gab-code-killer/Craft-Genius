@@ -36,9 +36,16 @@ function updateUserBadge() {
     badge.textContent = '\uD83D\uDCBE Mode local';
     badge.title = 'Connectez-vous pour synchroniser vos projets';
   }
+
+  // Afficher le bouton Minecraft seulement si connecté avec Microsoft
+  const btnLaunch = document.getElementById('btnLaunchMinecraft');
+  if (!btnLaunch) return;
+  const isMicrosoft = meUser && meUser.providerData &&
+    meUser.providerData.some(p => p.providerId === 'microsoft.com');
+  btnLaunch.style.display = isMicrosoft ? 'flex' : 'none';
 }
 
-// â”€â”€ Ã‰lÃ©ments â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Éléments ─────────────────────────────────────────────────────────────────
 const btnNewProject  = document.getElementById('btnNewProject');
 const btnImport      = document.getElementById('btnImport');
 const importFileInput= document.getElementById('importFileInput');
@@ -51,6 +58,11 @@ const modNameInput   = document.getElementById('modName');
 const modIdInput     = document.getElementById('modId');
 const modIdPreview   = document.getElementById('modIdPreview');
 const idLockBtn      = document.getElementById('idLockBtn');
+
+// Lancer Minecraft
+document.getElementById('btnLaunchMinecraft').addEventListener('click', () => {
+  window.location.href = 'minecraft://';
+});
 
 let idLocked = true;
 
