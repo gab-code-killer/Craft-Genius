@@ -326,31 +326,17 @@ signupFormElement.addEventListener("submit", async (e) => {
 async function signInWithMicrosoft() {
   const provider = new firebase.auth.OAuthProvider("microsoft.com");
   provider.setCustomParameters({ prompt: "select_account" });
+
+  const errorEl =
+    document.getElementById("loginForm").style.display !== "none"
+      ? document.getElementById("loginError")
+      : document.getElementById("signupError");
+
   try {
     showLoading(true);
-    await auth.signInWithRedirect(provider);
-  } catch (error) {
-    showLoading(false);
-    const errorEl =
-      document.getElementById("loginForm").style.display !== "none"
-        ? document.getElementById("loginError")
-        : document.getElementById("signupError");
-    showMessage(errorEl, "❌ Erreur de connexion Microsoft", "error");
-    console.error("Erreur Microsoft:", error);
-  }
-}
+    const result = await auth.signInWithPopup(provider);
+    const user = result.user;
 
-// Traiter le résultat du redirect Microsoft au retour
-auth.getRedirectResult().then(async (result) => {
-  console.log("[Microsoft] getRedirectResult résultat:", result);
-  if (!result || !result.user) {
-    console.log("[Microsoft] Pas de résultat redirect, user null");
-    return;
-  }
-  const user = result.user;
-  console.log("[Microsoft] Utilisateur connecté:", user.uid, user.email);
-
-  try {
     const userDoc = await db.collection("users").doc(user.uid).get();
     if (!userDoc.exists) {
       const username =
@@ -364,25 +350,26 @@ auth.getRedirectResult().then(async (result) => {
         history: [],
         provider: "microsoft.com",
       });
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ uid: user.uid, email: user.email, username: username, createdAt: new Date() }),
-      );
+      localStorage.setItem("user", JSON.stringify({ uid: user.uid, email: user.email, username: username, createdAt: new Date() }));
     } else {
       const userData = userDoc.data();
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ uid: user.uid, email: user.email, username: userData.username, createdAt: userData.createdAt }),
-      );
+      localStorage.setItem("user", JSON.stringify({ uid: user.uid, email: user.email, username: userData.username, createdAt: userData.createdAt }));
     }
-  } catch (e) {
-    console.error("Erreur Firestore:", e);
-    // On redirige quand même même si Firestore échoue
+    window.location.href = "index.html";
+  } catch (error) {
+    showLoading(false);
+    let msg = "❌ Erreur de connexion Microsoft";
+    if (error.code === "auth/popup-closed-by-user") {
+      msg = "❌ Fenêtre fermée avant la connexion";
+    } else if (error.code === "auth/popup-blocked") {
+      msg = "❌ Popup bloquée — autorisez les popups pour ce site";
+    } else if (error.code === "auth/account-exists-with-different-credential") {
+      msg = "❌ Un compte existe déjà avec cet email";
+    }
+    showMessage(errorEl, msg, "error");
+    console.error("Erreur Microsoft:", error.code, error.message);
   }
-  window.location.href = "index.html";
-}).catch((error) => {
-  console.error("[Microsoft] Erreur getRedirectResult:", error.code, error.message);
-});
+}
 
 // ============================================
 // Vérifier l'état de connexion à la charge
